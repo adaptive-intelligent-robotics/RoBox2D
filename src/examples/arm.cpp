@@ -2,6 +2,11 @@
 
 #include <box2d/box2d.h>
 
+#include <robox2d/simu.hpp>
+#include <robox2d/robot.hpp>
+
+
+
 #include <Magnum/Platform/GlfwApplication.h>
 
 #include <Corrade/Containers/GrowableArray.h>
@@ -215,54 +220,17 @@ namespace Magnum { namespace Examples {
 
   }}
 
-MAGNUM_APPLICATION_MAIN(Magnum::Examples::Box2DExample)
+//MAGNUM_APPLICATION_MAIN(Magnum::Examples::Box2DExample)
 
-/*int main()
+int main()
   {
-  std::cout<<"hi"<<std::endl;
+    // simulating
+    robox2d::Simu simu(1.0/60.0f);
+    simu.add_floor();
 
-  b2Vec2 gravity(0.0f, -10.0f);
-  b2World world(gravity);
+    robox2d::Robot rob(simu);
+    
+    simu.run(5);
 
-  // add ground
-  b2BodyDef groundBodyDef;
-  groundBodyDef.position.Set(0.0f, -10.0f);
-  b2Body* groundBody = world.CreateBody(&groundBodyDef);
-  b2PolygonShape groundBox;
-  groundBox.SetAsBox(50.0f, 10.0f);
-
-  groundBody->CreateFixture(&groundBox, 0.0f);
-
-  // add movable body
-  b2BodyDef bodyDef;
-  bodyDef.type = b2_dynamicBody;
-  bodyDef.position.Set(0.0f, 4.0f);
-  b2Body* body = world.CreateBody(&bodyDef);
-
-  b2PolygonShape dynamicBox;
-  dynamicBox.SetAsBox(1.0f, 1.0f);
-
-  b2FixtureDef fixtureDef;
-  fixtureDef.shape = &dynamicBox;
-  fixtureDef.density = 1.0f;
-  fixtureDef.friction = 0.3f;
-
-  body->CreateFixture(&fixtureDef);
-
-  // simulating
-
-  float timeStep = 1.0f / 60.0f;
-  int32 velocityIterations = 8;
-  int32 positionIterations = 3;
-
-  for (int32 i = 0; i < 60; ++i)
-  {
-  world.Step(timeStep, velocityIterations, positionIterations);
-  b2Vec2 position = body->GetPosition();
-  float angle = body->GetAngle();
-  printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle);
-  }
-*/
-  
-//  return 0;
-//}
+    return 0;
+}

@@ -42,7 +42,6 @@ def configure(conf):
     conf.load('waf_unit_test')
     conf.load('boost')
     conf.load('eigen')
-    conf.load('avx')
     conf.load('corrade')
     conf.load('magnum')
     conf.load('magnum_integration')
@@ -106,24 +105,49 @@ def summary(bld):
 def build(bld):
 
     
-    path = bld.path.abspath() + '/res'
-
-    files = []
-    magnum_files = []
-
-    # Quick and dirty link to python C++
+    # Quick and dirty link to box2d
     bld.env.LIBPATH_BOX2D = '/workspace/lib/'
     bld.env.LIB_BOX2D = [ 'box2d']
     bld.env.INCLUDES_BOX2D = '/workspace/include/'
 
     
-    
+    path = bld.path.abspath() + '/res'
+
+    files = []
+    magnum_files = []
+
+    files = []
+    magnum_files = []
+    for root, dirnames, filenames in os.walk(bld.path.abspath()+'/src/robox2d/'):
+        for filename in fnmatch.filter(filenames, '*.cpp'):
+            ffile = os.path.join(root, filename)
+            if 'robox2d/gui/magnum' in ffile:
+                magnum_files.append(ffile)
+            else:
+                files.append(ffile)
+
+    files = [f[len(bld.path.abspath())+1:] for f in files]
+    robox2d_srcs = " ".join(files)
+    magnum_files = [f[len(bld.path.abspath())+1:] for f in magnum_files]
+    robox2d_magnum_srcs = " ".join(magnum_files)
+
     libs = 'BOOST EIGEN BOX2D'
+
+    bld.program(features = 'cxx ' + bld.env['lib_type'],
+                source = robox2d_srcs,
+                includes = './src',
+                uselib = libs,
+                target = 'Robox2d')
+
+
+
+    
+    
     
     bld.program(features = 'cxx',
                   install_path = None,
-                  source = 'src/arm.cpp',
+                  source = 'src/examples/arm.cpp',
                   includes = './src',
                   uselib = bld.env['magnum_libs'] + libs,
-                  use = '',
+                  use = 'Robox2d',
                   target = 'arm_plain')
