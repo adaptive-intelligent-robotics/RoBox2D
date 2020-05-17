@@ -2,11 +2,12 @@
 
 #include <box2d/box2d.h>
 
-#include <robox2d/simu.hpp>
+//#include <robox2d/simu.hpp>
 #include <robox2d/robot.hpp>
+#include <robox2d/gui/graphics.hpp>
 
 
-
+/*
 #include <Magnum/Platform/GlfwApplication.h>
 
 #include <Corrade/Containers/GrowableArray.h>
@@ -47,7 +48,7 @@ namespace Magnum { namespace Examples {
       void drawEvent() override;
       void mousePressEvent(MouseEvent& event) override;
 
-      b2Body* createBody(Object2D& object, const Vector2& size, b2BodyType type, const DualComplex& transformation, Float density = 1.0f);
+      b2Body* createBody2(Object2D& object, const Vector2& size, b2BodyType type, const DualComplex& transformation, Float density = 1.0f);
 
       GL::Mesh _mesh{NoCreate};
       GL::Buffer _instanceBuffer{NoCreate};
@@ -75,7 +76,7 @@ namespace Magnum { namespace Examples {
       Color3 _color;
     };
 
-    b2Body* Box2DExample::createBody(Object2D& object, const Vector2& halfSize, const b2BodyType type, const DualComplex& transformation, const Float density) {
+    b2Body* Box2DExample::createBody2(Object2D& object, const Vector2& halfSize, const b2BodyType type, const DualComplex& transformation, const Float density) {
       b2BodyDef bodyDefinition;
       bodyDefinition.position.Set(transformation.translation().x(), transformation.translation().y());
       bodyDefinition.angle = Float(transformation.rotation().angle());
@@ -98,7 +99,7 @@ namespace Magnum { namespace Examples {
     }
 
     Box2DExample::Box2DExample(const Arguments& arguments): Platform::Application{arguments, NoCreate} {
-      /* Make it possible for the user to have some fun */
+      //Make it possible for the user to have some fun 
       Utility::Arguments args;
       args.addOption("transformation", "1 0 0 0").setHelp("transformation", "initial pyramid transformation")
         .addSkippedPrefix("magnum", "engine-specific options")
@@ -106,8 +107,7 @@ namespace Magnum { namespace Examples {
 
       const DualComplex globalTransformation = args.value<DualComplex>("transformation").normalized();
 
-      /* Try 8x MSAA, fall back to zero samples if not possible. Enable only 2x
-	 MSAA if we have enough DPI. */
+      // Try 8x MSAA, fall back to zero samples if not possible. Enable only 2x	 MSAA if we have enough DPI. 
       {
         const Vector2 dpiScaling = this->dpiScaling({});
         Configuration conf;
@@ -119,55 +119,55 @@ namespace Magnum { namespace Examples {
 	  create(conf, glConf.setSampleCount(0));
       }
 
-      /* Configure camera */
+      // Configure camera 
       _cameraObject.reset(new Object2D{&_scene});
       _camera.reset(new SceneGraph::Camera2D{*_cameraObject});
       _camera->setAspectRatioPolicy(SceneGraph::AspectRatioPolicy::Extend)
         .setProjectionMatrix(Matrix3::projection({20.0f, 20.0f}))
         .setViewport(GL::defaultFramebuffer.viewport().size());
 
-      /* Create the Box2D world with the usual gravity vector */
+      // Create the Box2D world with the usual gravity vector 
       _world.emplace(b2Vec2{0.0f, 0.0f});
 
-      /* Create an instanced shader */
+      // Create an instanced shader 
       _shader = Shaders::Flat2D{
         Shaders::Flat2D::Flag::VertexColor|
         Shaders::Flat2D::Flag::InstancedTransformation};
 
-      /* Box mesh with an (initially empty) instance buffer */
+	// Box mesh with an (initially empty) instance buffer 
       _mesh = MeshTools::compile(Primitives::squareSolid());
       _instanceBuffer = GL::Buffer{};
       _mesh.addVertexBufferInstanced(_instanceBuffer, 1, 0,
 				     Shaders::Flat2D::TransformationMatrix{},
 				     Shaders::Flat2D::Color3{});
 
-      /* Create the ground */
+      // Create the ground 
       auto ground1 = new Object2D{&_scene};
       auto ground2 = new Object2D{&_scene};
       auto ground3 = new Object2D{&_scene};
       auto ground4 = new Object2D{&_scene};
-      createBody(*ground1, {8.0f, 0.5f}, b2_staticBody, DualComplex::translation(Vector2::yAxis(-8.0f)));
-      createBody(*ground2, {8.0f, 0.5f}, b2_staticBody, DualComplex::translation(Vector2::yAxis(8.0f)));
-      createBody(*ground3, {0.5f, 8.0f}, b2_staticBody, DualComplex::translation(Vector2::xAxis(-8.0f)));
-      createBody(*ground4, {0.5f, 8.0f}, b2_staticBody, DualComplex::translation(Vector2::xAxis(8.0f)));
+      Box2DExample::createBody2(*ground1, {8.0f, 0.5f}, b2_staticBody, DualComplex::translation(Vector2::yAxis(-8.0f)));
+      Box2DExample::createBody2(*ground2, {8.0f, 0.5f}, b2_staticBody, DualComplex::translation(Vector2::yAxis(8.0f)));
+      Box2DExample::createBody2(*ground3, {0.5f, 8.0f}, b2_staticBody, DualComplex::translation(Vector2::xAxis(-8.0f)));
+      Box2DExample::createBody2(*ground4, {0.5f, 8.0f}, b2_staticBody, DualComplex::translation(Vector2::xAxis(8.0f)));
       new BoxDrawable{*ground1, _instanceData, 0xa5c9ea_rgbf, _drawables};
       new BoxDrawable{*ground2, _instanceData, 0xa5c9ea_rgbf, _drawables};
       new BoxDrawable{*ground3, _instanceData, 0xa5c9ea_rgbf, _drawables};
       new BoxDrawable{*ground4, _instanceData, 0xa5c9ea_rgbf, _drawables};
 
-      /* Create one box */
+      // Create one box 
       auto base = new Object2D{&_scene};
-      auto bbase = createBody(*base, {0.5f, 0.5f}, b2_staticBody, DualComplex::translation({0.0f,0.0f}));
+      auto bbase = Box2DExample::createBody2(*base, {0.5f, 0.5f}, b2_staticBody, DualComplex::translation({0.0f,0.0f}));
       new BoxDrawable{*base, _instanceData, 0xa5c9ea_rgbf, _drawables};
       
       auto box = new Object2D{&_scene};
       const DualComplex transformation = globalTransformation*DualComplex::translation( {2.0f, 0.0f});
-      auto bbox = createBody(*box, {2.0f, 0.25f}, b2_dynamicBody, transformation);
+      auto bbox = Box2DExample::createBody2(*box, {2.0f, 0.25f}, b2_dynamicBody, transformation);
       new BoxDrawable{*box, _instanceData, 0x2f83cc_rgbf, _drawables};
 
       auto box2 = new Object2D{&_scene};
       const DualComplex transformation2 = globalTransformation*DualComplex::translation( {2.5f, 2.0f});
-      auto bbox2 = createBody(*box2, {0.5f, 0.5f}, b2_dynamicBody, transformation2);
+      auto bbox2 = Box2DExample::createBody2(*box2, {0.5f, 0.5f}, b2_dynamicBody, transformation2);
       new BoxDrawable{*box2, _instanceData, 0x2f83cc_rgbf, _drawables};
 
 
@@ -180,14 +180,7 @@ namespace Magnum { namespace Examples {
       jointDef.motorSpeed = 10.5f;
       jointDef.enableMotor = true;
       
-      b2RevoluteJoint* joint = (b2RevoluteJoint*)_world->CreateJoint(&jointDef);
-      /*
-      // ... do stuff ...
-
-      myWorld->DestroyJoint(joint);
-      joint = nullptr;
-      */
-
+      b2RevoluteJoint* joint = (b2RevoluteJoint*)_world->CreateJoint(&jointDef); 
       
       setSwapInterval(1);
     }
@@ -197,18 +190,18 @@ namespace Magnum { namespace Examples {
     void Box2DExample::drawEvent() {
       GL::defaultFramebuffer.clear(GL::FramebufferClear::Color);
 
-      /* Step the world and update all object positions */
+      // Step the world and update all object positions 
       _world->Step(1.0f/60.0f, 6, 2);
       for(b2Body* body = _world->GetBodyList(); body; body = body->GetNext())
         (*static_cast<Object2D*>(body->GetUserData()))
 	  .setTranslation({body->GetPosition().x, body->GetPosition().y})
 	  .setRotation(Complex::rotation(Rad(body->GetAngle())));
 
-      /* Populate instance data with transformations and colors */
+      // Populate instance data with transformations and colors 
       arrayResize(_instanceData, 0);
       _camera->draw(_drawables);
 
-      /* Upload instance data to the GPU and draw everything in a single call */
+      // Upload instance data to the GPU and draw everything in a single call
       _instanceBuffer.setData(_instanceData, GL::BufferUsage::DynamicDraw);
       _mesh.setInstanceCount(_instanceData.size());
       _shader.setTransformationProjectionMatrix(_camera->projectionMatrix())
@@ -221,16 +214,20 @@ namespace Magnum { namespace Examples {
   }}
 
 //MAGNUM_APPLICATION_MAIN(Magnum::Examples::Box2DExample)
-
+*/
 int main()
   {
     // simulating
-    robox2d::Simu simu(1.0/60.0f);
+    robox2d::Simu simu(0.02f);
     simu.add_floor();
 
     robox2d::Robot rob(simu);
+
+    auto graphics = std::make_shared<robox2d::gui::Graphics<>>(simu.world());
+    simu.set_graphics(graphics);
     
-    simu.run(5);
+    
+    simu.run(2);
 
     return 0;
 }

@@ -9,6 +9,8 @@
 
 #include <box2d/box2d.h>
 
+#include "common.hpp"
+#include "gui/graphics.hpp"
 
 namespace robox2d {
   class Simu {
@@ -20,30 +22,12 @@ namespace robox2d {
     
     void run(double max_duration = 5.0);
     
-    //std::shared_ptr<gui::Base> graphics() const;
-    //void set_graphics(const std::shared_ptr<gui::Base>& graphics);
+    std::shared_ptr<gui::Base> graphics() const;
+    void set_graphics(const std::shared_ptr<gui::Base>& graphics);
     
     std::shared_ptr<b2World> world();
 
 
-    b2Body* createBody(const b2Vec2& halfSize, const b2BodyType type, const b2Vec3& transformation, const float density = 1.0f) {
-      b2BodyDef bodyDefinition;
-      bodyDefinition.position.Set(transformation.x, transformation.y);
-      bodyDefinition.angle = transformation.z;
-      bodyDefinition.type = type;
-      b2Body* body = _world->CreateBody(&bodyDefinition);
-      
-      b2PolygonShape shape;
-      shape.SetAsBox(halfSize.x, halfSize.y);
-      
-      b2FixtureDef fixture;
-      fixture.friction = 0.8f;
-      fixture.density = density;
-      fixture.shape = &shape;
-      body->CreateFixture(&fixture);
-      
-      return body;
-    }
 
     
     
@@ -98,7 +82,7 @@ namespace robox2d {
     //std::vector<std::shared_ptr<descriptor::BaseDescriptor>> _descriptors;
     //std::vector<std::shared_ptr<gui::Base>> _cameras; // designed to include mainly graphcis::CameraOSR
     //std::vector<robot_t> _robots;
-    //std::shared_ptr<gui::Base> _graphics;
+    std::shared_ptr<gui::Base> _graphics;
   };
 } // namespace robot_dart
 

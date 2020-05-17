@@ -6,6 +6,7 @@
 #include<vector>
 
 #include "simu.hpp"
+//#include "common.hpp"
 
 namespace robox2d {
   
@@ -14,7 +15,14 @@ namespace robox2d {
     
     Robot(Simu& simu):_simu(simu){
       
-      _simu.createBody({8.0f, 0.5f}, b2_dynamicBody, {0.0f,4.0f,0.0f} );
+      auto base = common::createBody(_simu.world(),{0.25f, 0.25f}, b2_staticBody,  {0.0f,0.0f,0.0f} );
+      auto seg1 = common::createBody(_simu.world(),{0.5f , 0.1f }, b2_dynamicBody, {0.5f,0.0f,0.0f} );
+      auto seg2 = common::createBody(_simu.world(),{0.5f , 0.1f }, b2_dynamicBody, {1.5f,0.0f,0.0f} );
+
+      //auto j1 =
+	common::createServo(_simu.world(),base, seg1, base->GetWorldCenter());
+	//auto j2 =
+	common::createServo(_simu.world(),seg1, seg2, seg1->GetWorldCenter());
 
     }
         

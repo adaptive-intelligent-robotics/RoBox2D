@@ -25,7 +25,7 @@ namespace robox2d {
 	int32 velocityIterations = 6;
 	int32 positionIterations = 2;
 	
-        while ((time - max_duration) < -_time_step/2.0 ){//&& !_graphics->done()) {
+        while ((time - max_duration) < -_time_step/2.0 && !_graphics->done()) {
 	  //std::cout<<time<<std::endl;
 	  time+=_time_step;
 
@@ -39,7 +39,7 @@ namespace robox2d {
 	  float angle = bb->GetAngle();
 	  printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle);
 	  
-	  //_graphics->refresh();
+	  _graphics->refresh();
 
 	  /*
 	  // update descriptors
@@ -59,7 +59,7 @@ namespace robox2d {
         _old_index = index;
     }
 
-  /*std::shared_ptr<gui::Base> Simu::graphics() const
+  std::shared_ptr<gui::Base> Simu::graphics() const
     {
         return _graphics;
     }
@@ -68,7 +68,7 @@ namespace robox2d {
     {
         _graphics = graphics;
     }
-  */
+  
   std::shared_ptr<b2World> Simu::world()
   {
     return _world;
@@ -216,7 +216,7 @@ namespace robox2d {
   */
   void Simu::add_floor()//(double floor_width, double floor_height, const Eigen::Vector6d& pose, const std::string& floor_name)
   {
-    createBody({50.0f, 0.50f}, b2_staticBody, {0.0f,-10.5f,0.0f} );
+    common::createBody(_world, {50.0f, 0.50f}, b2_staticBody, {0.0f,-10.5f,0.0f} );
   }
 
     
