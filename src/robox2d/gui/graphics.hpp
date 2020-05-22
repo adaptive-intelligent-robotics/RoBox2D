@@ -17,7 +17,6 @@ namespace robox2d {
 	Corrade::Utility::Debug magnum_silence_output{nullptr};
 	//robot_dart_initialize_magnum_resources();
 	_magnum_app.reset(make_application<T>(world, width, height, title));
-	set_render_period(time_step);
       }
 
       ~Graphics() {}
@@ -32,22 +31,10 @@ namespace robox2d {
 	if (!_enabled)
 	  return;
 
-	// process next frame
-	if (_frame_counter % _render_period == 0)
-	  {
-	  _magnum_app->render();
-	  usleep(20000);
-	  }
+	_magnum_app->render();
 	_frame_counter++;
       }
 
-      void set_render_period(double dt) override
-      {
-	// we want to display at around 40Hz of simulated time
-	_render_period = std::floor((1. / 40.) / dt);
-	if (_render_period < 1)
-	  _render_period = 1;
-      }
 
       /*void set_enable(bool enable) override
 	{

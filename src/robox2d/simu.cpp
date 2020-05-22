@@ -5,7 +5,8 @@ namespace robox2d {
   
   Simu::Simu(size_t physic_freq, size_t control_freq, size_t graphic_freq) :
     _world(new b2World(b2Vec2(0.0f, -10.0f))),
-    _time(0)
+    _time(0),
+    _graphics(nullptr)
   {
     _time_step = 1.0f/double( boost::math::lcm( boost::math::lcm(physic_freq, control_freq) , graphic_freq ));
     std::cout<<"time step " <<_time_step<<std::endl;
@@ -28,26 +29,28 @@ namespace robox2d {
     while ((_time - max_duration) < -_time_step/2.0 && !_graphics->done()) {
       
       _time+=_time_step;
-      std::cout<<"time "<<_time<<std::endl;
-      
+            
       // control step
-      auto d = std::remainder(_time,_control_period);
-      std::cout<< d <<" vs "<< _time_step<<std::endl;
-	
-      if(std::abs(d) < 1e-4)
+      if(std::abs(std::remainder(_time,_control_period)) < 1e-4)
 	{
-	  std::cout<<"control update "<<_time<<std::endl;
 	  for (auto& robot : _robots)
 	    robot->control_update(_time);
 	}
+      
       // physic step
-      for (auto& robot : _robots)
-	robot->physic_update();	
-      _world->Step(_time_step, velocityIterations, positionIterations);
+      if(std::abs(std::remainder(_time,_physic_period)) < 1e-4)
+	{
+	  for (auto& robot : _robots)
+	    robot->physic_update();	
+	  _world->Step(_time_step, velocityIterations, positionIterations);
+	}
       
       // graphic step
-      _graphics->refresh();
-      
+      if(_graphics && std::abs(std::remainder(_time,_graphic_period)) < 1e-4)
+	{
+	  _graphics->refresh();
+	  usleep(_graphic_period *1e6);
+	}
       
     }
    
