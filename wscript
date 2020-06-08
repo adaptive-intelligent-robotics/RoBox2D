@@ -151,3 +151,27 @@ def build(bld):
                   uselib = bld.env['magnum_libs'] + libs,
                   use = 'Robox2d',
                   target = 'arm_plain')
+
+
+
+    install_files = []
+    for root, dirnames, filenames in os.walk(bld.path.abspath()+'/src/robox2d/'):
+        for filename in fnmatch.filter(filenames, '*.hpp'):
+            install_files.append(os.path.join(root, filename))
+    install_files = [f[len(bld.path.abspath())+1:] for f in install_files]
+
+    for f in install_files:
+        end_index = f.rfind('/')
+        if end_index == -1:
+            end_index = len(f)
+        bld.install_files('${PREFIX}/include/' + f[4:end_index], f)
+    if bld.env['lib_type'] == 'cxxstlib':
+        bld.install_files('${PREFIX}/lib', blddir + '/libRobox2d.a')
+        #if bld.get_env()['BUILD_MAGNUM'] == True:
+        #    bld.install_files('${PREFIX}/lib', blddir + '/libRobox2dMagnum.a')
+    else:
+        # OSX/Mac uses .dylib and GNU/Linux .so
+        suffix = 'dylib' if bld.env['DEST_OS'] == 'darwin' else 'so'
+        bld.install_files('${PREFIX}/lib', blddir + '/libRobox2d.' + suffix)
+        #if bld.get_env()['BUILD_MAGNUM'] == True:
+        #    bld.install_files('${PREFIX}/lib', blddir + '/libRobox2d.' + suffix)
