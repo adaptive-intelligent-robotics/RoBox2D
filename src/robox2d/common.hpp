@@ -20,7 +20,7 @@ namespace robox2d {
 
     class Servo{
     public:
-      Servo( std::shared_ptr<b2World> world, b2Body* bodyA, b2Body* bodyB,  const b2Vec2 & anchor, double gain = 1.0);
+      Servo( std::shared_ptr<b2World> world, b2Body* bodyA, b2Body* bodyB,  const b2Vec2 & anchor, double gain = 0.3);
       
       void set_target_pos(double pos);
       

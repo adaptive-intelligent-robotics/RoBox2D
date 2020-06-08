@@ -4,12 +4,11 @@
 namespace robox2d {
   
   Simu::Simu(size_t physic_freq, size_t control_freq, size_t graphic_freq) :
-    _world(new b2World(b2Vec2(0.0f, -10.0f))),
-    _time(0)
-    
-    //_graphics(nullptr)
+    _world(new b2World(b2Vec2(0.0f, 0.0f))),
+    _time(0),
+    _graphics(nullptr)
   {
-    _graphics = std::make_shared<gui::Base>(_world);
+  
     _time_step = 1.0f/double( boost::math::lcm( boost::math::lcm(physic_freq, control_freq) , graphic_freq ));
     _physic_period = 1.0f/(double)physic_freq;
     _control_period = 1.0f/(double)control_freq;
@@ -26,8 +25,7 @@ namespace robox2d {
   void Simu::run(double max_duration)
   {
     
-    while ((_time - max_duration) < -_time_step/2.0 && !_graphics->done()) {
-    
+    while ((_time - max_duration) < -_time_step/2.0 && (!_graphics || !_graphics->done())) {
       _time+=_time_step;
 
       // control step
@@ -56,8 +54,7 @@ namespace robox2d {
    
   }
 
-
-
+  
   
   std::shared_ptr<gui::Base> Simu::graphics() const { return _graphics; }
   

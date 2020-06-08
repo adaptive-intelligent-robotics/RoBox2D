@@ -27,23 +27,23 @@ namespace robox2d {
 
 
     Servo::Servo( std::shared_ptr<b2World> world, b2Body* bodyA, b2Body* bodyB,  const b2Vec2 & anchor, double gain):_gain(gain), _target_pos(0.0)
-      {
-	b2RevoluteJointDef jointDef;
-	jointDef.Initialize(bodyA, bodyB, anchor);
-	jointDef.lowerAngle = -1.0f * b2_pi;
-	jointDef.upperAngle = 1.0f * b2_pi;
-	jointDef.enableLimit = false;
-	jointDef.maxMotorTorque = 10.0f;
-	jointDef.motorSpeed = 0.0f;
-	jointDef.enableMotor = true;
-	_joint = (b2RevoluteJoint*)world->CreateJoint(&jointDef); 
-      }
-
+    {
+      b2RevoluteJointDef jointDef;
+      jointDef.Initialize(bodyA, bodyB, anchor);
+      jointDef.lowerAngle = -1.0f * b2_pi;
+      jointDef.upperAngle = 1.0f * b2_pi;
+      jointDef.enableLimit = true;
+      jointDef.maxMotorTorque = 1.0f;
+      jointDef.motorSpeed = 0.0f;
+      jointDef.enableMotor = true;
+      _joint = (b2RevoluteJoint*)world->CreateJoint(&jointDef); 
+    }
+    
     void Servo::set_target_pos(double pos){_target_pos = pos;}
-
+    
     void Servo::update(){
-	_joint->SetMotorSpeed(_gain * (_target_pos - _joint->GetJointAngle() ));
-      }
+      _joint->SetMotorSpeed(_gain * (_target_pos - _joint->GetJointAngle() ));
+    }
 
     
      
