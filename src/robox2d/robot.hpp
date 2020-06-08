@@ -14,20 +14,7 @@ namespace robox2d {
   class Robot : public std::enable_shared_from_this<Robot> {
   public:
     
-    Robot(std::shared_ptr<b2World> world){
-      
-      auto base = common::createBody(world,{0.25f, 0.25f}, b2_staticBody,  {0.0f,0.0f,0.0f} );
-      auto seg1 = common::createBody(world,{0.5f , 0.1f }, b2_dynamicBody, {0.5f,0.0f,0.0f} );
-      auto seg2 = common::createBody(world,{0.5f , 0.1f }, b2_dynamicBody, {1.5f,0.0f,0.0f} );
-      
-      b2Vec2 anchor = base->GetWorldCenter();
-      //auto j1 =
-      _servos.push_back(std::make_shared<common::Servo>(world,base, seg1, anchor));
-      //auto j2 =
-      anchor = seg1->GetWorldCenter() + b2Vec2(0.5f , 0.0f);
-      _servos.push_back(std::make_shared<common::Servo>(world,seg1, seg2,  anchor));
-      
-    }
+    //Robot(std::shared_ptr<b2World> world){ }
     
     std::shared_ptr<Robot> clone() const;
         
