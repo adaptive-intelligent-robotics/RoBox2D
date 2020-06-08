@@ -1,7 +1,7 @@
 #ifndef ROBOX2D_GUI_MAGNUM_GLFW_APPLICATION_HPP
 #define ROBOX2D_GUI_MAGNUM_GLFW_APPLICATION_HPP
 
-#include <robox2d/gui/base_application.hpp>
+#include <robox2d/gui/magnum/base_application.hpp>
 
 // Workaround for X11lib defines
 #undef Button1

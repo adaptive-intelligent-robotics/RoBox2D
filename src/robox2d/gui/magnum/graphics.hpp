@@ -2,7 +2,7 @@
 #define ROBOX2D_GUI_MAGNUM_GRAPHICS_HPP
 
 #include <robox2d/gui/base.hpp>
-#include <robox2d/gui/glfw_application.hpp>
+#include <robox2d/gui/magnum/glfw_application.hpp>
 
 
 

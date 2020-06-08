@@ -109,8 +109,6 @@ def build(bld):
     
     path = bld.path.abspath() + '/res'
 
-    files = []
-    magnum_files = []
 
     files = []
     magnum_files = []
@@ -136,17 +134,38 @@ def build(bld):
                 target = 'Robox2d')
 
 
+    build_graphic = False
+
+    if bld.get_env()['BUILD_MAGNUM'] == True:
+        bld.program(features = 'cxx ' + bld.env['lib_type'],
+                    source = robox2d_magnum_srcs,
+                    includes = './src',
+                    uselib = bld.env['magnum_libs'] + libs,
+                    use = 'Robox2d',
+                    target = 'Robox2dMagnum')
+
+        build_graphic = True
+
 
     
     
-    
+    if build_graphic == True:
+        bld.program(features = 'cxx',
+                    install_path = None,
+                    source = 'src/examples/arm.cpp',
+                    includes = './src',
+                    uselib = bld.env['magnum_libs'] + libs,
+                    use = 'Robox2d Robox2dMagnum',
+                    defines = ['GRAPHIC'],
+                    target = 'arm_graphic')
+
     bld.program(features = 'cxx',
-                  install_path = None,
-                  source = 'src/examples/arm.cpp',
-                  includes = './src',
-                  uselib = bld.env['magnum_libs'] + libs,
-                  use = 'Robox2d',
-                  target = 'arm_plain')
+                install_path = None,
+                source = 'src/examples/arm.cpp',
+                includes = './src',
+                uselib = bld.env['magnum_libs'] + libs,
+                use = 'Robox2d Robox2dMagnum',
+                target = 'arm_plain')
 
 
 
@@ -162,12 +181,12 @@ def build(bld):
             end_index = len(f)
         bld.install_files('${PREFIX}/include/' + f[4:end_index], f)
     if bld.env['lib_type'] == 'cxxstlib':
-        bld.install_files('${PREFIX}/lib', blddir + '/libRobox2d.a')
-        #if bld.get_env()['BUILD_MAGNUM'] == True:
-        #    bld.install_files('${PREFIX}/lib', blddir + '/libRobox2dMagnum.a')
+        bld.install_files('${PREFIX}/lib', blddir + '/libRobox2d.so')
+        if bld.get_env()['BUILD_MAGNUM'] == True:
+            bld.install_files('${PREFIX}/lib', blddir + '/libRobox2dMagnum.so')
     else:
         # OSX/Mac uses .dylib and GNU/Linux .so
         suffix = 'dylib' if bld.env['DEST_OS'] == 'darwin' else 'so'
         bld.install_files('${PREFIX}/lib', blddir + '/libRobox2d.' + suffix)
-        #if bld.get_env()['BUILD_MAGNUM'] == True:
-        #    bld.install_files('${PREFIX}/lib', blddir + '/libRobox2d.' + suffix)
+        if bld.get_env()['BUILD_MAGNUM'] == True:
+            bld.install_files('${PREFIX}/lib', blddir + '/libRobox2dMagnum.' + suffix)

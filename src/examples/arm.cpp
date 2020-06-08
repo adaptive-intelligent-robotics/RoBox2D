@@ -4,7 +4,9 @@
 
 #include <robox2d/simu.hpp>
 #include <robox2d/robot.hpp>
-#include <robox2d/gui/graphics.hpp>
+#ifdef GRAPHIC
+#include <robox2d/gui/magnum/graphics.hpp>
+#endif
 
 int main()
   {
@@ -16,9 +18,12 @@ int main()
     auto ctrl = std::make_shared<robox2d::control::BaseController>(2);
     rob->add_controller(ctrl);
     simu.add_robot(rob);
+
+#ifdef GRAPHIC
     auto graphics = std::make_shared<robox2d::gui::Graphics<>>(simu.world());
     simu.set_graphics(graphics);
-        
+#endif
+
     simu.run(10.0);
 
     return 0;

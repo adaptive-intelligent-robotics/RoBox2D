@@ -11,7 +11,7 @@
 
 #include "common.hpp"
 #include "robot.hpp"
-#include "gui/graphics.hpp"
+#include "gui/base.hpp"
 
 namespace robox2d {
   class Simu {
