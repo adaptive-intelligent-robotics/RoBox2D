@@ -34,6 +34,9 @@ def options(opt):
     opt.load('magnum_integration')
     opt.load('magnum_plugins')
 
+    opt.add_option('--shared', action='store_true', help='build shared library', dest='build_shared')
+    
+    
 def configure(conf):
     conf.get_env()['BUILD_GRAPHIC'] = False
 
@@ -64,12 +67,15 @@ def configure(conf):
 
     
 
-    native = ''
-    native_icc = ''
-    conf.msg('-mavx -msse -msse2  (AVX support)', 'yes', color='GREEN')
+    native = ' '
+    native_icc = ' '
+
 
 
     conf.env['lib_type'] = 'cxxstlib'
+    if conf.options.build_shared:
+        conf.env['lib_type'] = 'cxxshlib'
+    
 
     if conf.env.CXX_NAME in ["icc", "icpc"]:
         common_flags = "-Wall -std=c++11"
@@ -91,16 +97,6 @@ def configure(conf):
     conf.env['CXXFLAGS'] = conf.env['CXXFLAGS'] + all_flags.split(' ')
 
 
-def summary(bld):
-    lst = getattr(bld, 'utest_results', [])
-    total = 0
-    tfail = 0
-    if lst:
-        total = len(lst)
-        tfail = len([x for x in lst if x[1]])
-    waf_unit_test.summary(bld)
-    if tfail > 0:
-        bld.fatal("Build failed, because some tests failed!")
 
 def build(bld):
 
