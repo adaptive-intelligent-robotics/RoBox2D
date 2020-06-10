@@ -22,36 +22,64 @@ namespace robox2d {
     //_cameras.clear();
   }
   
-  void Simu::run(double max_duration)
+  void Simu::run(double max_duration, std::array<Eigen::VectorXf, 2> &trajectories, int trajectory_length)
   {
+    int record_freq{max_duration / _time_step / trajectory_length};
     
-    while ((_time - max_duration) < -_time_step/2.0 && (!_graphics || !_graphics->done())) {
+    for (Eigen::VectorXf &traj : trajectories)
+    {traj.resize(2 * trajectory_length);}
+
+    int observation_counter{0};
+    int loop_counter{1};
+    while ((_time - max_duration) < -_time_step/2.0 && (!_graphics || !_graphics->done())) 
+    {
       _time+=_time_step;
 
       // control step
       if(std::abs(std::remainder(_time,_control_period)) < 1e-4)
-	{
-	  for (auto& robot : _robots)
-	    robot->control_update(_time);
-	}
+      {
+        for (auto& robot : _robots)
+          robot->control_update(_time);
+      }
       
       // physic step
       if(std::abs(std::remainder(_time,_physic_period)) < 1e-4)
-	{
-	  for (auto& robot : _robots)
-	    robot->physic_update();	
-	  _world->Step(_time_step, velocityIterations, positionIterations);
-	}
-      
+	    {
+      for (auto& robot : _robots)
+        robot->physic_update();	
+
+      _world->Step(_time_step, velocityIterations, positionIterations);
+	    }
+
       // graphic step
       if(_graphics && std::abs(std::remainder(_time,_graphic_period)) < 1e-4)
-	{
-	  _graphics->refresh();
-	  usleep(_graphic_period *1e6);
-	}
-      
+      {
+        _graphics->refresh();
+        usleep(_graphic_period *1e6);
+      }
+
+
+      if (loop_counter % record_freq == 0)
+      {
+
+        // two trajectories, one actual and one potential fake
+        int trajectory_index{0};
+        // here call position through world and record
+        
+        for(b2Body* body = _world->GetBodyList(); body; body = body->GetNext())
+        {
+          if (body->GetFixtureList()->GetShape()->GetType() == 0)
+          {
+            b2Vec2 body_pos = body->GetWorldCenter();
+            trajectories[trajectory_index][observation_counter] = body_pos.x;
+            trajectories[trajectory_index][observation_counter + 1] = body_pos.y;
+            ++trajectory_index;
+          }
+        }
+        observation_counter += 2;
+      }
+      ++loop_counter;
     }
-   
   }
 
   

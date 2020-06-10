@@ -22,7 +22,7 @@ namespace robox2d {
     
     ~Simu();
     
-    void run(double max_duration = 5.0);
+    void run(double max_duration, std::array<Eigen::VectorXf, 2> &trajectories, int trajectory_length);
     
     std::shared_ptr<gui::Base> graphics() const;
     void set_graphics(const std::shared_ptr<gui::Base>& graphics);
