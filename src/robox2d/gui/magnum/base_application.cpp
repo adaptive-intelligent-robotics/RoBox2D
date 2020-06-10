@@ -85,15 +85,35 @@ namespace robox2d {
 	    body->SetUserData(obj);
 	    // todo triple check this... Very likely to not work properly as we assume the body is with rot = 0
 	    //here we assume a single fixture
+
+
+	    switch(body->GetFixtureList()->GetShape()->GetType())
+	      {
+	      case b2Shape::e_circle: // if shape is a circle
+		 {
+		   b2CircleShape* circle = static_cast<b2CircleShape*>(body->GetFixtureList()->GetShape());
+		   obj->setScaling(Magnum::Vector2(circle->m_radius, circle->m_radius));
+		   
+		   break;
+		 }
+	      case b2Shape::e_polygon: // if shape is a box (more advanced polygon not supported yet)
+		{
+		  b2PolygonShape* poly =  static_cast<b2PolygonShape*>(body->GetFixtureList()->GetShape());
+		  auto v = poly->m_vertices;
+		  auto hx = (v[1]-v[0]).Length()/2;
+		  auto hy = (v[2]-v[1]).Length()/2;
+		  Magnum::Vector2 halfSize(hx, hy);
+		  obj->setScaling(halfSize);
+		  
+		  break;
+		}
+	      default: // not supported shapes
+		{
+		  std::cout<<"Warning Shape Type not supported"<<std::endl;
+		  break;
+		}
+	      }
 	    
-	    b2PolygonShape* poly =  static_cast<b2PolygonShape*>(body->GetFixtureList()->GetShape());
-	    auto v = poly->m_vertices;
-	    auto hx = (v[1]-v[0]).Length()/2;
-	    auto hy = (v[2]-v[1]).Length()/2;
-
-	    Magnum::Vector2 halfSize(hx, hy);
-	    obj->setScaling(halfSize);
-
 	    new BoxDrawable{*obj, *_instanceData, 0xa5c9ea_rgbf, *_drawables};
 
 	  }
