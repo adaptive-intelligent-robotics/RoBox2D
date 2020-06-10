@@ -34,7 +34,7 @@ public:
       anchor = _end_effector->GetWorldCenter() + b2Vec2(seg_length*0.5 , 0.0f);
       }
 
-    b2Body* ball = robox2d::common::createCircle( world,0.025f, b2_dynamicBody,  {0.5f,0.5f,0.0f} );
+    robox2d::common::createCircle( world,0.025f, b2_dynamicBody,  {0.5f,0.5f,0.0f} );
     
   }
   

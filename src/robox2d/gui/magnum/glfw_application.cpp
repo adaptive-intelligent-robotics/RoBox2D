@@ -59,14 +59,20 @@ namespace robox2d {
 
 	/* Populate instance data with transformations and colors */
 	
-	arrayResize(*_instanceData, 0);
+	arrayResize(*_boxInstanceData, 0);
+	arrayResize(*_circleInstanceData, 0);
 	_camera->draw(*_drawables);
 
-	/* Upload instance data to the GPU and draw everything in a single call */
-	_instanceBuffer->setData(*_instanceData, Magnum::GL::BufferUsage::DynamicDraw);
-	_mesh->setInstanceCount(_instanceData->size());
+	/* Upload instance data to the GPU and draw everything in a single call per shape */
+	_instanceBuffer->setData(*_boxInstanceData, Magnum::GL::BufferUsage::DynamicDraw);
+	_boxMesh->setInstanceCount(_boxInstanceData->size());
 	_shader->setTransformationProjectionMatrix(_camera->projectionMatrix())
-	  .draw(*_mesh);
+	  .draw(*_boxMesh);
+
+	_instanceBuffer->setData(*_circleInstanceData, Magnum::GL::BufferUsage::DynamicDraw);
+	_circleMesh->setInstanceCount(_circleInstanceData->size());
+	_shader->setTransformationProjectionMatrix(_camera->projectionMatrix())
+	  .draw(*_circleMesh);
 
 	swapBuffers();
 	redraw();
