@@ -69,7 +69,8 @@ namespace robox2d {
 	  Magnum::Shaders::Flat2D::Flag::InstancedTransformation});
 
       /* Box mesh with an (initially empty) instance buffer */
-      _mesh.reset(new Magnum::GL::Mesh(Magnum::MeshTools::compile(Magnum::Primitives::squareSolid())));
+      // changed this to circle wireframe
+      _mesh.reset(new Magnum::GL::Mesh(Magnum::MeshTools::compile(Magnum::Primitives::circle2DWireframe(20))));
       
       _instanceBuffer = std::unique_ptr<Magnum::GL::Buffer>(new Magnum::GL::Buffer{});
       _mesh->addVertexBufferInstanced(*_instanceBuffer, 1, 0,
@@ -86,6 +87,9 @@ namespace robox2d {
 	    // todo triple check this... Very likely to not work properly as we assume the body is with rot = 0
 	    //here we assume a single fixture
 	    
+      // if shape is not a circle
+      if (body->GetFixtureList()->GetShape()->GetType() != 0)
+      {
 	    b2PolygonShape* poly =  static_cast<b2PolygonShape*>(body->GetFixtureList()->GetShape());
 	    auto v = poly->m_vertices;
 	    auto hx = (v[1]-v[0]).Length()/2;
@@ -93,6 +97,13 @@ namespace robox2d {
 
 	    Magnum::Vector2 halfSize(hx, hy);
 	    obj->setScaling(halfSize);
+      }
+      // if shape is a circle, need to apply different scaling as otherwise becomes elliptic
+      else
+      {
+        b2CircleShape* circle = static_cast<b2CircleShape*>(body->GetFixtureList()->GetShape());
+        obj->setScaling(Magnum::Vector2(circle->m_radius, circle->m_radius));
+      }
 
 	    new BoxDrawable{*obj, *_instanceData, 0xa5c9ea_rgbf, *_drawables};
 
