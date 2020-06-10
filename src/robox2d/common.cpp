@@ -38,7 +38,7 @@ namespace robox2d {
       b2FixtureDef fixture;
       fixture.shape = &circle;
       fixture.friction = 0.3f;
-      fixture.restitution = 0.9f;
+      fixture.restitution = 0.8f;
       // if density not set then infinite mass -> not pushable
       fixture.density = density;
       body->CreateFixture(&fixture);
@@ -59,7 +59,6 @@ namespace robox2d {
       fixture.shape = &polygonShape;
       fixture.restitution = 0;
       
-      //add four walls to the static body
       polygonShape.SetAsBox( halfSize.x, halfSize.y);
       body->CreateFixture(&fixture);
       return body;

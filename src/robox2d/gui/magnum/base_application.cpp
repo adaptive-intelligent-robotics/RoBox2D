@@ -57,9 +57,13 @@ namespace robox2d {
       _world=world;
       /* Configure camera */
       _cameraObject = new Object2D{&_scene};
+      // set camera location
+      _cameraObject->setTranslation({2.5f, 2.5f});
       _camera.reset(new Magnum::SceneGraph::Camera2D{*_cameraObject});
       _camera->setAspectRatioPolicy(Magnum::SceneGraph::AspectRatioPolicy::Extend)
-	.setProjectionMatrix(Magnum::Matrix3::projection({2.0f, 2.0f}))
+  
+  // increase to have larger pic
+	.setProjectionMatrix(Magnum::Matrix3::projection({7.0f, 7.0f}))
 	.setViewport(Magnum::GL::defaultFramebuffer.viewport().size());
       _drawables.reset(new Magnum::SceneGraph::DrawableGroup2D());
 
