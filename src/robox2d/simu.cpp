@@ -22,14 +22,20 @@ namespace robox2d {
     //_cameras.clear();
   }
   
-  void Simu::run(double max_duration, std::array<Eigen::VectorXf, 2> &trajectories, int trajectory_length)
+  void Simu::run(double max_duration, std::array<Eigen::VectorXf, 2> &trajectories, int trajectory_length, Eigen::VectorXf &full_trajectory)
   {
-    int record_freq{max_duration / _time_step / trajectory_length};
+    // total number of simulation steps
+    int num_timesteps{max_duration / _time_step};
+
+    // fill the full trajectory for diversity calculation
+    full_trajectory.resize(2 * num_timesteps);
+
+    int record_freq{num_timesteps / trajectory_length};
     
     for (Eigen::VectorXf &traj : trajectories)
     {traj.resize(2 * trajectory_length);}
 
-    int observation_counter{0};
+    int trajectory_frame_counter{0};
     int loop_counter{1};
     while ((_time - max_duration) < -_time_step/2.0 && (!_graphics || !_graphics->done())) 
     {
@@ -58,26 +64,35 @@ namespace robox2d {
         usleep(_graphic_period *1e6);
       }
 
+      // first ball retrieved is actual ball
+      bool is_first_ball{true};
 
-      if (loop_counter % record_freq == 0)
+      // two trajectories, one actual and one potential fake
+      int trajectory_index{0};
+
+      for(b2Body* body = _world->GetBodyList(); body; body = body->GetNext())
       {
-
-        // two trajectories, one actual and one potential fake
-        int trajectory_index{0};
-        // here call position through world and record
-        
-        for(b2Body* body = _world->GetBodyList(); body; body = body->GetNext())
+        if (body->GetFixtureList()->GetShape()->GetType() == 0)
         {
-          if (body->GetFixtureList()->GetShape()->GetType() == 0)
+          if (is_first_ball)
           {
             b2Vec2 body_pos = body->GetWorldCenter();
-            trajectories[trajectory_index][observation_counter] = body_pos.x;
-            trajectories[trajectory_index][observation_counter + 1] = body_pos.y;
+            full_trajectory[(loop_counter - 1) * 2] = body_pos.x;
+            full_trajectory[(loop_counter - 1) * 2 + 1] = body_pos.y;
+            is_first_ball = false;
+          }
+          if (loop_counter % record_freq == 0)
+          {
+            b2Vec2 body_pos = body->GetWorldCenter();
+            trajectories[trajectory_index][trajectory_frame_counter] = body_pos.x;
+            trajectories[trajectory_index][trajectory_frame_counter + 1] = body_pos.y;
             ++trajectory_index;
           }
         }
-        observation_counter += 2;
       }
+      if (loop_counter % record_freq == 0)
+        trajectory_frame_counter += 2;
+
       ++loop_counter;
     }
   }
