@@ -6,7 +6,7 @@
 namespace robox2d {
   namespace common {
     
-    b2Body* createBody( std::shared_ptr<b2World> world, const b2Vec2& halfSize, const b2BodyType type, const b2Vec3& transformation, const float density) {
+    b2Body* createBox( std::shared_ptr<b2World> world, const b2Vec2& halfSize, const b2BodyType type, const b2Vec3& transformation, const float density) {
       b2BodyDef bodyDefinition;
       bodyDefinition.position.Set(transformation.x, transformation.y);
       bodyDefinition.angle = transformation.z;
@@ -15,6 +15,25 @@ namespace robox2d {
       
       b2PolygonShape shape;
       shape.SetAsBox(halfSize.x, halfSize.y);
+      
+      b2FixtureDef fixture;
+      fixture.friction = 0.8f;
+      fixture.density = density;
+      fixture.shape = &shape;
+      body->CreateFixture(&fixture);
+      
+      return body;
+    }
+
+    b2Body* createCircle( std::shared_ptr<b2World> world, const float radius, const b2BodyType type, const b2Vec3& transformation, const float density) {
+      b2BodyDef bodyDefinition;
+      bodyDefinition.position.Set(transformation.x, transformation.y);
+      bodyDefinition.angle = transformation.z;
+      bodyDefinition.type = type;
+      b2Body* body = world->CreateBody(&bodyDefinition);
+      
+      b2CircleShape shape;
+      shape.m_radius=radius;
       
       b2FixtureDef fixture;
       fixture.friction = 0.8f;
