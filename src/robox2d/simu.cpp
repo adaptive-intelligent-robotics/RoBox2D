@@ -174,7 +174,7 @@ namespace robox2d {
 
   void Simu::add_floor()//(double floor_width, double floor_height, const Eigen::Vector6d& pose, const std::string& floor_name)
   {
-    common::createBody(_world, {50.0f, 0.50f}, b2_staticBody, {0.0f,-10.5f,0.0f} );
+    common::createBox(_world, {50.0f, 0.50f}, b2_staticBody, {0.0f,-10.5f,0.0f} );
   }
 
     

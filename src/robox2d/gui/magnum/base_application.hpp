@@ -99,9 +99,9 @@ namespace robox2d {
     };
       
 
-    class BoxDrawable: public Magnum::SceneGraph::Drawable2D {
+    class Drawable: public Magnum::SceneGraph::Drawable2D {
     public:
-      explicit BoxDrawable(Object2D& object, Magnum::Containers::Array<InstanceData>& instanceData, const Magnum::Color3& color, Magnum::SceneGraph::DrawableGroup2D& drawables): Magnum::SceneGraph::Drawable2D{object, &drawables}, _instanceData(instanceData), _color{color} {}
+      explicit Drawable(Object2D& object, Magnum::Containers::Array<InstanceData>& instanceData, const Magnum::Color3& color, Magnum::SceneGraph::DrawableGroup2D& drawables): Magnum::SceneGraph::Drawable2D{object, &drawables}, _instanceData(instanceData), _color{color} {}
 
     private:
       void draw(const Magnum::Matrix3& transformation, Magnum::SceneGraph::Camera2D&) override {
@@ -112,6 +112,7 @@ namespace robox2d {
       Magnum::Containers::Array<InstanceData>& _instanceData;
       Magnum::Color3 _color;
     };
+
     
       
     class BaseApplication {
@@ -135,11 +136,14 @@ namespace robox2d {
     protected:
       /* Magnum */
       std::unique_ptr<Magnum::Shaders::Flat2D> _shader;//{Magnum::NoCreate};
-      std::unique_ptr<Magnum::GL::Mesh> _mesh;//{Magnum::NoCreate};
-      //Magnum::GL::Mesh _mesh{Magnum::NoCreate};
       std::unique_ptr<Magnum::GL::Buffer> _instanceBuffer;//{Magnum::NoCreate};
-      std::unique_ptr<Magnum::Containers::Array<InstanceData>> _instanceData;
+      std::unique_ptr<Magnum::GL::Mesh> _boxMesh;//{Magnum::NoCreate};
+      std::unique_ptr<Magnum::Containers::Array<InstanceData>> _boxInstanceData;
+      std::unique_ptr<Magnum::GL::Mesh> _circleMesh;//{Magnum::NoCreate};
+      std::unique_ptr<Magnum::Containers::Array<InstanceData>> _circleInstanceData;
 
+
+      
       Scene2D _scene;
       Object2D* _cameraObject;
       std::unique_ptr<Magnum::SceneGraph::Camera2D> _camera;

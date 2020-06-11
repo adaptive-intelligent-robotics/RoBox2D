@@ -6,7 +6,7 @@
 namespace robox2d {
   namespace common {
     
-    b2Body* createBody( std::shared_ptr<b2World> world, const b2Vec2& halfSize, const b2BodyType type, const b2Vec3& transformation, const float density) {
+    b2Body* createBox( std::shared_ptr<b2World> world, const b2Vec2& halfSize, const b2BodyType type, const b2Vec3& transformation, const float density) {
       b2BodyDef bodyDefinition;
       bodyDefinition.position.Set(transformation.x, transformation.y);
       bodyDefinition.angle = transformation.z;
