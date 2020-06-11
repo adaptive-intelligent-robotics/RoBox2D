@@ -25,44 +25,26 @@ namespace robox2d {
       return body;
     }
 
-    b2Body* createBall( std::shared_ptr<b2World> world, float radius, const b2BodyType type, const b2Vec2& position, const float density) {
+    b2Body* createCircle( std::shared_ptr<b2World> world, const float radius, const b2BodyType type, const b2Vec3& transformation, const float density) {
       b2BodyDef bodyDefinition;
-      bodyDefinition.position.Set(position.x, position.y);
+      bodyDefinition.position.Set(transformation.x, transformation.y);
+      bodyDefinition.angle = transformation.z;
       bodyDefinition.type = type;
-      
       b2Body* body = world->CreateBody(&bodyDefinition);
       
-      b2CircleShape circle;
-      circle.m_radius = radius;
+      b2CircleShape shape;
+      shape.m_radius=radius;
       
       b2FixtureDef fixture;
-      fixture.shape = &circle;
-      fixture.friction = 0.3f;
-      fixture.restitution = 0.8f;
-      // if density not set then infinite mass -> not pushable
+      fixture.friction = 0.8f;
       fixture.density = density;
+      fixture.restitution = 0.8f;
+      fixture.shape = &shape;
       body->CreateFixture(&fixture);
       
       return body;
     }
-    b2Body* createWall( std::shared_ptr<b2World> world, const b2Vec2& halfSize, const b2Vec2& position) {
-      b2BodyDef bodyDefinition;
-      bodyDefinition.type = b2_staticBody;
-      bodyDefinition.position.Set(position.x, position.y);
-      b2Body* body = world->CreateBody(&bodyDefinition);
-  
-      //shape definition
-      b2PolygonShape polygonShape;
-    
-      //fixture definition
-      b2FixtureDef fixture;
-      fixture.shape = &polygonShape;
-      fixture.restitution = 0;
-      
-      polygonShape.SetAsBox( halfSize.x, halfSize.y);
-      body->CreateFixture(&fixture);
-      return body;
-    }
+
 
 
     Servo::Servo( std::shared_ptr<b2World> world, b2Body* bodyA, b2Body* bodyB,  const b2Vec2 & anchor, double gain):_gain(gain), _target_pos(0.0)
