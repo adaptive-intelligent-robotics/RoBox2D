@@ -62,7 +62,7 @@ int main()
 #endif
     std::array<Eigen::VectorXf, 2> trajectories;
     Eigen::VectorXf full_trajectory;
-    simu.run(10.0, trajectories, 50, full_trajectory);
+    simu.run(10.0, trajectories, 50);
     std::cout<<"End effector position:" << rob->get_end_effector_pos().x<<"  "<<rob->get_end_effector_pos().y<<std::endl;
     return 0;
 }
