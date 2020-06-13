@@ -25,12 +25,9 @@ namespace robox2d {
   void Simu::run(double max_duration, std::array<Eigen::VectorXf, 2> &trajectories, int trajectory_length)
   {
     int record_freq{static_cast<int>(max_duration / _time_step / trajectory_length)};
-    
-    for (Eigen::VectorXf &traj : trajectories)
-    {traj.resize(2 * trajectory_length);}
-
     int trajectory_frame_counter{0};
     int loop_counter{1};
+
     while ((_time - max_duration) < -_time_step/2.0 && (!_graphics || !_graphics->done())) 
     {
       _time+=_time_step;
@@ -80,12 +77,6 @@ namespace robox2d {
 
   void Simu::run(double max_duration, Eigen::VectorXf &full_trajectory)
   {
-    // total number of simulation steps
-    int num_timesteps{static_cast<int>(max_duration / _time_step)};
-
-    // fill the full trajectory for diversity calculation
-    full_trajectory.resize(2 * num_timesteps);
-
     int loop_counter{0};
     while ((_time - max_duration) < -_time_step/2.0 && (!_graphics || !_graphics->done())) 
     {

@@ -91,45 +91,45 @@ namespace robox2d {
 
 
 
-if(_world)
-	for(b2Body* body = _world->GetBodyList(); body; body = body->GetNext())
-	  {
-	    auto obj = new Object2D{&_scene};
-	    body->SetUserData(obj);
-	    // todo triple check this... Very likely to not work properly as we assume the body is with rot = 0
-	    //here we assume a single fixture
+      if(_world)
+        for(b2Body* body = _world->GetBodyList(); body; body = body->GetNext())
+        {
+            auto obj = new Object2D{&_scene};
+            body->SetUserData(obj);
+            // todo triple check this... Very likely to not work properly as we assume the body is with rot = 0
+            //here we assume a single fixture
 
 
-	    switch(body->GetFixtureList()->GetShape()->GetType())
-	      {
-	      case b2Shape::e_circle: // if shape is a circle
-		 {
-		   b2CircleShape* circle = static_cast<b2CircleShape*>(body->GetFixtureList()->GetShape());
-		   obj->setScaling(Magnum::Vector2(circle->m_radius, circle->m_radius));
-		   new Drawable{*obj, *_circleInstanceData, 0xeac9a5_rgbf, *_drawables};
-		   break;
-		 }
-	      case b2Shape::e_polygon: // if shape is a box (more advanced polygon not supported yet)
-		{
-		  b2PolygonShape* poly =  static_cast<b2PolygonShape*>(body->GetFixtureList()->GetShape());
-		  auto v = poly->m_vertices;
-		  auto hx = (v[1]-v[0]).Length()/2;
-		  auto hy = (v[2]-v[1]).Length()/2;
-		  Magnum::Vector2 halfSize(hx, hy);
-		  obj->setScaling(halfSize);
-		  new Drawable{*obj, *_boxInstanceData, 0xa5c9ea_rgbf, *_drawables};	  
-		  break;
-		}
-	      default: // not supported shapes
-		{
-		  std::cout<<"Warning Shape Type not supported"<<std::endl;
-		  break;
-		}
-	      }
-	    
-	    
+            switch(body->GetFixtureList()->GetShape()->GetType())
+            {
+              case b2Shape::e_circle: // if shape is a circle
+              {
+                b2CircleShape* circle = static_cast<b2CircleShape*>(body->GetFixtureList()->GetShape());
+                obj->setScaling(Magnum::Vector2(circle->m_radius, circle->m_radius));
+                new Drawable{*obj, *_circleInstanceData, 0xeac9a5_rgbf, *_drawables};
+                break;
+              }
+              case b2Shape::e_polygon: // if shape is a box (more advanced polygon not supported yet)
+              {
+                b2PolygonShape* poly =  static_cast<b2PolygonShape*>(body->GetFixtureList()->GetShape());
+                auto v = poly->m_vertices;
+                auto hx = (v[1]-v[0]).Length()/2;
+                auto hy = (v[2]-v[1]).Length()/2;
+                Magnum::Vector2 halfSize(hx, hy);
+                obj->setScaling(halfSize);
+                new Drawable{*obj, *_boxInstanceData, 0xa5c9ea_rgbf, *_drawables};	  
+                break;
+              }
+              default: // not supported shapes
+              {
+                std::cout<<"Warning Shape Type not supported"<<std::endl;
+                break;
+              }
+            }
+            
+            
 
-	  }
+        }
 
     }
 
