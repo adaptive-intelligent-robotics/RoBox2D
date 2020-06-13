@@ -45,6 +45,29 @@ namespace robox2d {
       return body;
     }
 
+    b2Body* createRoom( std::shared_ptr<b2World> world, const b2Vec2& roomDim){
+      b2BodyDef roomDefinition;
+      roomDefinition.position.Set(0.f, 0.f);
+      roomDefinition.type = b2_staticBody;
+      b2Body* body = world->CreateBody(&roomDefinition);
+      
+      b2PolygonShape wall;
+
+      b2FixtureDef fixture;
+      fixture.shape = &wall;
+      fixture.friction = 0.8f;
+
+      wall.SetAsBox(roomDim.x / 2, 0.01f, {roomDim.x / 2, roomDim.y}, 0.f);
+      body->CreateFixture(&fixture);
+      wall.SetAsBox(roomDim.x / 2, 0.01f, {roomDim.x / 2, 0.f}, 0.f);
+      body->CreateFixture(&fixture);
+      wall.SetAsBox(0.01f, roomDim.y / 2, {0.f, roomDim.y / 2}, 0.f);
+      body->CreateFixture(&fixture);
+      wall.SetAsBox(0.01f, roomDim.y / 2, {roomDim.x, roomDim.y / 2}, 0.f);
+      body->CreateFixture(&fixture);
+      return body;
+    }
+
 
 
     Servo::Servo( std::shared_ptr<b2World> world, b2Body* bodyA, b2Body* bodyB,  const b2Vec2 & anchor, double gain):_gain(gain), _target_pos(0.0)
