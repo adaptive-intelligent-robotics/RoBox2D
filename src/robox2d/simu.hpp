@@ -18,6 +18,11 @@ namespace robox2d {
   public:
     using robot_t = std::shared_ptr<Robot>;
     
+    /**
+     * @brief Construct a new Simu object.
+     * 
+     * Create a new world, world has zero gravity.
+     */
     Simu(size_t physic_freq=100, size_t control_freq=50, size_t graphic_freq=50);
     
     ~Simu();
