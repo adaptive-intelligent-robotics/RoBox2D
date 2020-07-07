@@ -67,7 +67,7 @@ def configure(conf):
 
     
 
-    native = ' '
+    native = ' -mavx -msse -msse2 '
     native_icc = ' '
 
 
