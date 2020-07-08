@@ -42,7 +42,7 @@ namespace robox2d {
     void run(double max_duration = 5.0);
 
     template<class T>
-    void Simu::run(double max_duration, std::shared_ptr<CustomImplementation<T>>& custom = nullptr)
+    void Simu::run(double max_duration, std::shared_ptr<CustomImplementation<T>>& custom)
     {
       
       while ((_time - max_duration) < -_time_step/2.0 && (!_graphics || !_graphics->done())) {
