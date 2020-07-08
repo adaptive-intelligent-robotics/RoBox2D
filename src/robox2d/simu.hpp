@@ -15,7 +15,15 @@
 
 
 namespace robox2d {
-  struct CustomImplementation;
+    template <class T1> 
+    struct CustomImplementation
+    {
+        void interface(Simu& simulation)
+        {
+            static_cast<T1*>(this)->implementation(simulation);
+        }
+    };
+
   
   class Simu {
   public:
@@ -130,14 +138,6 @@ namespace robox2d {
     std::shared_ptr<gui::Base> _graphics;
   };
 
-  template <class T1> 
-  struct CustomImplementation
-  {
-      void interface(Simu& simulation)
-      {
-          static_cast<T1*>(this)->implementation(simulation);
-      }
-  };
 
 
 } // namespace robot_dart
