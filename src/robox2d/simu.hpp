@@ -13,7 +13,10 @@
 #include "robot.hpp"
 #include "gui/base.hpp"
 
+
 namespace robox2d {
+  struct CustomImplementation;
+  
   class Simu {
   public:
     using robot_t = std::shared_ptr<Robot>;
@@ -28,6 +31,40 @@ namespace robox2d {
     ~Simu();
     
     void run(double max_duration = 5.0);
+
+    template<class T>
+    void Simu::run(double max_duration, std::shared_ptr<CustomImplementation<T>>& custom = nullptr)
+    {
+      
+      while ((_time - max_duration) < -_time_step/2.0 && (!_graphics || !_graphics->done())) {
+        _time+=_time_step;
+
+        // control step
+        if(std::abs(std::remainder(_time,_control_period)) < 1e-4)
+    {
+      for (auto& robot : _robots)
+        robot->control_update(_time);
+    }
+        
+        // physic step
+        if(std::abs(std::remainder(_time,_physic_period)) < 1e-4)
+    {
+      for (auto& robot : _robots)
+        robot->physic_update();	
+      _world->Step(_time_step, velocityIterations, positionIterations);
+      custom->implementation(std::shared_ptr<Simu>(this));
+    }
+        
+        // graphic step
+        if(_graphics && std::abs(std::remainder(_time,_graphic_period)) < 1e-4)
+    {
+      _graphics->refresh();
+      usleep(_graphic_period *1e6);
+    }
+        
+      }
+    }
+    
     
     std::shared_ptr<gui::Base> graphics() const;
     void set_graphics(const std::shared_ptr<gui::Base>& graphics);
@@ -92,6 +129,18 @@ namespace robox2d {
     std::vector<robot_t> _robots;
     std::shared_ptr<gui::Base> _graphics;
   };
+
+  template <class T1> 
+  struct CustomImplementation
+  {
+      void interface(Simu& simulation)
+      {
+          static_cast<T1*>(this)->implementation(simulation);
+      }
+  };
+
+
 } // namespace robot_dart
+
 
 #endif
