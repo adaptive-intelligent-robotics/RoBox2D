@@ -15,10 +15,11 @@
 
 
 namespace robox2d {
+    class Simu;
     template <class T1> 
     struct CustomImplementation
     {
-        void interface(Simu& simulation)
+        void implementation(std::shared_ptr<Simu>& simulation)
         {
             static_cast<T1*>(this)->implementation(simulation);
         }
