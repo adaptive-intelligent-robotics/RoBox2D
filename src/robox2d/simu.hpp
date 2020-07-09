@@ -15,16 +15,6 @@
 
 
 namespace robox2d {
-    class Simu;
-    template <class T1> 
-    struct CustomImplementation
-    {
-        void implementation(std::shared_ptr<Simu>& simulation)
-        {
-            static_cast<T1*>(this)->implementation(simulation);
-        }
-    };
-
   
   class Simu {
   public:
@@ -41,7 +31,7 @@ namespace robox2d {
     
     void run(double max_duration = 5.0);
 
-    void run(double max_duration, void (&step_func) (std::shared_ptr<std::vector<std::any>>), std::shared_ptr<std::vector<std::any>>& custom)
+    void run(double max_duration, void (&step_func) (std::shared_ptr<std::vector<std::any>>,  std::shared_ptr<robox2d::Simu>), std::shared_ptr<std::vector<std::any>>& custom)
     {
       
       while ((_time - max_duration) < -_time_step/2.0 && (!_graphics || !_graphics->done())) {
@@ -60,7 +50,7 @@ namespace robox2d {
       for (auto& robot : _robots)
         robot->physic_update();	
       _world->Step(_time_step, velocityIterations, positionIterations);
-      step_func(custom);
+      step_func(custom, std::shared_ptr<robox2d::Simu>(this));
     }
         
         // graphic step
