@@ -31,37 +31,6 @@ namespace robox2d {
     
     void run(double max_duration = 5.0);
 
-    void run(double max_duration, void (&step_func) (std::shared_ptr<std::vector<std::any>>,  std::shared_ptr<robox2d::Simu>), std::shared_ptr<std::vector<std::any>>& custom)
-    {
-      
-      while ((_time - max_duration) < -_time_step/2.0 && (!_graphics || !_graphics->done())) {
-        _time+=_time_step;
-
-        // control step
-        if(std::abs(std::remainder(_time,_control_period)) < 1e-4)
-    {
-      for (auto& robot : _robots)
-        robot->control_update(_time);
-    }
-        
-        // physic step
-        if(std::abs(std::remainder(_time,_physic_period)) < 1e-4)
-    {
-      for (auto& robot : _robots)
-        robot->physic_update();	
-      _world->Step(_time_step, velocityIterations, positionIterations);
-      step_func(custom, std::shared_ptr<robox2d::Simu>(this));
-    }
-        
-        // graphic step
-        if(_graphics && std::abs(std::remainder(_time,_graphic_period)) < 1e-4)
-    {
-      _graphics->refresh();
-      usleep(_graphic_period *1e6);
-    }
-        
-      }
-    }
     
     
     std::shared_ptr<gui::Base> graphics() const;
