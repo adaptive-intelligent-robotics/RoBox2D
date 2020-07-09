@@ -1,4 +1,3 @@
-
 #include <box2d/box2d.h>
 
 #include "common.hpp"
@@ -78,7 +77,7 @@ namespace robox2d {
      * @param  bodyA Body the servo will be attached to.
      * @param  bodyB Body the servo will be attached to.
      * @param  anchor Position the joint will be at when initializing the situation (can move during the simulation).
-     * @param  gain Motor speed gain factor.
+     * @param  gain factor for the movement of the Proportional Controller for the joint.
      */
     Servo::Servo( std::shared_ptr<b2World> world, b2Body* bodyA, b2Body* bodyB,  const b2Vec2 & anchor, double gain):_gain(gain), _target_pos(0.0)
     {
