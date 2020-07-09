@@ -31,7 +31,7 @@ namespace robox2d {
       Eigen::VectorXd commands(double t){ return _cmd;}
     private:
       Eigen::VectorXd _cmd;
-    };    
+    };
     
   } // namespace control
 } // namespace robox2d

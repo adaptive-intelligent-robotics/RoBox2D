@@ -13,16 +13,25 @@
 #include "robot.hpp"
 #include "gui/base.hpp"
 
+
 namespace robox2d {
+  
   class Simu {
   public:
     using robot_t = std::shared_ptr<Robot>;
     
+    /**
+     * @brief Construct a new Simu object.
+     * 
+     * Create a new world, world has zero gravity.
+     */
     Simu(size_t physic_freq=100, size_t control_freq=50, size_t graphic_freq=50);
     
     ~Simu();
     
     void run(double max_duration = 5.0);
+
+    
     
     std::shared_ptr<gui::Base> graphics() const;
     void set_graphics(const std::shared_ptr<gui::Base>& graphics);
@@ -87,6 +96,10 @@ namespace robox2d {
     std::vector<robot_t> _robots;
     std::shared_ptr<gui::Base> _graphics;
   };
+
+
+
 } // namespace robot_dart
+
 
 #endif

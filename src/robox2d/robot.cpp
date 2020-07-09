@@ -16,6 +16,7 @@ namespace robox2d {
     for (auto& ctrl : _controllers) {
       commands += ctrl->commands(t);
     }
+
     for(size_t i = 0; i<nb_dofs(); i++)
       _servos[i]->set_target_pos(commands[i]);
   }
