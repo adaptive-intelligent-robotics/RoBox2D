@@ -12,7 +12,11 @@ namespace robox2d {
   
   void Robot::control_update(double t)
   {
-    Eigen::VectorXd commands = _controllers[0]->commands(t);
+    Eigen::VectorXd commands = Eigen::VectorXd::Zero(nb_dofs());
+    for (auto& ctrl : _controllers) {
+      commands += ctrl->commands(t);
+    }
+
     for(size_t i = 0; i<nb_dofs(); i++)
       _servos[i]->set_target_pos(commands[i]);
   }
