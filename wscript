@@ -79,17 +79,17 @@ def configure(conf):
 
     if conf.env.CXX_NAME in ["icc", "icpc"]:
         common_flags = "-Wall -std=c++11"
-        opt_flags = " -O3 -xHost -unroll -g" + native_icc
+        opt_flags = " -O3 -xHost -unroll -g " + native_icc
     elif conf.env.CXX_NAME in ["clang"]:
         common_flags = "-Wall -std=c++11"
-        opt_flags = " -O3 -g -faligned-new" + native
+        opt_flags = " -O3 -g -faligned-new " + native
     else:
         gcc_version = int(conf.env['CC_VERSION'][0]+conf.env['CC_VERSION'][1])
         if gcc_version < 47:
             common_flags = "-Wall -std=c++0x"
         else:
             common_flags = "-Wall -std=c++11"
-        opt_flags = " -O3 -g" + native
+        opt_flags = " -O3 -g " + native
         if gcc_version >= 71:
             opt_flags = opt_flags + " -faligned-new"
 
