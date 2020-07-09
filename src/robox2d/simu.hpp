@@ -41,8 +41,7 @@ namespace robox2d {
     
     void run(double max_duration = 5.0);
 
-    template<class T>
-    void run(double max_duration, std::shared_ptr<CustomImplementation<T>>& custom)
+    void run(double max_duration, void (&step_func) (std::shared_ptr<std::vector<std::any>>), std::shared_ptr<std::vector<std::any>>& custom)
     {
       
       while ((_time - max_duration) < -_time_step/2.0 && (!_graphics || !_graphics->done())) {
@@ -61,7 +60,7 @@ namespace robox2d {
       for (auto& robot : _robots)
         robot->physic_update();	
       _world->Step(_time_step, velocityIterations, positionIterations);
-      custom->implementation(std::shared_ptr<Simu>(this));
+      step_func(custom);
     }
         
         // graphic step
