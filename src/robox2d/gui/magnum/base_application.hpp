@@ -14,6 +14,7 @@
 #include <Magnum/GL/DefaultFramebuffer.h>
 #include <Magnum/GL/Buffer.h>
 #include <Magnum/GL/Mesh.h>
+#include <Magnum/Image.h>
 #include <Magnum/Math/ConfigurationValue.h>
 #include <Magnum/Math/DualComplex.h>
 #include <Magnum/MeshTools/Compile.h>
@@ -126,7 +127,10 @@ namespace robox2d {
       Magnum::SceneGraph::DrawableGroup2D& drawables() { return *_drawables; }
       Scene2D& scene() { return _scene; }
       Magnum::SceneGraph::Camera2D* camera() { return &*_camera; }
-	
+
+      Corrade::Containers::Optional<Magnum::Image2D>& image() { return _image; }
+
+      
       bool done() const;
 
      
@@ -142,7 +146,7 @@ namespace robox2d {
       std::unique_ptr<Magnum::GL::Mesh> _circleMesh;//{Magnum::NoCreate};
       std::unique_ptr<Magnum::Containers::Array<InstanceData>> _circleInstanceData;
 
-
+      
       
       Scene2D _scene;
       Object2D* _cameraObject;
@@ -150,6 +154,7 @@ namespace robox2d {
       std::unique_ptr<Magnum::SceneGraph::DrawableGroup2D> _drawables;
       std::shared_ptr<b2World> _world;
       //Magnum::Containers::Optional<b2World> _world;
+      Corrade::Containers::Optional<Magnum::Image2D> _image;
       
       bool _done = false;
     };

@@ -65,6 +65,12 @@ int main()
 #endif
 
     simu.run(10.0);
+
+#ifdef GRAPHIC
+    auto gimage = graphics->image();
+    robox2d::gui::save_png_image("camera-main.png", gimage);
+#endif
+
     std::cout<<"End effector position:" << rob->get_end_effector_pos().x<<"  "<<rob->get_end_effector_pos().y<<std::endl;
     return 0;
 }

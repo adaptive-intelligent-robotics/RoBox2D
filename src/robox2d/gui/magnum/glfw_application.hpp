@@ -20,9 +20,13 @@ namespace robox2d{
 	~GlfwApplication();
 	
 	void render() override;
+
+	
 	
       protected:
 	Magnum::Float _speedMove, _speedStrafe;
+	
+	
 	
 	static constexpr Magnum::Float _speed = 0.05f;
 	

@@ -2,6 +2,7 @@
 #define ROBOX2D_GUI_MAGNUM_GRAPHICS_HPP
 
 #include <robox2d/gui/base.hpp>
+#include <robox2d/gui/helper.hpp>
 #include <robox2d/gui/magnum/glfw_application.hpp>
 
 
@@ -80,21 +81,21 @@ namespace robox2d {
       //bool is_shadowed() const { return _magnum_app->isShadowed(); }
       //void enable_shadows(bool enable = true) { _magnum_app->enableShadows(enable); }
 
-      /*Magnum::Image2D* magnum_image()
+      Magnum::Image2D* magnum_image()
 	{
-	if (_magnum_app->image())
-	return &(*_magnum_app->image());
-	return nullptr;
+	  if (_magnum_app->image())
+	    return &(*_magnum_app->image());
+	  return nullptr;
 	}
 
-	Image image() override
+	Image image() 
 	{
-	auto image = magnum_image();
-	if (image)
-	return gs::rgb_from_image(image);
-	return Image();
+	  auto image = magnum_image();
+	  if (image)
+	    return rgb_from_image(image);
+	  return Image();
 	}
-
+      /*
 	GrayscaleImage depth_image() override { return _magnum_app->depthImage(); }
 	GrayscaleImage raw_depth_image() override { return _magnum_app->rawDepthImage(); }
 
