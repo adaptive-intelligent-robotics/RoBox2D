@@ -1,9 +1,9 @@
 #ifndef ROBOX2D_GUI_MAGNUM_GRAPHICS_HPP
 #define ROBOX2D_GUI_MAGNUM_GRAPHICS_HPP
 
-#include <robox2d/gui/base.hpp>
-#include <robox2d/gui/helper.hpp>
-#include <robox2d/gui/magnum/glfw_application.hpp>
+#include "../base.hpp"
+#include "helper.hpp"
+#include "glfw_application.hpp"
 
 
 
