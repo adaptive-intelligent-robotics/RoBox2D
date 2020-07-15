@@ -74,6 +74,8 @@ namespace robox2d {
 	_shader->setTransformationProjectionMatrix(_camera->projectionMatrix())
 	  .draw(*_circleMesh);
 
+    _image = Magnum::GL::defaultFramebuffer.read(Magnum::GL::defaultFramebuffer.viewport(), {Magnum::PixelFormat::RGB8Unorm});
+
 	swapBuffers();
 	redraw();
       }
