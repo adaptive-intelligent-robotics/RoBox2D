@@ -1,6 +1,8 @@
 #include "simu.hpp"
 #include <iostream>
 #include <boost/math/common_factor.hpp>
+
+#include <fstream>
 namespace robox2d
 {
 
@@ -22,6 +24,7 @@ namespace robox2d
         //_cameras.clear();
     }
 
+    // retrieve ground truth position information of trajectories
     void Simu::run(double max_duration, std::array<Eigen::VectorXf, 2> &trajectories, Eigen::VectorXf &full_trajectory, int trajectory_length)
     {
         int record_freq{static_cast<int>(max_duration / _time_step / trajectory_length)};
@@ -86,6 +89,154 @@ namespace robox2d
 
             ++loop_counter;
         }
+    }
+
+    // retrieve image data
+    void Simu::run(double max_duration, std::array<Eigen::VectorXf, 2> &trajectories, Eigen::VectorXf &full_trajectory, int trajectory_length, Eigen::VectorXf &avg_image)
+    {
+        int record_freq{static_cast<int>(max_duration / _time_step / trajectory_length)};
+        int trajectory_frame_counter{0};
+        int loop_counter{1};
+
+        while ((_time - max_duration) < -_time_step / 2.0 && (!_graphics || !_graphics->done()))
+        {
+            _time += _time_step;
+
+            // control step
+            if (std::abs(std::remainder(_time, _control_period)) < 1e-4)
+            {
+                for (auto &robot : _robots)
+                    robot->control_update(_time);
+            }
+
+            // physic step
+            if (std::abs(std::remainder(_time, _physic_period)) < 1e-4)
+            {
+                for (auto &robot : _robots)
+                    robot->physic_update();
+
+                _world->Step(_time_step, velocityIterations, positionIterations);
+            }
+
+            // graphic step
+            if (_graphics && std::abs(std::remainder(_time, _graphic_period)) < 1e-4)
+            {
+                _graphics->refresh();
+                // usleep(_graphic_period * 1e6);
+                std::vector<uint8_t> grayscale_img = robox2d::gui::convert_rgb_to_grayscale(_graphics->image()).data;
+                for (size_t i{0}; i < grayscale_img.size(); ++i)
+                    avg_image[i] += grayscale_img[i];
+            }
+
+            // first ball retrieved is actual ball
+            bool is_first_ball{true};
+
+            // two trajectories, one actual and one potential fake
+            int trajectory_index{0};
+
+            for (b2Body *body = _world->GetBodyList(); body; body = body->GetNext())
+            {
+                if (body->GetFixtureList()->GetShape()->GetType() == 0)
+                {
+                    if (is_first_ball)
+                    {
+                        b2Vec2 body_pos = body->GetWorldCenter();
+                        full_trajectory[(loop_counter - 1) * 2] = body_pos.x;
+                        full_trajectory[(loop_counter - 1) * 2 + 1] = body_pos.y;
+                        is_first_ball = false;
+                    }
+                    if (loop_counter % record_freq == 0)
+                    {
+                        b2Vec2 body_pos = body->GetWorldCenter();
+                        trajectories[trajectory_index][trajectory_frame_counter] = body_pos.x;
+                        trajectories[trajectory_index][trajectory_frame_counter + 1] = body_pos.y;
+                        ++trajectory_index;
+                    }
+                }
+            }
+            if (loop_counter % record_freq == 0)
+                trajectory_frame_counter += 2;
+
+            ++loop_counter;
+        }
+        avg_image /= (loop_counter - 1);
+    }
+
+    // retrieve video data
+    void Simu::run(double max_duration, std::array<Eigen::VectorXf, 2> &trajectories, Eigen::VectorXf &full_trajectory, int trajectory_length, Eigen::MatrixXi &img_frames)
+    {
+        int record_freq{static_cast<int>(max_duration / _time_step / trajectory_length)};
+        int trajectory_frame_counter{0};
+        int loop_counter{1};
+
+        while ((_time - max_duration) < -_time_step / 2.0 && (!_graphics || !_graphics->done()))
+        {
+            _time += _time_step;
+
+            // control step
+            if (std::abs(std::remainder(_time, _control_period)) < 1e-4)
+            {
+                for (auto &robot : _robots)
+                    robot->control_update(_time);
+            }
+
+            // physic step
+            if (std::abs(std::remainder(_time, _physic_period)) < 1e-4)
+            {
+                for (auto &robot : _robots)
+                    robot->physic_update();
+
+                _world->Step(_time_step, velocityIterations, positionIterations);
+            }
+
+            // graphic step
+            if (_graphics && std::abs(std::remainder(_time, _graphic_period)) < 1e-4)
+            {
+                _graphics->refresh();
+                usleep(_graphic_period * 1e6);
+                auto gimage = _graphics->image();
+                std::vector<uint8_t> grayscale_img = robox2d::gui::convert_rgb_to_grayscale(_graphics->image()).data;
+                std::vector<int> int_grayscale_img(grayscale_img.begin(), grayscale_img.end());
+                img_frames.row(loop_counter - 1) = Eigen::Map<Eigen::VectorXi> (int_grayscale_img.data(), int_grayscale_img.size());
+            }
+
+            // first ball retrieved is actual ball
+            bool is_first_ball{true};
+
+            // two trajectories, one actual and one potential fake
+            int trajectory_index{0};
+
+            for (b2Body *body = _world->GetBodyList(); body; body = body->GetNext())
+            {
+                if (body->GetFixtureList()->GetShape()->GetType() == 0)
+                {
+                    if (is_first_ball)
+                    {
+                        b2Vec2 body_pos = body->GetWorldCenter();
+                        full_trajectory[(loop_counter - 1) * 2] = body_pos.x;
+                        full_trajectory[(loop_counter - 1) * 2 + 1] = body_pos.y;
+                        is_first_ball = false;
+                    }
+                    if (loop_counter % record_freq == 0)
+                    {
+                        b2Vec2 body_pos = body->GetWorldCenter();
+                        trajectories[trajectory_index][trajectory_frame_counter] = body_pos.x;
+                        trajectories[trajectory_index][trajectory_frame_counter + 1] = body_pos.y;
+                        ++trajectory_index;
+                    }
+                }
+            }
+            if (loop_counter % record_freq == 0)
+                trajectory_frame_counter += 2;
+
+            ++loop_counter;
+        }
+        // max_duration / _time_step
+        // std::ofstream ofs("testfile2");
+        // for (size_t i{0}; i < avg_image.size(); ++i)
+        // {ofs << avg_image[i] << ", ";}
+        // ofs.close();
+        // exit(0);
     }
 
     std::shared_ptr<gui::Base> Simu::graphics() const { return _graphics; }

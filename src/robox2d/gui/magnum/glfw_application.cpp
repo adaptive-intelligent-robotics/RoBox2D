@@ -54,6 +54,9 @@ namespace robox2d {
       {
 	Magnum::GL::defaultFramebuffer.clear(Magnum::GL::FramebufferClear::Color);
 
+    /* Change default clear color to black */
+    Magnum::GL::Renderer::setClearColor(Magnum::Vector4{0.f, 0.f, 0.f, 1.f});
+
 	/* Update graphic meshes/materials and render */
 	update_graphics();
 
@@ -73,7 +76,6 @@ namespace robox2d {
 	_circleMesh->setInstanceCount(_circleInstanceData->size());
 	_shader->setTransformationProjectionMatrix(_camera->projectionMatrix())
 	  .draw(*_circleMesh);
-
     _image = Magnum::GL::defaultFramebuffer.read(Magnum::GL::defaultFramebuffer.viewport(), {Magnum::PixelFormat::RGB8Unorm});
 
 	swapBuffers();

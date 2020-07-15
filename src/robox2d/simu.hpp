@@ -24,6 +24,10 @@ namespace robox2d
 
         void run(double max_duration, std::array<Eigen::VectorXf, 2> &trajectories, Eigen::VectorXf &full_trajectory, int trajectory_length);
 
+        void run(double max_duration, std::array<Eigen::VectorXf, 2> &trajectories, Eigen::VectorXf &full_trajectory, int trajectory_length, Eigen::VectorXf &avg_image);
+
+        void run(double max_duration, std::array<Eigen::VectorXf, 2> &trajectories, Eigen::VectorXf &full_trajectory, int trajectory_length, Eigen::MatrixXi &img_frames);
+
         std::shared_ptr<gui::Base> graphics() const;
         void set_graphics(const std::shared_ptr<gui::Base> &graphics);
 
