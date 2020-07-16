@@ -3,6 +3,7 @@
 
 
 #include <box2d/box2d.h>
+#include <robox2d/gui/magnum/helper.hpp>
 
 namespace robox2d {
   namespace gui {
@@ -24,8 +25,12 @@ namespace robox2d {
       virtual void set_render_period(double) {}
       
       virtual void set_enable(bool) {}
+
+      virtual Magnum::Image2D* magnum_image() {}
       
-      //virtual Image image() { return Image(); }
+      virtual Image image() {}
+
+      
       //virtual GrayscaleImage depth_image() { return GrayscaleImage(); }
       //virtual GrayscaleImage raw_depth_image() { return GrayscaleImage(); }
     };

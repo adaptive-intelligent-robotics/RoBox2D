@@ -4,6 +4,7 @@
 #include "../base.hpp"
 #include "helper.hpp"
 #include "glfw_application.hpp"
+#include "windowless_gl_application.hpp"
 
 
 
@@ -81,14 +82,14 @@ namespace robox2d {
       //bool is_shadowed() const { return _magnum_app->isShadowed(); }
       //void enable_shadows(bool enable = true) { _magnum_app->enableShadows(enable); }
 
-      Magnum::Image2D* magnum_image()
+    Magnum::Image2D* magnum_image() override
 	{
 	  if (_magnum_app->image())
 	    return &(*_magnum_app->image());
 	  return nullptr;
 	}
 
-	Image image() 
+	Image image() override
 	{
 	  auto image = magnum_image();
 	  if (image)
