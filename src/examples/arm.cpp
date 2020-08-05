@@ -5,6 +5,7 @@
 #include <robox2d/simu.hpp>
 #include <robox2d/robot.hpp>
 #include <robox2d/common.hpp>
+#include <robox2d/actuator.hpp>
 #ifdef GRAPHIC
 #include <robox2d/gui/magnum/graphics.hpp>
 #endif
@@ -28,7 +29,7 @@ public:
     for(size_t i =0; i < nb_joints; i++)
       {
 	_end_effector = robox2d::common::createBox( world,{seg_length*0.5f , arm_length*0.01f }, b2_dynamicBody, {(0.5f+i)*seg_length,0.0f,0.0f} );
-      this->_servos.push_back(std::make_shared<robox2d::common::Servo>(world,body, _end_effector, anchor));
+      this->_actuators.push_back(std::make_shared<robox2d::actuator::Servo>(world,body, _end_effector, anchor));
 
       body=_end_effector;
       anchor = _end_effector->GetWorldCenter() + b2Vec2(seg_length*0.5 , 0.0f);

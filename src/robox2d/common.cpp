@@ -67,36 +67,6 @@ namespace robox2d {
       return body;
     }
 
-    /**
-     * @brief Construct a new Servo object. Servo is a wrapper around a joint.
-     * 
-     * Servo is used to control how the joints move. Joints can move between -pi and pi rad.
-     * Maximum motor torque is 1.
-     * 
-     * @param  world World to place the servo in.
-     * @param  bodyA Body the servo will be attached to.
-     * @param  bodyB Body the servo will be attached to.
-     * @param  anchor Position the joint will be at when initializing the situation (can move during the simulation).
-     * @param  gain factor for the movement of the Proportional Controller for the joint.
-     */
-    Servo::Servo( std::shared_ptr<b2World> world, b2Body* bodyA, b2Body* bodyB,  const b2Vec2 & anchor, double gain):_gain(gain), _target_pos(0.0)
-    {
-      b2RevoluteJointDef jointDef;
-      jointDef.Initialize(bodyA, bodyB, anchor);
-      jointDef.lowerAngle = -1.0f * b2_pi;
-      jointDef.upperAngle = 1.0f * b2_pi;
-      jointDef.enableLimit = true;
-      jointDef.maxMotorTorque = 1.0f;
-      jointDef.motorSpeed = 0.0f;
-      jointDef.enableMotor = true;
-      _joint = (b2RevoluteJoint*)world->CreateJoint(&jointDef); 
-    }
-    
-    void Servo::set_target_pos(double pos){_target_pos = pos;}
-    
-    void Servo::update(){
-      _joint->SetMotorSpeed(_gain * (_target_pos - _joint->GetJointAngle() ));
-    }
 
     /**
      * @brief Create a Weld Joint, weld joints are joints that do not move.
