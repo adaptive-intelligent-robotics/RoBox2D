@@ -56,7 +56,7 @@ namespace robox2d {
       if (gas_diff < -0.1)
 	gas_diff = -0.1; // gradually decrease
       _gas += gas_diff;
-      std::cout<<"gas "<<_gas<<std::endl;
+      
 
       // get velocities of the wheel
       auto forw = _body->GetWorldVector( {0,1} );
@@ -92,7 +92,7 @@ namespace robox2d {
 
       //apply force
       b2Vec2 force_vec= { p_force*side.x + f_force*forw.x,   p_force*side.y + f_force*forw.y};
-      std::cout<<"force: "<<force_vec.x << " "<<force_vec.y<<std::endl;
+      
       _body->ApplyForceToCenter( force_vec,  true);
     }
 

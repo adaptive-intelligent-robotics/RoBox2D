@@ -54,8 +54,8 @@ int main()
     robox2d::Simu simu;
     simu.add_floor();
     Eigen::VectorXd ctrl_pos(2);
-    ctrl_pos[0]=1;
-    ctrl_pos[1]=1;
+    ctrl_pos[0]=0.5;
+    ctrl_pos[1]=0.25;
     
     auto rob = std::make_shared<Car>(simu.world());
     

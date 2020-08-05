@@ -101,7 +101,7 @@ namespace robox2d {
       float _omega; // angular velocity
 
       const float dt=0.01;
-      const float size=0.002;
+      const float size=0.001;
       const float engine_power =100000000*size*size;
       const float friction_limit = 1000000*size*size;
       const float wheel_moment_of_inertia = 4000*size*size;
