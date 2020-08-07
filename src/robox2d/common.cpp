@@ -35,6 +35,19 @@ namespace robox2d {
       
       return body;
     }
+
+
+    void addBoxFixture(b2Body* body, const b2Vec2& halfSize, const b2Vec3& transformation, const float density) {
+      b2PolygonShape shape;
+      shape.SetAsBox(halfSize.x, halfSize.y, {transformation.x, transformation.y}, transformation.z);
+
+      b2FixtureDef fixture;
+      fixture.friction = 0.8f;
+      fixture.density = density;
+      fixture.shape = &shape;
+      body->CreateFixture(&fixture);
+      
+    }
     
     /**
      * @brief Create a Circle object.
@@ -67,6 +80,19 @@ namespace robox2d {
       return body;
     }
 
+    void addCircleFixture(b2Body* body, const float radius, const b2Vec3& transformation, const float density) {
+      b2CircleShape shape;
+      shape.m_radius = radius;
+      shape.m_p = {transformation.x, transformation.y};
+
+      b2FixtureDef fixture;
+      fixture.friction = 0.8f;
+      fixture.density = density;
+      fixture.shape = &shape;
+      body->CreateFixture(&fixture);
+      
+    }
+    
 
     /**
      * @brief Create a Weld Joint, weld joints are joints that do not move.

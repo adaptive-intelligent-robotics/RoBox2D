@@ -41,7 +41,7 @@ namespace robox2d {
     
     void PonctualForce::update(){
       auto f = _input*_body->GetWorldVector(_direction);
-      _body->ApplyLinearImpulse(f , _body->GetWorldVector(_anchor), true);
+      _body->ApplyLinearImpulse(f , _body->GetWorldPoint(_anchor), true);
     }
 
     

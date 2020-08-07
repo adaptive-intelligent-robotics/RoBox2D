@@ -20,6 +20,7 @@
 #include <Magnum/MeshTools/Compile.h>
 #include <Magnum/Primitives/Square.h>
 #include <Magnum/Primitives/Circle.h>
+#include <Magnum/Primitives/Line.h>
 #include <Magnum/SceneGraph/Camera.h>
 #include <Magnum/SceneGraph/Drawable.h>
 #include <Magnum/SceneGraph/TranslationRotationScalingTransformation2D.h>
@@ -145,6 +146,9 @@ namespace robox2d {
       std::unique_ptr<Magnum::Containers::Array<InstanceData>> _boxInstanceData;
       std::unique_ptr<Magnum::GL::Mesh> _circleMesh;//{Magnum::NoCreate};
       std::unique_ptr<Magnum::Containers::Array<InstanceData>> _circleInstanceData;
+
+      std::unique_ptr<Magnum::GL::Mesh> _lineMesh;//{Magnum::NoCreate};
+      std::unique_ptr<Magnum::Containers::Array<InstanceData>> _lineInstanceData;
 
       
       

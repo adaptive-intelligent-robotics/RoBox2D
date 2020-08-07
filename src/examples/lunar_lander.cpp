@@ -18,7 +18,7 @@ public:
 
     float hull_size = 0.1;
    
-    _hull = robox2d::common::createBox( world,{hull_size, hull_size*0.75f}, b2_dynamicBody,  {0.0f,0.0f,0.0f} );
+    _hull = robox2d::common::createBox( world,{hull_size, hull_size*0.75f}, b2_dynamicBody,  {0.0f,0.0f,0.0f}, 1.0f );
     robox2d::common::createBox( world,{10.0f, 0.5f}, b2_staticBody,  {0.0f,-1.0f,0.0f} );// ground
     
     // body will always represent the body created in the previous iteration
@@ -39,11 +39,11 @@ public:
 	  direction+=b2Vec2({0,1});
 	  break;
 	case 2:   // top left
-	  anchor += b2Vec2({-(hull_size+radius),+hull_size*0.4f});
+	  anchor += b2Vec2({-(hull_size+radius),+hull_size*0.3f});
 	  direction+=b2Vec2({1,0});
 	  break;
 	case 3:   // top right
-	  anchor += b2Vec2({(hull_size+radius),+hull_size*0.4f});
+	  anchor += b2Vec2({(hull_size+radius),+hull_size*0.3f});
 	  direction+=b2Vec2({-1,0});
 	  break;
 	default:
@@ -51,10 +51,10 @@ public:
 	}
 	
 	
-	b2Body* reactor = robox2d::common::createCircle( world, radius, b2_dynamicBody, {anchor.x,anchor.y,0.0f});
+	robox2d::common::addBoxFixture( _hull, {radius*2.0f, radius*1.0f}, {anchor.x,anchor.y, 0.0f}, 0.0f); //REACTOR
 	
-	this->_actuators.push_back(std::make_shared<robox2d::actuator::PonctualForce>(reactor, b2Vec2({0,0}), direction)); //{0,0} is for the center of mass
-	robox2d::common::createWeldJoint( world, _hull, reactor, anchor);
+	this->_actuators.push_back(std::make_shared<robox2d::actuator::PonctualForce>(_hull, anchor, direction)); 
+	
       }
 
     
@@ -70,15 +70,18 @@ private:
 
 int main()
   {
+    
     // simulating
     robox2d::Simu simu;
     simu.world()->SetGravity({0, -9.81});
     simu.add_floor();
     Eigen::VectorXd ctrl_pos(4);
-    ctrl_pos[0]=0.19;
-    ctrl_pos[1]=0.19;
-    ctrl_pos[2]=0.000;
-    ctrl_pos[3]=0.000;
+    ctrl_pos[0]=0.002;
+    ctrl_pos[1]=0.002;
+    ctrl_pos[2]= 0.0001;
+    ctrl_pos[3]= 0.00;
+
+    
     
     auto rob = std::make_shared<LunarLander>(simu.world());
     
