@@ -62,10 +62,48 @@ public:
   }
   
   b2Vec2 get_hull_pos(){return _hull->GetWorldCenter(); }
+  b2Vec2 get_hull_lin_vel(){return _hull->GetLinearVelocity(); }
+  float get_hull_rot_vel(){return _hull->GetAngularVelocity(); }
   
 private:
   b2Body* _hull;
 };
+
+
+class LanderController: public robox2d::control::BaseController {
+    public:
+      LanderController(): robox2d::control::BaseController(4){}
+      
+      Eigen::VectorXd commands(double t, robox2d::Robot* robot){
+	auto rob = static_cast<LunarLander*>(robot);
+	Eigen::VectorXd cmd=Eigen::VectorXd::Zero(this->_nb_dofs);
+
+	
+	
+	std::cout<<rob->get_hull_lin_vel().y<<" "<<rob->get_hull_rot_vel()<<std::endl;
+
+	if(std::abs(rob->get_hull_rot_vel())>0.001)
+	   if(rob->get_hull_rot_vel() > 0)
+	     cmd[2]+= std::min(std::max(std::abs(rob->get_hull_rot_vel())/50.0f, 0.0f), 0.01f);
+	   else
+	     cmd[3]+= std::min(std::max(std::abs(rob->get_hull_rot_vel())/50.0f, 0.0f), 0.01f);
+
+	if(rob->get_hull_lin_vel().x < 0)
+	  cmd[2]+= std::min(std::max(std::abs(rob->get_hull_lin_vel().x)/100.0f, 0.0f), 0.01f);
+	else
+	  cmd[3]+= std::min(std::max(std::abs(rob->get_hull_lin_vel().x)/100.0f, 0.0f), 0.01f);
+
+	if(std::abs(rob->get_hull_lin_vel().Length())>0.001)
+	  if(rob->get_hull_lin_vel().y<0)
+	    {
+	      cmd[0]= std::min(std::max(-rob->get_hull_lin_vel().y/400.0f, 0.0f), 0.02f);
+	      cmd[1]= std::min(std::max(-rob->get_hull_lin_vel().y/200.0f, 0.0f), 0.02f); // simulated defect in one reactor
+	    }
+	return cmd;
+      }
+  
+    };
+    
 
 
 int main()
@@ -75,17 +113,18 @@ int main()
     robox2d::Simu simu;
     simu.world()->SetGravity({0, -9.81});
     simu.add_floor();
-    Eigen::VectorXd ctrl_pos(4);
+    /* Eigen::VectorXd ctrl_pos(4);
     ctrl_pos[0]=0.002;
     ctrl_pos[1]=0.002;
     ctrl_pos[2]= 0.0001;
     ctrl_pos[3]= 0.00;
-
+    */
     
     
     auto rob = std::make_shared<LunarLander>(simu.world());
     
-    auto ctrl = std::make_shared<robox2d::control::ConstantPos>(ctrl_pos);
+    //auto ctrl = std::make_shared<robox2d::control::ConstantPos>(ctrl_pos);
+    auto ctrl = std::make_shared<LanderController>();
     rob->add_controller(ctrl);
     simu.add_robot(rob);
 

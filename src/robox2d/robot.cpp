@@ -14,7 +14,7 @@ namespace robox2d {
   {
     Eigen::VectorXd commands = Eigen::VectorXd::Zero(nb_dofs());
     for (auto& ctrl : _controllers) {
-      commands += ctrl->commands(t);
+      commands += ctrl->commands(t, this);
     }
 
     for(size_t i = 0; i<nb_dofs(); i++)
