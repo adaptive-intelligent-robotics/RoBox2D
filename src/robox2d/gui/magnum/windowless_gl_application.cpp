@@ -15,7 +15,7 @@ namespace robox2d {
     namespace gui {
         namespace magnum {
             WindowlessGLApplication::WindowlessGLApplication(int argc, char** argv, const std::shared_ptr<b2World>& world, size_t width, size_t height, const std::string& title)
-                : Magnum::Platform::WindowlessApplication({argc, argv})//, Magnum::NoCreate)
+                : Magnum::Platform::WindowlessApplication({argc, argv}, Magnum::NoCreate)
             {
                 /* Assume context is given externally, if not create it */
                 if (!Magnum::GL::Context::hasCurrent()) {
