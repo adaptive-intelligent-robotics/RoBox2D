@@ -165,12 +165,18 @@ namespace robox2d
         prelim_avg_img /= (loop_counter - 1);
         int index{0};
         int initial_dim = 280;
-        for (int row{0}; row < initial_dim - 1; row += 2)
+        for (int row{0}; row < initial_dim - 1; row += 7)
         {
-            for (int column{0}; column < initial_dim - 1; column += 2)
+            for (int column{0}; column < initial_dim - 1; column += 7)
             {
-                avg_image[index] = (prelim_avg_img.segment(row * initial_dim + column, 2) +
-                                    prelim_avg_img.segment((row + 1) * initial_dim + column, 2)).mean();
+                avg_image[index] = (prelim_avg_img.segment(row * initial_dim + column, 7) +
+                                    prelim_avg_img.segment((row + 1) * initial_dim + column, 7) +
+                                    prelim_avg_img.segment((row + 2) * initial_dim + column, 7) +
+                                    prelim_avg_img.segment((row + 3) * initial_dim + column, 7) +
+                                    prelim_avg_img.segment((row + 4) * initial_dim + column, 7) +
+                                    prelim_avg_img.segment((row + 5) * initial_dim + column, 7) +
+                                    prelim_avg_img.segment((row + 6) * initial_dim + column, 7)
+                                    ).mean();
                 ++index;
             }
         }
