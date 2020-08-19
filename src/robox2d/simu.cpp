@@ -165,17 +165,24 @@ namespace robox2d
         prelim_avg_img /= (loop_counter - 1);
         int index{0};
         int initial_dim = 280;
-        for (int row{0}; row < initial_dim - 1; row += 7)
+        for (int row{0}; row < initial_dim - 1; row += 14)
         {
-            for (int column{0}; column < initial_dim - 1; column += 7)
+            for (int column{0}; column < initial_dim - 1; column += 14)
             {
-                avg_image[index] = (prelim_avg_img.segment(row * initial_dim + column, 7) +
-                                    prelim_avg_img.segment((row + 1) * initial_dim + column, 7) +
-                                    prelim_avg_img.segment((row + 2) * initial_dim + column, 7) +
-                                    prelim_avg_img.segment((row + 3) * initial_dim + column, 7) +
-                                    prelim_avg_img.segment((row + 4) * initial_dim + column, 7) +
-                                    prelim_avg_img.segment((row + 5) * initial_dim + column, 7) +
-                                    prelim_avg_img.segment((row + 6) * initial_dim + column, 7)
+                avg_image[index] = (prelim_avg_img.segment(row * initial_dim + column, 14) +
+                                    prelim_avg_img.segment((row + 1) * initial_dim + column, 14) +
+                                    prelim_avg_img.segment((row + 2) * initial_dim + column, 14) +
+                                    prelim_avg_img.segment((row + 3) * initial_dim + column, 14) +
+                                    prelim_avg_img.segment((row + 4) * initial_dim + column, 14) +
+                                    prelim_avg_img.segment((row + 5) * initial_dim + column, 14) +
+                                    prelim_avg_img.segment((row + 6) * initial_dim + column, 14) +
+                                    prelim_avg_img.segment((row + 7) * initial_dim + column, 14) +
+                                    prelim_avg_img.segment((row + 8) * initial_dim + column, 14) +
+                                    prelim_avg_img.segment((row + 9) * initial_dim + column, 14) +
+                                    prelim_avg_img.segment((row + 10) * initial_dim + column, 14) +
+                                    prelim_avg_img.segment((row + 11) * initial_dim + column, 14) +
+                                    prelim_avg_img.segment((row + 12) * initial_dim + column, 14) +
+                                    prelim_avg_img.segment((row + 13) * initial_dim + column, 14)
                                     ).mean();
                 ++index;
             }
