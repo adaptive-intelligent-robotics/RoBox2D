@@ -36,6 +36,50 @@ namespace robox2d {
       return body;
     }
 
+    b2Body* createCircle( std::shared_ptr<b2World> world, const float radius, const b2BodyType type, const b2Vec3& transformation, const float density) {
+      b2BodyDef bodyDefinition;
+      bodyDefinition.position.Set(transformation.x, transformation.y);
+      bodyDefinition.angle = transformation.z;
+      bodyDefinition.type = type;
+      b2Body* body = world->CreateBody(&bodyDefinition);
+      
+      b2CircleShape shape;
+      shape.m_radius=radius;
+      
+      b2FixtureDef fixture;
+      fixture.friction = 0.8f;
+      fixture.density = density;
+      fixture.restitution = 0.8f;
+      fixture.shape = &shape;
+      body->CreateFixture(&fixture);
+      
+      return body;
+    }
+
+    b2Body* createRoom( std::shared_ptr<b2World> world, const b2Vec2& roomDim){
+      b2BodyDef roomDefinition;
+      roomDefinition.position.Set(0.f, 0.f);
+      roomDefinition.type = b2_staticBody;
+      b2Body* body = world->CreateBody(&roomDefinition);
+      
+      b2PolygonShape wall;
+
+      b2FixtureDef fixture;
+      fixture.shape = &wall;
+      fixture.friction = 0.8f;
+
+      wall.SetAsBox(roomDim.x / 2, 0.01f, {roomDim.x / 2, roomDim.y}, 0.f);
+      body->CreateFixture(&fixture);
+      wall.SetAsBox(roomDim.x / 2, 0.01f, {roomDim.x / 2, 0.f}, 0.f);
+      body->CreateFixture(&fixture);
+      wall.SetAsBox(0.01f, roomDim.y / 2, {0.f, roomDim.y / 2}, 0.f);
+      body->CreateFixture(&fixture);
+      wall.SetAsBox(0.01f, roomDim.y / 2, {roomDim.x, roomDim.y / 2}, 0.f);
+      body->CreateFixture(&fixture);
+      return body;
+    }
+
+
 
     void addBoxFixture(b2Body* body, const b2Vec2& halfSize, const b2Vec3& transformation, const float density) {
       b2PolygonShape shape;

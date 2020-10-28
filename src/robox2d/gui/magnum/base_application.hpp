@@ -131,7 +131,6 @@ namespace robox2d {
 
       Corrade::Containers::Optional<Magnum::Image2D>& image() { return _image; }
 
-      
       bool done() const;
 
      
@@ -146,11 +145,16 @@ namespace robox2d {
       std::unique_ptr<Magnum::Containers::Array<InstanceData>> _boxInstanceData;
       std::unique_ptr<Magnum::GL::Mesh> _circleMesh;//{Magnum::NoCreate};
       std::unique_ptr<Magnum::Containers::Array<InstanceData>> _circleInstanceData;
+<<<<<<< HEAD
+
+
+=======
 
       std::unique_ptr<Magnum::GL::Mesh> _lineMesh;//{Magnum::NoCreate};
       std::unique_ptr<Magnum::Containers::Array<InstanceData>> _lineInstanceData;
 
       
+>>>>>>> upstream/master
       
       Scene2D _scene;
       Object2D* _cameraObject;

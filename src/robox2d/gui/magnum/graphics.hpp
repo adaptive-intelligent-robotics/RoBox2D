@@ -1,9 +1,9 @@
 #ifndef ROBOX2D_GUI_MAGNUM_GRAPHICS_HPP
 #define ROBOX2D_GUI_MAGNUM_GRAPHICS_HPP
 
-#include "../base.hpp"
-#include "helper.hpp"
-#include "glfw_application.hpp"
+#include <robox2d/gui/base.hpp>
+#include <robox2d/gui/helper.hpp>
+#include <robox2d/gui/magnum/glfw_application.hpp>
 
 
 
@@ -12,7 +12,7 @@ namespace robox2d {
     template <typename T = GlfwApplication>
     class Graphics : public Base {
     public:
-      Graphics(const std::shared_ptr<b2World>& world, double time_step = 0.02, unsigned int width = 640, unsigned int height = 480, const std::string& title = "ROBOX2D")
+      Graphics(const std::shared_ptr<b2World>& world, double time_step = 0.02, unsigned int width = 280, unsigned int height = 280, const std::string& title = "ROBOXD")
 	: _world(world), _width(width), _height(height), _frame_counter(0), _enabled(true)
       {
 	Corrade::Utility::Debug magnum_silence_output{nullptr};
@@ -90,12 +90,13 @@ namespace robox2d {
 
 	Image image() 
 	{
-	  auto image = magnum_image();
-	  if (image)
-	    return rgb_from_image(image);
-	  return Image();
+	auto image = magnum_image();
+	if (image)
+    	return rgb_from_image(image);
+	return Image();
 	}
-      /*
+
+    /*
 	GrayscaleImage depth_image() override { return _magnum_app->depthImage(); }
 	GrayscaleImage raw_depth_image() override { return _magnum_app->rawDepthImage(); }
 
