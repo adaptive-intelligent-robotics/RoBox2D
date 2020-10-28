@@ -59,6 +59,8 @@ namespace robox2d {
      * @param  type             Type of circle to place (static, dynamic, kinematic).
      * @param  transformation   Position and angle at which to place the object in the world.
      * @param  density          Density of the circle.
+     * @param  friction         Friction of the circle
+     * @param  restitution      Restitution (elasticity coefficient) of the circle
      * @return b2Body*          Body that was created.
      */
     b2Body* createCircle( std::shared_ptr<b2World> world, const float radius, const b2BodyType type, const b2Vec3& transformation, const float density, const float friction, const float restitution) {
