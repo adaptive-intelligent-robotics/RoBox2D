@@ -4,7 +4,7 @@
 #include <mutex>
 #include <unistd.h>
 #include <unordered_map>
-
+#include <memory>
 
 #include <box2d/box2d.h>
 
