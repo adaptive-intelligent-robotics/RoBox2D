@@ -3,9 +3,8 @@
 
 #include <Magnum/GL/Renderbuffer.h>
 #include <Magnum/PixelFormat.h>
-#include <Magnum/GL/Framebuffer.h>
 #include <robox2d/gui/magnum/base_application.hpp>
-
+#include <Magnum/GL/Framebuffer.h>
 
 namespace robox2d {
     namespace gui {

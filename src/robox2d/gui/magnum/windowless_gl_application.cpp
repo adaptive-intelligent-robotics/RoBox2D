@@ -5,6 +5,12 @@
 #include <Magnum/GL/Renderer.h>
 
 
+
+
+#include <iostream>
+#include <fstream>
+#include <robox2d/gui/helper.hpp>
+
 namespace robox2d {
     namespace gui {
         namespace magnum {
