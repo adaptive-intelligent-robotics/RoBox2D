@@ -83,11 +83,13 @@ class LanderController: public robox2d::control::BaseController {
 	std::cout<<rob->get_hull_lin_vel().y<<" "<<rob->get_hull_rot_vel()<<std::endl;
 
 	if(std::abs(rob->get_hull_rot_vel())>0.001)
+	  {
 	   if(rob->get_hull_rot_vel() > 0)
 	     cmd[2]+= std::min(std::max(std::abs(rob->get_hull_rot_vel())/50.0f, 0.0f), 0.01f);
 	   else
 	     cmd[3]+= std::min(std::max(std::abs(rob->get_hull_rot_vel())/50.0f, 0.0f), 0.01f);
-
+	  }
+	
 	if(rob->get_hull_lin_vel().x < 0)
 	  cmd[2]+= std::min(std::max(std::abs(rob->get_hull_lin_vel().x)/100.0f, 0.0f), 0.01f);
 	else
