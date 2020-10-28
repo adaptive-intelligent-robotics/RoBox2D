@@ -30,7 +30,7 @@ namespace robox2d{
 	
 	static constexpr Magnum::Float _speed = 0.05f;
 	
-	void viewportEvent(const Magnum::Vector2i& size) override;
+	void viewportEvent(const Magnum::Vector2i& size);
 	
 	void drawEvent() override;
 	

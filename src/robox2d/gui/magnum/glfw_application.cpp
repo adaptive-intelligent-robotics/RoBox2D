@@ -61,6 +61,7 @@ namespace robox2d {
 	
 	arrayResize(*_boxInstanceData, 0);
 	arrayResize(*_circleInstanceData, 0);
+	arrayResize(*_lineInstanceData, 0);
 	_camera->draw(*_drawables);
 
 	/* Upload instance data to the GPU and draw everything in a single call per shape */
@@ -73,6 +74,11 @@ namespace robox2d {
 	_circleMesh->setInstanceCount(_circleInstanceData->size());
 	_shader->setTransformationProjectionMatrix(_camera->projectionMatrix())
 	  .draw(*_circleMesh);
+
+	_instanceBuffer->setData(*_lineInstanceData, Magnum::GL::BufferUsage::DynamicDraw);
+	_lineMesh->setInstanceCount(_lineInstanceData->size());
+	_shader->setTransformationProjectionMatrix(_camera->projectionMatrix())
+	  .draw(*_lineMesh);
 
 	_image = Magnum::GL::defaultFramebuffer.read(Magnum::GL::defaultFramebuffer.viewport(), {Magnum::PixelFormat::RGB8Unorm});
 	

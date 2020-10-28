@@ -15,30 +15,11 @@ namespace robox2d {
 
     b2Body* createBox( std::shared_ptr<b2World> world, const b2Vec2& halfSize, const b2BodyType type, const b2Vec3& transformation, const float density = 1.0f);
     b2Body* createCircle( std::shared_ptr<b2World> world, const float radius, const b2BodyType type, const b2Vec3& transformation, const float density = 1.0f);
-
+    void addBoxFixture(b2Body* body, const b2Vec2& halfSize, const b2Vec3& transformation, const float density);
+    void addCircleFixture(b2Body* body, const float radius, const b2Vec3& transformation, const float density);
+    
     
     b2WeldJoint* createWeldJoint( std::shared_ptr<b2World> world, b2Body* bodyA, b2Body* bodyB,  const b2Vec2 & anchor);
-    /**
-     * @brief Servo is a wrapper for dynamic joints and motors combined.
-     * 
-     * This class allows for easy manipulation of joint movements.
-     * 
-     */
-    class Servo{
-    public:
-      Servo( std::shared_ptr<b2World> world, b2Body* bodyA, b2Body* bodyB,  const b2Vec2 & anchor, double gain = 0.3);
-      
-      void set_target_pos(double pos);
-      
-      void update();
-      
-      b2RevoluteJoint* get_joint();
-      const b2RevoluteJoint* get_joint()const;
-    private:
-      b2RevoluteJoint* _joint;
-      double _gain;
-      double _target_pos;
-    };
 
     
 
