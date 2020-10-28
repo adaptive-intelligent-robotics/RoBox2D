@@ -61,7 +61,7 @@ namespace robox2d {
      * @param  density          Density of the circle.
      * @return b2Body*          Body that was created.
      */
-    b2Body* createCircle( std::shared_ptr<b2World> world, const float radius, const b2BodyType type, const b2Vec3& transformation, const float density) {
+    b2Body* createCircle( std::shared_ptr<b2World> world, const float radius, const b2BodyType type, const b2Vec3& transformation, const float density, const float friction, const float restitution) {
       b2BodyDef bodyDefinition;
       bodyDefinition.position.Set(transformation.x, transformation.y);
       bodyDefinition.angle = transformation.z;
@@ -72,9 +72,10 @@ namespace robox2d {
       shape.m_radius=radius;
       
       b2FixtureDef fixture;
-      fixture.friction = 0.8f;
+      fixture.friction = friction;
       fixture.density = density;
       fixture.shape = &shape;
+      fixture.restitution = restitution;
       body->CreateFixture(&fixture);
       
       return body;
