@@ -237,7 +237,7 @@ namespace robox2d
     //         {
     //             if (body->GetFixtureList()->GetShape()->GetType() == 0)
     //             {
-    //                 if (is_first_ball)
+R   //                 if (is_first_ball)
     //                 {
     //                     b2Vec2 body_pos = body->GetWorldCenter();
     //                     full_trajectory[(loop_counter - 1) * 2] = body_pos.x;
@@ -270,6 +270,11 @@ namespace robox2d
 
     void Simu::set_graphics(const std::shared_ptr<gui::Base> &graphics) { _graphics = graphics; }
 
+  /**
+   * @brief Get current world (type std::shared_ptr<b2World>)
+   * 
+   * @return   std::shared_ptr<b2World> 
+   */
     std::shared_ptr<b2World> Simu::world() { return _world; }
 
     /*
@@ -353,9 +358,13 @@ namespace robox2d
 
    */
 
-    void Simu::add_floor() //(double floor_width, double floor_height, const Eigen::Vector6d& pose, const std::string& floor_name)
-    {
-        common::createBox(_world, {50.0f, 0.50f}, b2_staticBody, {0.0f, -10.5f, 0.0f});
-    }
+  /**
+   * @brief Creates a floor (static body) of width 50, height 0.5 and placed at y = -10.5
+   * 
+   */
+  void Simu::add_floor()//(double floor_width, double floor_height, const Eigen::Vector6d& pose, const std::string& floor_name)
+  {
+    common::createBox(_world, {50.0f, 0.50f}, b2_staticBody, {0.0f,-10.5f,0.0f} );
+  }
 
 } // namespace robox2d

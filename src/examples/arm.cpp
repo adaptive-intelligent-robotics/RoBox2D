@@ -5,6 +5,7 @@
 #include <robox2d/simu.hpp>
 #include <robox2d/robot.hpp>
 #include <robox2d/common.hpp>
+#include <robox2d/actuator.hpp>
 #ifdef GRAPHIC
 #include <robox2d/gui/magnum/graphics.hpp>
 #endif
@@ -28,11 +29,14 @@ public:
     for(size_t i =0; i < nb_joints; i++)
       {
 	_end_effector = robox2d::common::createBox( world,{seg_length*0.5f , arm_length*0.01f }, b2_dynamicBody, {(0.5f+i)*seg_length,0.0f,0.0f} );
-      this->_servos.push_back(std::make_shared<robox2d::common::Servo>(world,body, _end_effector, anchor));
+      this->_actuators.push_back(std::make_shared<robox2d::actuator::Servo>(world,body, _end_effector, anchor));
 
       body=_end_effector;
       anchor = _end_effector->GetWorldCenter() + b2Vec2(seg_length*0.5 , 0.0f);
       }
+
+    robox2d::common::createCircle( world,0.025f, b2_dynamicBody,  {0.5f,0.5f,0.0f} );
+    
   }
   
   b2Vec2 get_end_effector_pos(){return _end_effector->GetWorldCenter(); }
@@ -60,9 +64,14 @@ int main()
     auto graphics = std::make_shared<robox2d::gui::Graphics<>>(simu.world());
     simu.set_graphics(graphics);
 #endif
-    std::array<Eigen::VectorXf, 2> trajectories;
-    Eigen::VectorXf full_trajectory;
-    simu.run(10.0, trajectories, full_trajectory, 50);
+
+    simu.run(10.0);
+
+#ifdef GRAPHIC
+    auto gimage = graphics->image();
+    robox2d::gui::save_png_image("camera-main.png", gimage);
+#endif
+
     std::cout<<"End effector position:" << rob->get_end_effector_pos().x<<"  "<<rob->get_end_effector_pos().y<<std::endl;
     return 0;
 }

@@ -81,14 +81,14 @@ namespace robox2d {
       //bool is_shadowed() const { return _magnum_app->isShadowed(); }
       //void enable_shadows(bool enable = true) { _magnum_app->enableShadows(enable); }
 
-    Magnum::Image2D* magnum_image() override
+      Magnum::Image2D* magnum_image()
 	{
-	if (_magnum_app->image())
-	return &(*_magnum_app->image());
-	return nullptr;
+	  if (_magnum_app->image())
+	    return &(*_magnum_app->image());
+	  return nullptr;
 	}
 
-	Image image() override
+	Image image() 
 	{
 	auto image = magnum_image();
 	if (image)

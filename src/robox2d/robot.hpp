@@ -5,7 +5,7 @@
 #include<memory>
 #include<vector>
 
-#include "common.hpp"
+#include "actuator.hpp"
 #include "control/base_controller.hpp"
 
 namespace robox2d {
@@ -39,7 +39,7 @@ namespace robox2d {
     
      
     //size_t num_dofs() const;
-    size_t nb_dofs() const {return _servos.size();};
+    size_t nb_dofs() const {return _actuators.size();};
     //size_t num_bodies() const;
     /*
     Eigen::Vector3d com() const;
@@ -70,7 +70,7 @@ namespace robox2d {
     */
     
   protected:
-    std::vector<std::shared_ptr<common::Servo>> _servos;
+    std::vector<std::shared_ptr<actuator::Actuator>> _actuators;
     std::vector<std::shared_ptr<control::BaseController>> _controllers;
   };
 } // namespace robot_dart

@@ -73,63 +73,73 @@ namespace robox2d {
 	  Magnum::Shaders::Flat2D::Flag::InstancedTransformation});
 
       /* Box mesh with an (initially empty) instance buffer */
-      // changed this to circle wireframe
       _boxMesh.reset(new Magnum::GL::Mesh(Magnum::MeshTools::compile(Magnum::Primitives::squareSolid())));
       _circleMesh.reset(new Magnum::GL::Mesh(Magnum::MeshTools::compile(Magnum::Primitives::circle2DSolid(20))));
-
+      _lineMesh.reset(new Magnum::GL::Mesh(Magnum::MeshTools::compile(Magnum::Primitives::line2D())));
       
       _instanceBuffer = std::unique_ptr<Magnum::GL::Buffer>(new Magnum::GL::Buffer{});
       _boxMesh->addVertexBufferInstanced(*_instanceBuffer, 1, 0,
 				     Magnum::Shaders::Flat2D::TransformationMatrix{},
 				     Magnum::Shaders::Flat2D::Color3{});
-
       _circleMesh->addVertexBufferInstanced(*_instanceBuffer, 1, 0,
-        Magnum::Shaders::Flat2D::TransformationMatrix{},
-        Magnum::Shaders::Flat2D::Color3{});
+				     Magnum::Shaders::Flat2D::TransformationMatrix{},
+				     Magnum::Shaders::Flat2D::Color3{});
+      _lineMesh->addVertexBufferInstanced(*_instanceBuffer, 1, 0,
+				     Magnum::Shaders::Flat2D::TransformationMatrix{},
+				     Magnum::Shaders::Flat2D::Color3{});
       _boxInstanceData = std::unique_ptr<Magnum::Containers::Array<InstanceData>>(new Magnum::Containers::Array<InstanceData>() ) ;
       _circleInstanceData = std::unique_ptr<Magnum::Containers::Array<InstanceData>>(new Magnum::Containers::Array<InstanceData>() ) ;
-
+      _lineInstanceData = std::unique_ptr<Magnum::Containers::Array<InstanceData>>(new Magnum::Containers::Array<InstanceData>() ) ;
 
 
       if(_world)
-        for(b2Body* body = _world->GetBodyList(); body; body = body->GetNext())
-        {
-            auto obj = new Object2D{&_scene};
-            body->SetUserData(obj);
-            // todo triple check this... Very likely to not work properly as we assume the body is with rot = 0
-            //here we assume a single fixture
+	for(b2Body* body = _world->GetBodyList(); body; body = body->GetNext())
+	  for(b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext())
+	  {
+	    auto obj = new Object2D{&_scene};
+	    fixture->SetUserData(obj);
+	    // todo triple check this... Very likely to not work properly as we assume the fixture is with rot = 0
+	    //here we assume a single fixture
 
 
-            switch(body->GetFixtureList()->GetShape()->GetType())
-            {
-              case b2Shape::e_circle: // if shape is a circle
-              {
-                b2CircleShape* circle = static_cast<b2CircleShape*>(body->GetFixtureList()->GetShape());
-                obj->setScaling(Magnum::Vector2(circle->m_radius, circle->m_radius));
-                new Drawable{*obj, *_circleInstanceData, 0xeac9a5_rgbf, *_drawables};
-                break;
-              }
-              case b2Shape::e_polygon: // if shape is a box (more advanced polygon not supported yet)
-              {
-                b2PolygonShape* poly =  static_cast<b2PolygonShape*>(body->GetFixtureList()->GetShape());
-                auto v = poly->m_vertices;
-                auto hx = (v[1]-v[0]).Length()/2;
-                auto hy = (v[2]-v[1]).Length()/2;
-                Magnum::Vector2 halfSize(hx, hy);
-                obj->setScaling(halfSize);
-                new Drawable{*obj, *_boxInstanceData, 0xa5c9ea_rgbf, *_drawables};	  
-                break;
-              }
-              default: // not supported shapes
-              {
-                std::cout<<"Warning Shape Type not supported"<<std::endl;
-                break;
-              }
-            }
-            
-            
+	    switch(fixture->GetShape()->GetType())
+	      {
+	      case b2Shape::e_circle: // if shape is a circle
+		 {
+		   b2CircleShape* circle = static_cast<b2CircleShape*>(fixture->GetShape());
+		   obj->setScaling(Magnum::Vector2(circle->m_radius, circle->m_radius));
+		   new Drawable{*obj, *_circleInstanceData, 0xeac9a5_rgbf, *_drawables};
+		   break;
+		 }
+	      case b2Shape::e_polygon: // if shape is a box (more advanced polygon not supported yet)
+		{
+		  b2PolygonShape* poly =  static_cast<b2PolygonShape*>(fixture->GetShape());
+		  auto v = poly->m_vertices;
+		  auto hx = (v[1]-v[0]).Length()/2;
+		  auto hy = (v[2]-v[1]).Length()/2;
+		  Magnum::Vector2 halfSize(hx, hy);
+		  obj->setScaling(halfSize);
+		  new Drawable{*obj, *_boxInstanceData, 0xa5c9ea_rgbf, *_drawables};	  
+		  break;
+		}
+	      default: // not supported shapes
+		{
+		  std::cout<<"Warning Shape Type not supported"<<std::endl;
+		  break;
+		}
+	      }
+	  }
 
-        }
+      /*for(b2Joint* joint = _world->GetJointList(); joint; joint = joint->GetNext())
+	{
+	  auto obj = new Object2D{&_scene};
+	  joint->SetUserData(obj);
+	  //Magnum::Vector2 halfSize(1, 0.1);
+	  //obj->setScaling(halfSize);
+	  
+	  new Drawable{*obj, *_lineInstanceData, 0xffc9ea_rgbf, *_drawables};	  
+		  
+	  }*/
 
     }
 
@@ -137,10 +147,50 @@ namespace robox2d {
     {
       /* update all object positions */
       if(_world)
-	for(b2Body* body = _world->GetBodyList(); body; body = body->GetNext())
-	  (*static_cast<Object2D*>(body->GetUserData()))
-	    .setTranslation({body->GetPosition().x, body->GetPosition().y})
-	    .setRotation(Magnum::Complex::rotation(Magnum::Rad(body->GetAngle())));
+	{
+	  for(b2Body* body = _world->GetBodyList(); body; body = body->GetNext())
+	    for(b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext())
+	      switch(fixture->GetShape()->GetType())
+		{
+		case b2Shape::e_circle: // if shape is a circle
+		  {
+		    b2CircleShape* circle = static_cast<b2CircleShape*>(fixture->GetShape());
+		    auto pos = body->GetWorldPoint(circle->m_p);
+		    (*static_cast<Object2D*>(fixture->GetUserData()))
+		      .setTranslation({pos.x, pos.y});		    
+		   break;
+		 }
+		case b2Shape::e_polygon: // if shape is a box (more advanced polygon not supported yet)
+		  {
+		    b2PolygonShape* poly =  static_cast<b2PolygonShape*>(fixture->GetShape());
+		    auto v = poly->m_vertices;
+		    auto center = (v[2]+v[0]);
+		    center*=0.5f;
+		    auto pos = body->GetWorldPoint(center);
+		    (*static_cast<Object2D*>(fixture->GetUserData()))
+		      .setTranslation({pos.x, pos.y})
+		      .setRotation(Magnum::Complex::rotation(Magnum::Rad(body->GetAngle())));
+	  		  
+		  break;
+		}
+	      default: // not supported shapes
+		{
+		  std::cout<<"Warning Shape Type not supported"<<std::endl;
+		  break;
+		}
+	      }
+	  
+	  
+	  /*for(b2Joint* joint = _world->GetJointList(); joint; joint = joint->GetNext())
+	    {
+	    (*static_cast<Object2D*>(joint->GetUserData()))
+	      .setTranslation({joint->GetAnchorB().x, joint->GetAnchorB().y})
+	      .setScaling(Magnum::Vector2(joint->GetReactionForce(1).Length()*100, joint->GetReactionForce(1).Length()*100))
+	      .setRotation(Magnum::Complex::rotation(Magnum::Rad(std::atan2(joint->GetReactionForce(1).y,joint->GetReactionForce(1).x))));
+	    std::cout<<joint->GetReactionForce(1).x<<"  "<<joint->GetReactionForce(1).y<<std::endl;
+	    }*/
+	  
+	}
     }
     
     bool BaseApplication::done() const
@@ -160,6 +210,9 @@ namespace robox2d {
       _boxInstanceData.reset();
       _circleMesh.reset();
       _circleInstanceData.reset();
+
+      _lineMesh.reset();
+      _lineInstanceData.reset();
       
       _camera.reset();
       _drawables.reset();

@@ -67,7 +67,7 @@ def configure(conf):
 
     
 
-    native = ' '
+    native = ' -mavx -msse -msse2 '
     native_icc = ' '
 
 
@@ -158,7 +158,33 @@ def build(bld):
                     use = 'Robox2d Robox2dMagnum',
                     defines = ['GRAPHIC'],
                     target = 'arm_graphic')
+        bld.program(features = 'cxx',
+                    install_path = None,
+                    source = 'src/examples/car.cpp',
+                    includes = './src',
+                    uselib = bld.env['magnum_libs'] + libs,
+                    use = 'Robox2d Robox2dMagnum',
+                    defines = ['GRAPHIC'],
+                    target = 'car_graphic')
+        bld.program(features = 'cxx',
+                    install_path = None,
+                    source = 'src/examples/lunar_lander.cpp',
+                    includes = './src',
+                    uselib = bld.env['magnum_libs'] + libs,
+                    use = 'Robox2d Robox2dMagnum',
+                    defines = ['GRAPHIC'],
+                    target = 'lunar_lander_graphic')
 
+
+
+
+    bld.program(features = 'cxx',
+                install_path = None,
+                source = 'src/examples/car.cpp',
+                includes = './src',
+                uselib = bld.env['magnum_libs'] + libs,
+                use = 'Robox2d Robox2dMagnum',
+                target = 'car_plain')
     bld.program(features = 'cxx',
                 install_path = None,
                 source = 'src/examples/arm.cpp',
@@ -166,6 +192,13 @@ def build(bld):
                 uselib = bld.env['magnum_libs'] + libs,
                 use = 'Robox2d Robox2dMagnum',
                 target = 'arm_plain')
+    bld.program(features = 'cxx',
+                install_path = None,
+                source = 'src/examples/lunar_lander.cpp',
+                includes = './src',
+                uselib = bld.env['magnum_libs'] + libs,
+                use = 'Robox2d Robox2dMagnum',
+                target = 'lunar_lander_plain')
 
 
 
