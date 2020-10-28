@@ -1,4 +1,5 @@
 #include "robot.hpp"
+#include "control/base_controller.hpp"
 
 #include <unistd.h>
 #include <iostream>
@@ -25,6 +26,23 @@ namespace robox2d {
   {
     for(auto s : _actuators)
       s->update();
+  }
+
+    void Robot::remove_controller(const std::shared_ptr<control::BaseController>& controller)
+    {
+        auto it = std::find(_controllers.begin(), _controllers.end(), controller);
+        if (it != _controllers.end())
+            _controllers.erase(it);
+    }
+
+    void Robot::remove_controller(size_t index)
+    {
+        assert((index < _controllers.size()) && "Controller index out of bounds");
+        _controllers.erase(_controllers.begin() + index);
+    }
+
+  void Robot::clear_controllers() {
+    _controllers.clear();
   }
   
 } // namespace robox2d
