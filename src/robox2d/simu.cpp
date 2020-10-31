@@ -24,8 +24,9 @@ namespace robox2d {
   
   void Simu::run(double max_duration)
   {
-    
-    while ((_time - max_duration) < -_time_step/2.0 && (!_graphics || !_graphics->done())) {
+    double old_time = _time;
+
+    while ((_time - old_time - max_duration) < -_time_step/2.0 && (!_graphics || !_graphics->done())) {
       _time+=_time_step;
 
       // control step
