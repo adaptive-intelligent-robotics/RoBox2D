@@ -15,7 +15,7 @@ namespace robox2d{
     namespace gui {
       class GlfwApplication : public BaseApplication, public Magnum::Platform::Application {
       public:
-	explicit GlfwApplication(int argc, char** argv, const  std::shared_ptr<b2World>& world, size_t width, size_t height, const std::string& title = "DART");
+	explicit GlfwApplication(int argc, char** argv, robox2d::Simu* simu, size_t width, size_t height, const std::string& title = "DART");
 	
 	~GlfwApplication();
 	

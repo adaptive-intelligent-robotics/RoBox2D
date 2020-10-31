@@ -122,7 +122,7 @@ namespace robox2d {
       BaseApplication(){}
       virtual ~BaseApplication() {}
 	
-      void init(const std::shared_ptr<b2World>& world, size_t width, size_t height);
+      void init(robox2d::Simu* simu, size_t width, size_t height);
       void update_graphics();
       	
       Magnum::SceneGraph::DrawableGroup2D& drawables() { return *_drawables; }
