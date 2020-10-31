@@ -35,6 +35,7 @@
 #include <Magnum/Platform/WindowlessCglApplication.h>
 #endif
 
+#include "robox2d/simu.hpp"
 
 #define get_gl_context_with_sleep(name, ms_sleep)			\
   /* Create/Get GLContext */						\
@@ -57,6 +58,7 @@
 #define release_gl_context(name) robox2d::gui::GlobalData::instance()->free_gl_context(name);
 
 namespace robox2d {
+    class Simu;
   namespace gui {
 
 
@@ -122,7 +124,7 @@ namespace robox2d {
       BaseApplication(){}
       virtual ~BaseApplication() {}
 	
-      void init(const std::shared_ptr<b2World>& world, size_t width, size_t height);
+      void init(robox2d::Simu* simu, size_t width, size_t height);
       void update_graphics();
       	
       Magnum::SceneGraph::DrawableGroup2D& drawables() { return *_drawables; }
@@ -164,12 +166,12 @@ namespace robox2d {
     };
 
     template <typename T>
-    inline BaseApplication* make_application(const std::shared_ptr<b2World>& world, size_t width, size_t height, const std::string& title = "ROBOX2D")
+    inline BaseApplication* make_application(robox2d::Simu* simu, size_t width, size_t height, const std::string& title = "ROBOX2D")
     {
       int argc = 0;
       char** argv = NULL;
 
-      return new T(argc, argv, world, width, height, title);
+      return new T(argc, argv, simu, width, height, title);
     }
     
   } // namespace gui

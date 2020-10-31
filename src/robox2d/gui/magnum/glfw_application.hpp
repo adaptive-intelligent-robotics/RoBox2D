@@ -11,11 +11,16 @@
 #undef Button5
 #include <Magnum/Platform/GlfwApplication.h>
 
-namespace robox2d{
+#include "robox2d/simu.hpp"
+
+namespace robox2d {
+
+    class Simu;
+
     namespace gui {
       class GlfwApplication : public BaseApplication, public Magnum::Platform::Application {
       public:
-	explicit GlfwApplication(int argc, char** argv, const  std::shared_ptr<b2World>& world, size_t width, size_t height, const std::string& title = "DART");
+	explicit GlfwApplication(int argc, char** argv, robox2d::Simu* simu, size_t width, size_t height, const std::string& title = "DART");
 	
 	~GlfwApplication();
 	

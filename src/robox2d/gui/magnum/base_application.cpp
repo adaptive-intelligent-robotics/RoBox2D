@@ -52,9 +52,9 @@ namespace robox2d {
     
     // BaseApplication
     
-    void BaseApplication::init(const std::shared_ptr<b2World>& world, size_t width, size_t height)
+    void BaseApplication::init(robox2d::Simu* simu, size_t width, size_t height)
     {
-      _world=world;
+      _world = simu->world();
       /* Configure camera */
       _cameraObject = new Object2D{&_scene};
       _camera.reset(new Magnum::SceneGraph::Camera2D{*_cameraObject});
