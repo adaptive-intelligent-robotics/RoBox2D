@@ -5,7 +5,7 @@
 #include "helper.hpp"
 #include "glfw_application.hpp"
 
-#include "simu.hpp"
+#include "robox2d/simu.hpp"
 
 namespace robox2d {
     class Simu;
@@ -14,7 +14,7 @@ namespace robox2d {
     template <typename T = GlfwApplication>
     class Graphics : public Base {
     public:
-      Graphics(RobotDARTSimu* simu, double time_step = 0.02, unsigned int width = 640, unsigned int height = 480, const std::string& title = "ROBOX2D")
+      Graphics(robox2d::Simu* simu, double time_step = 0.02, unsigned int width = 640, unsigned int height = 480, const std::string& title = "ROBOX2D")
 	: _world(simu->world()), _width(width), _height(height), _frame_counter(0), _enabled(true)
       {
 	Corrade::Utility::Debug magnum_silence_output{nullptr};
