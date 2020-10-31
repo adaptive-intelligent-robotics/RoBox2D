@@ -131,7 +131,7 @@ int main()
     simu->add_robot(rob);
 
 #ifdef GRAPHIC
-    auto graphics = std::make_shared<robox2d::gui::Graphics<>>(simu->world());
+    auto graphics = std::make_shared<robox2d::gui::Graphics<>>(simu);
     simu->set_graphics(graphics);
 #endif
 
