@@ -6,12 +6,16 @@
 #include <robox2d/gui/magnum/base_application.hpp>
 #include <Magnum/GL/Framebuffer.h>
 
+#include "robox2d/simu.hpp"
+
 namespace robox2d {
+    class Simu;
+
     namespace gui {
         namespace magnum {
             class WindowlessGLApplication : public BaseApplication, public Magnum::Platform::WindowlessApplication {
             public:
-                explicit WindowlessGLApplication(int argc, char** argv, const std::shared_ptr<b2World>& world, size_t width, size_t height, const std::string& title = "DART");
+                explicit WindowlessGLApplication(int argc, char** argv, robox2d::Simu* simu, size_t width, size_t height, const std::string& title = "DART");
                 ~WindowlessGLApplication();
 
                 void render() override;

@@ -14,7 +14,7 @@
 namespace robox2d {
     namespace gui {
         namespace magnum {
-            WindowlessGLApplication::WindowlessGLApplication(int argc, char** argv, const std::shared_ptr<b2World>& world, size_t width, size_t height, const std::string& title)
+            WindowlessGLApplication::WindowlessGLApplication(int argc, char** argv, robox2d::Simu* simu, size_t width, size_t height, const std::string& title)
                 : Magnum::Platform::WindowlessApplication({argc, argv}, Magnum::NoCreate)
             {
                 /* Assume context is given externally, if not create it */
@@ -42,7 +42,7 @@ namespace robox2d {
                     Magnum::GL::Framebuffer::BufferAttachment::Depth, _depth);
 
                 /* Initialize DART world */
-                init(world, width, height);
+                init(simu, width, height);
             }
 
             WindowlessGLApplication::~WindowlessGLApplication()
