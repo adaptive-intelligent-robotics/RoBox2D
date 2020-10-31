@@ -43,6 +43,11 @@ namespace robox2d {
 
                 /* Initialize DART world */
                 init(simu, width, height);
+
+                // TODO : as in robot_dart:
+                //  create class WindowlessGraphics to encapsulate the behaviour of WindowlessApplication
+                //  WindowlessGraphics should be the one setting the sync param of simu to false by default
+                simu->set_sync(false);
             }
 
             WindowlessGLApplication::~WindowlessGLApplication()
