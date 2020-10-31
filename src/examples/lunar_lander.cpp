@@ -112,9 +112,9 @@ int main()
   {
     
     // simulating
-    robox2d::Simu simu;
-    simu.world()->SetGravity({0, -9.81});
-    simu.add_floor();
+    robox2d::Simu* simu = new robox2d::Simu();
+    simu->world()->SetGravity({0, -9.81});
+    simu->add_floor();
     /* Eigen::VectorXd ctrl_pos(4);
     ctrl_pos[0]=0.002;
     ctrl_pos[1]=0.002;
@@ -123,19 +123,19 @@ int main()
     */
     
     
-    auto rob = std::make_shared<LunarLander>(simu.world());
+    auto rob = std::make_shared<LunarLander>(simu->world());
     
     //auto ctrl = std::make_shared<robox2d::control::ConstantPos>(ctrl_pos);
     auto ctrl = std::make_shared<LanderController>();
     rob->add_controller(ctrl);
-    simu.add_robot(rob);
+    simu->add_robot(rob);
 
 #ifdef GRAPHIC
-    auto graphics = std::make_shared<robox2d::gui::Graphics<>>(simu.world());
-    simu.set_graphics(graphics);
+    auto graphics = std::make_shared<robox2d::gui::Graphics<>>(simu->world());
+    simu->set_graphics(graphics);
 #endif
 
-    simu.run(10.0);
+    simu->run(10.0);
 
 #ifdef GRAPHIC
     auto gimage = graphics->image();
