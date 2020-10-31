@@ -9,7 +9,8 @@
 
 #include <iostream>
 #include <fstream>
-#include <robox2d/gui/helper.hpp>
+
+#include "robox2d/gui/magnum/helper.hpp"
 
 namespace robox2d {
     namespace gui {
