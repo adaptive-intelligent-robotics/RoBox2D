@@ -6,8 +6,8 @@ namespace robox2d {
   Simu::Simu(size_t physic_freq, size_t control_freq, size_t graphic_freq) :
     _world(new b2World(b2Vec2(0.0f, 0.0f))),
     _time(0),
-    _graphics(nullptr),
-    _sync(false)
+    _sync(false),
+    _graphics(nullptr)
   {
   
     _time_step = 1.0f/double( boost::math::lcm( boost::math::lcm(physic_freq, control_freq) , graphic_freq ));
