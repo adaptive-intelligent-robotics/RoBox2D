@@ -11,7 +11,12 @@
 #undef Button5
 #include <Magnum/Platform/GlfwApplication.h>
 
-namespace robox2d{
+#include "robox2d/simu.hpp"
+
+namespace robox2d {
+
+    class Simu;
+
     namespace gui {
       class GlfwApplication : public BaseApplication, public Magnum::Platform::Application {
       public:

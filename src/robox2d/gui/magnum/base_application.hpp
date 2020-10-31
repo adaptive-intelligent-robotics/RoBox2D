@@ -35,6 +35,7 @@
 #include <Magnum/Platform/WindowlessCglApplication.h>
 #endif
 
+#include "robox2d/simu.hpp"
 
 #define get_gl_context_with_sleep(name, ms_sleep)			\
   /* Create/Get GLContext */						\
@@ -57,6 +58,7 @@
 #define release_gl_context(name) robox2d::gui::GlobalData::instance()->free_gl_context(name);
 
 namespace robox2d {
+    class Simu;
   namespace gui {
 
 
