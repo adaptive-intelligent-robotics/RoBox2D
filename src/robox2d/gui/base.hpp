@@ -4,13 +4,20 @@
 
 #include <box2d/box2d.h>
 
+#include "robox2d/simu.hpp"
+
 namespace robox2d {
+    class Simu;
+
   namespace gui {
     class Base {
     public:
       Base() {}
       
-      Base(std::shared_ptr<b2World>) {}
+      Base(robox2d::Simu* simu) { _simu = simu; }
+
+      virtual void set_simu(robox2d::Simu* simu) { _simu = simu; }
+      const robox2d::Simu* simu() const { return _simu; }
       
       virtual ~Base() {}
       
@@ -28,6 +35,9 @@ namespace robox2d {
       //virtual Image image() { return Image(); }
       //virtual GrayscaleImage depth_image() { return GrayscaleImage(); }
       //virtual GrayscaleImage raw_depth_image() { return GrayscaleImage(); }
+
+    protected:
+        robox2d::Simu* _simu = nullptr;
     };
   } // namespace gui
 } // namespace robot_dart
