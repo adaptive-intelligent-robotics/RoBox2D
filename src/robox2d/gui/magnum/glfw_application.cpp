@@ -31,6 +31,11 @@ namespace robox2d {
 	setSwapInterval(1);
 	
 	redraw();
+
+      // TODO : as in robot_dart:
+      //  create class Graphics to encapsulate the behaviour of GlfwApplication
+      //  Graphics should be the one setting the sync param of simu to true
+	simu->set_sync(true);
       }
       
       GlfwApplication::~GlfwApplication()
