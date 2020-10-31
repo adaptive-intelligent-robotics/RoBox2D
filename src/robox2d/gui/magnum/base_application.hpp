@@ -166,12 +166,12 @@ namespace robox2d {
     };
 
     template <typename T>
-    inline BaseApplication* make_application(const std::shared_ptr<b2World>& world, size_t width, size_t height, const std::string& title = "ROBOX2D")
+    inline BaseApplication* make_application(robox2d::Simu* simu, size_t width, size_t height, const std::string& title = "ROBOX2D")
     {
       int argc = 0;
       char** argv = NULL;
 
-      return new T(argc, argv, world, width, height, title);
+      return new T(argc, argv, simu, width, height, title);
     }
     
   } // namespace gui
