@@ -37,7 +37,7 @@
 
 #include "robox2d/simu.hpp"
 
-#define get_gl_context_with_sleep(name, ms_sleep)			\
+#define get_gl_context_with_sleep_robox2d(name, ms_sleep)			\
   /* Create/Get GLContext */						\
   Corrade::Utility::Debug name##_magnum_silence_output{nullptr};	\
   Magnum::Platform::WindowlessGLContext* name = nullptr;		\
@@ -53,9 +53,9 @@
 									\
   Magnum::Platform::GLContext name##_magnum_context;
 
-#define get_gl_context(name) get_gl_context_with_sleep(name, 0)
+#define get_gl_context_robox2d(name) get_gl_context_with_sleep_robox2d(name, 0)
 
-#define release_gl_context(name) robox2d::gui::GlobalData::instance()->free_gl_context(name);
+#define release_gl_context_robox2d(name) robox2d::gui::GlobalData::instance()->free_gl_context(name);
 
 namespace robox2d {
     class Simu;
