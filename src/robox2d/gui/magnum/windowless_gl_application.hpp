@@ -1,5 +1,5 @@
-#ifndef ROBOT_DART_GUI_MAGNUM_GLX_APPLICATION_HPP
-#define ROBOT_DART_GUI_MAGNUM_GLX_APPLICATION_HPP
+#ifndef ROBOX2D_GUI_MAGNUM_GLX_APPLICATION_HPP
+#define ROBOX2D_GUI_MAGNUM_GLX_APPLICATION_HPP
 
 #include <Magnum/GL/Renderbuffer.h>
 #include <Magnum/PixelFormat.h>
@@ -31,6 +31,6 @@ namespace robox2d {
             };
         } // namespace magnum
     } // namespace gui
-} // namespace robot_dart
+} // namespace robox2d
 
 #endif
