@@ -51,24 +51,24 @@ private:
 int main()
   {
     // simulating
-    robox2d::Simu* simu = new robox2d::Simu();
-    simu->add_floor();
+    robox2d::Simu simu;
+    simu.add_floor();
     Eigen::VectorXd ctrl_pos(2);
     ctrl_pos[0]=0.5;
     ctrl_pos[1]=0.25;
     
-    auto rob = std::make_shared<Car>(simu->world());
+    auto rob = std::make_shared<Car>(simu.world());
     
     auto ctrl = std::make_shared<robox2d::control::ConstantPos>(ctrl_pos);
     rob->add_controller(ctrl);
-    simu->add_robot(rob);
+    simu.add_robot(rob);
 
 #ifdef GRAPHIC
-    auto graphics = std::make_shared<robox2d::gui::Graphics<>>(simu);
-    simu->set_graphics(graphics);
+    auto graphics = std::make_shared<robox2d::gui::Graphics<>>(&simu);
+    simu.set_graphics(graphics);
 #endif
 
-    simu->run(10.0);
+    simu.run(10.0);
 
 #ifdef GRAPHIC
     auto gimage = graphics->image();
