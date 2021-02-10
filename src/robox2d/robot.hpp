@@ -32,9 +32,9 @@ namespace robox2d {
     //std::shared_ptr<control::RobotControl> controller(size_t index) const;
     
     void add_controller(const std::shared_ptr<control::BaseController>& controller){_controllers.push_back(controller);};
-    //void remove_controller(const std::shared_ptr<control::RobotControl>& controller);
-    //void remove_controller(size_t index);
-    //void clear_controllers();
+    void remove_controller(const std::shared_ptr<control::BaseController>& controller);
+    void remove_controller(size_t index);
+    void clear_controllers();
     
     
      

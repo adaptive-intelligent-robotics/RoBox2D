@@ -10,7 +10,7 @@
 
 namespace robox2d {
     namespace gui {
-      GlfwApplication::GlfwApplication(int argc, char** argv, const std::shared_ptr<b2World>& world, size_t width, size_t height, const std::string& title)
+      GlfwApplication::GlfwApplication(int argc, char** argv, robox2d::Simu* simu, size_t width, size_t height, const std::string& title)
 	: Magnum::Platform::Application({argc, argv}, Magnum::NoCreate), _speedMove(0.f), _speedStrafe(0.f)
       {
 	/* Try 16x MSAA */
@@ -25,12 +25,17 @@ namespace robox2d {
 	//ROBOT_DART_EXCEPTION_ASSERT(Magnum::GL::Context::current().version() >= Magnum::GL::Version::GL320, "robot_dart requires at least OpenGL 3.2 for rendering!");
 	
 	/* Initialize Robox2d world */
-	init(world, Magnum::GL::defaultFramebuffer.viewport().size()[0], Magnum::GL::defaultFramebuffer.viewport().size()[1]);
+	init(simu, Magnum::GL::defaultFramebuffer.viewport().size()[0], Magnum::GL::defaultFramebuffer.viewport().size()[1]);
 	
 	/* Loop at 60 Hz max */
 	setSwapInterval(1);
 	
 	redraw();
+
+      // TODO : as in robot_dart:
+      //  create class Graphics to encapsulate the behaviour of GlfwApplication
+      //  Graphics should be the one setting the sync param of simu to true
+	simu->set_sync(true);
       }
       
       GlfwApplication::~GlfwApplication()

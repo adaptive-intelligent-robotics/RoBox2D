@@ -80,6 +80,9 @@ namespace robox2d {
     void add_floor();//double floor_width = 10.0, double floor_height = 0.1, const Eigen::Vector6d& pose = Eigen::Vector6d::Zero(), const std::string& floor_name = "floor");
     //  void add_checkerboard_floor(double floor_width = 10.0, double floor_height = 0.1, double size = 1., const Eigen::Vector6d& pose = Eigen::Vector6d::Zero(), const std::string& floor_name = "checkerboard_floor");
 
+    void set_sync(bool sync) { _sync = sync; };
+    bool get_sync() { return _sync; };
+
   protected:
     std::shared_ptr<b2World> _world;
     double _physic_period;
@@ -87,6 +90,7 @@ namespace robox2d {
     double _graphic_period;
     double _time;
     double _time_step;
+    bool _sync;
     
     int32 velocityIterations = 6;
     int32 positionIterations = 2;

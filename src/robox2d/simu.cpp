@@ -6,6 +6,7 @@ namespace robox2d {
   Simu::Simu(size_t physic_freq, size_t control_freq, size_t graphic_freq) :
     _world(new b2World(b2Vec2(0.0f, 0.0f))),
     _time(0),
+    _sync(false),
     _graphics(nullptr)
   {
   
@@ -47,7 +48,9 @@ namespace robox2d {
       if(_graphics && std::abs(std::remainder(_time,_graphic_period)) < 1e-4)
 	{
 	  _graphics->refresh();
-	  usleep(_graphic_period *1e6);
+	  if (_sync) {
+          usleep(_graphic_period * 1e6);
+      }
 	}
       
     }
