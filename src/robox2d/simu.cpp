@@ -7,7 +7,8 @@ namespace robox2d {
     _world(new b2World(b2Vec2(0.0f, 0.0f))),
     _time(0),
     _sync(false),
-    _graphics(nullptr)
+    _graphics(nullptr),
+    _old_index(0)
   {
   
     _time_step = 1.0f/double( boost::math::lcm( boost::math::lcm(physic_freq, control_freq) , graphic_freq ));
@@ -43,6 +44,13 @@ namespace robox2d {
 	  for (auto& robot : _robots)
 	    robot->physic_update();	
 	  _world->Step(_time_step, velocityIterations, positionIterations);
+
+	  // Update descriptors
+	  for (auto& desc : _descriptors) {
+	    if (_old_index % desc->desc_dump() == 0) {
+	      desc->operator()();
+	    }
+	  }
 	}
       
       // graphic step
@@ -53,6 +61,8 @@ namespace robox2d {
           usleep(_graphic_period * 1e6);
       }
 	}
+
+      _old_index++;
       
     }
   }
@@ -69,25 +79,6 @@ namespace robox2d {
    * @return   std::shared_ptr<b2World> 
    */
   std::shared_ptr<b2World> Simu::world()  {return _world; }
-    
-  /*
-  void Simu::add_descriptor(const std::shared_ptr<descriptor::BaseDescriptor>& desc)
-  {
-    _descriptors.push_back(desc);
-  }
-
-  std::vector<std::shared_ptr<descriptor::BaseDescriptor>> Simu::descriptors() const
-  {
-    return _descriptors;
-  }
-  
-  std::shared_ptr<descriptor::BaseDescriptor> Simu::descriptor(size_t index) const
-    {
-      //ROBOT_DART_ASSERT(index < _descriptors.size(), "Descriptor index out of bounds", nullptr);
-      return _descriptors[index];
-    }
-  */
-
 
   size_t Simu::num_robots() const { return _robots.size(); }
 
@@ -131,26 +122,37 @@ namespace robox2d {
     _robots.clear();
   }
 
-  /*void Simu::remove_descriptor(const std::shared_ptr<descriptor::BaseDescriptor>& desc)
-    {
-    auto it = std::find(_descriptors.begin(), _descriptors.end(), desc);
-    if (it != _descriptors.end()) {
-    _descriptors.erase(it);
-    }
-    }
-    
-    void RobotDARTSimu::remove_descriptor(size_t index)
-    {
-        ROBOT_DART_ASSERT(index < _descriptors.size(), "Descriptor index out of bounds", );
-        _descriptors.erase(_descriptors.begin() + index);
+    // Methods for manipulating robox2d descriptors
+
+    void Simu::add_descriptor(const std::shared_ptr <descriptor::BaseDescriptor> &desc) {
+      _descriptors.push_back(desc);
+      desc->set_simu(this);
     }
 
-    void RobotDARTSimu::clear_descriptors()
-    {
-        _descriptors.clear();
+    std::vector <std::shared_ptr<descriptor::BaseDescriptor>> Simu::descriptors() const {
+      return _descriptors;
     }
 
-   */
+    std::shared_ptr <descriptor::BaseDescriptor> Simu::descriptor(size_t index) const {
+      //ROBOT_DART_ASSERT(index < _descriptors.size(), "Descriptor index out of bounds", nullptr);
+      return _descriptors[index];
+    }
+
+    void Simu::remove_descriptor(const std::shared_ptr <descriptor::BaseDescriptor> &desc) {
+      auto it = std::find(_descriptors.begin(), _descriptors.end(), desc);
+      if (it != _descriptors.end()) {
+        _descriptors.erase(it);
+      }
+    }
+
+    void Simu::remove_descriptor(size_t index) {
+      assert((index < _descriptors.size()) && "Descriptor index out of bounds");
+      _descriptors.erase(_descriptors.begin() + index);
+    }
+
+    void Simu::clear_descriptors() {
+      _descriptors.clear();
+    }
 
 
   /**
