@@ -31,29 +31,28 @@ namespace robox2d {
       double _input;
     };
 
-    
 
+      /**
+       * @brief Servo is a wrapper for dynamic joints and motors combined.
+       *
+       * This class allows for easy manipulation of joint movements.
+       *
+       */
+      class Servo : public Actuator {
+      public:
+          Servo(std::shared_ptr <b2World> world, b2Body *bodyA, b2Body *bodyB, const b2Vec2 &anchor, double gain = 0.3);
 
-    
-    /**
-     * @brief Servo is a wrapper for dynamic joints and motors combined.
-     * 
-     * This class allows for easy manipulation of joint movements.
-     * 
-     */
-    class Servo : public Actuator{
-    public:
-      Servo( std::shared_ptr<b2World> world, b2Body* bodyA, b2Body* bodyB,  const b2Vec2 & anchor, double gain = 0.3);
-      
-      void update();
-      
-      b2RevoluteJoint* get_joint();
-      const b2RevoluteJoint* get_joint()const;
-    private:
-      b2RevoluteJoint* _joint;
-      double _gain;
-      double _target_pos;
-    };
+          void update();
+
+          b2RevoluteJoint *get_joint() { return _joint; }
+
+          const b2RevoluteJoint *get_joint() const { return _joint; }
+
+      private:
+          b2RevoluteJoint *_joint;
+          double _gain;
+          double _target_pos;
+      };
 
 
 
