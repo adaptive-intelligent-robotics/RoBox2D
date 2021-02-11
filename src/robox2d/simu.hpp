@@ -13,6 +13,8 @@
 #include "robot.hpp"
 #include "gui/base.hpp"
 
+#include "robox2d/descriptor/base_descriptor.hpp"
+
 
 namespace robox2d {
   
@@ -38,24 +40,24 @@ namespace robox2d {
     
     std::shared_ptr<b2World> world();
 
+      // Methods for manipulating robox2d descriptors
 
+      template<typename Descriptor>
+      void add_descriptor(size_t desc_dump = 1) {
+        add_descriptor(std::make_shared<Descriptor>(Descriptor{desc_dump}));
+      }
 
-    
-    
-    /*template <typename Descriptor>
-    void add_descriptor(size_t desc_dump = 1)
-    {
-      add_descriptor(std::make_shared<Descriptor>(Descriptor{*this, desc_dump}));
-    }
-    
-        void add_descriptor(const std::shared_ptr<descriptor::BaseDescriptor>& desc);
-        std::vector<std::shared_ptr<descriptor::BaseDescriptor>> descriptors() const;
-        std::shared_ptr<descriptor::BaseDescriptor> descriptor(size_t index) const;
+      void add_descriptor(const std::shared_ptr <descriptor::BaseDescriptor> &desc);
 
-        void remove_descriptor(const std::shared_ptr<descriptor::BaseDescriptor>& desc);
-        void remove_descriptor(size_t index);
-        void clear_descriptors();
-    */
+      std::vector <std::shared_ptr<descriptor::BaseDescriptor>> descriptors() const;
+
+      std::shared_ptr <descriptor::BaseDescriptor> descriptor(size_t index) const;
+
+      void remove_descriptor(const std::shared_ptr <descriptor::BaseDescriptor> &desc);
+
+      void remove_descriptor(size_t index);
+
+      void clear_descriptors();
     
     /*    void add_camera(const std::shared_ptr<gui::Base>& cam);
         std::vector<std::shared_ptr<gui::Base>> cameras() const;
@@ -85,6 +87,8 @@ namespace robox2d {
 
   protected:
     std::shared_ptr<b2World> _world;
+    size_t _old_index;
+
     double _physic_period;
     double _control_period;
     double _graphic_period;
@@ -95,7 +99,7 @@ namespace robox2d {
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
      
-    //std::vector<std::shared_ptr<descriptor::BaseDescriptor>> _descriptors;
+    std::vector<std::shared_ptr<descriptor::BaseDescriptor>> _descriptors;
     //std::vector<std::shared_ptr<gui::Base>> _cameras; // designed to include mainly graphcis::CameraOSR
     std::vector<robot_t> _robots;
     std::shared_ptr<gui::Base> _graphics;
