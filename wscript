@@ -51,6 +51,8 @@ def configure(conf):
     conf.load('magnum_plugins')
 
     conf.check_boost(lib='regex system filesystem unit_test_framework', min_version='1.46')
+    # we need pthread for video saving
+    conf.check(features='cxx cxxprogram', lib=['pthread'], uselib_store='PTHREAD')
     conf.check_eigen(required=True)
 
     conf.check_corrade(components='Utility PluginManager', required=False)
