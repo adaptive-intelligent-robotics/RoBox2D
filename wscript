@@ -125,7 +125,8 @@ def build(bld):
     magnum_files = [f[len(bld.path.abspath())+1:] for f in magnum_files]
     robox2d_magnum_srcs = " ".join(magnum_files)
 
-    libs = 'BOOST EIGEN BOX2D'
+    libs = 'BOOST EIGEN BOX2D PTHREAD'
+    bld.env.LIB_PTHREAD = ['pthread']
 
     bld.program(features = 'cxx ' + bld.env['lib_type'],
                 source = robox2d_srcs,

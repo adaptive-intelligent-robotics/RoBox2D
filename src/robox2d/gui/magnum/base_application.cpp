@@ -1,6 +1,8 @@
 #include "base_application.hpp"
 
 #include <iostream>
+#include <Magnum/PixelFormat.h>
+#include <Magnum/GL/Framebuffer.h>
 
 namespace robox2d {
   namespace gui {
@@ -55,6 +57,9 @@ namespace robox2d {
     void BaseApplication::init(robox2d::Simu* simu, size_t width, size_t height)
     {
       _world = simu->world();
+      _width = width;
+      _height = height;
+
       /* Configure camera */
       _cameraObject = new Object2D{&_scene};
       _camera.reset(new Magnum::SceneGraph::Camera2D{*_cameraObject});
@@ -214,6 +219,78 @@ namespace robox2d {
       
       
       
+    }
+
+
+    void BaseApplication::record_video(const std::string& video_fname, int fps)
+    {
+      // we use boost process: https://www.boost.org/doc/libs/1_73_0/doc/html/boost_process/tutorial.html
+#ifdef ROBOX2D_HAS_BOOST_PROCESS
+      namespace bp = boost::process;
+
+      // search for ffmpeg
+      boost::filesystem::path ffmpeg = bp::search_path("ffmpeg");
+      if (ffmpeg.empty()) {
+        std::cout<<"Warning ffmpeg not found in the PATH. Robox2D will not be able to record videos!"<<std::endl;
+	return;
+      }
+#endif
+
+      _recording_video = true;
+
+      // List options
+      std::vector<std::string> args = {"-y",
+	      "-f", "rawvideo",
+	      "-vcodec", "rawvideo",
+	      "-s", std::to_string(_width) + 'x' + std::to_string(_height),
+	      "-pix_fmt", "rgb24",
+	      "-r", std::to_string(fps),
+	      "-i", "-",
+	      "-an",
+	      "-vcodec", "mpeg4",
+	      "-vb", "20M",
+	      video_fname};
+
+#ifdef ROBOX2D_HAS_BOOST_PROCESS
+       _ffmpeg_process = bp::child(ffmpeg, bp::args(args), bp::std_in < _video_pipe, bp::std_out > "/dev/null", bp::std_err > "/dev/null");
+#else
+       // we do it the old way
+       pipe(_video_fd);
+       //  Data written to fd[1] appears on (i.e., can be read from) fd[0].
+       _video_pid = fork();
+       if (_video_pid != 0) { // main process
+         close(_video_fd[0]); // we close the input on this side
+       }
+       else { // ffmpeg process
+         args.push_back("-loglevel");
+	 args.push_back("quiet");
+	 close(_video_fd[1]); // ffmpeg does not write here
+	 dup2(_video_fd[0], STDIN_FILENO); // ffmpeg will read the fd[0] as stdin
+	 char** argv = (char**)calloc(args.size() + 2, sizeof(char*)); // we need the 0 at the end AND the ffffmpeg at the beginning
+	 argv[0] = (char*)"ffmpeg";
+	 for (size_t i = 0; i < args.size(); ++i)
+	   argv[i + 1] = (char*)args[i].c_str();
+	 int ret = execvp("ffmpeg", argv);
+	 if (ret == -1) {
+	   std::cout<<"Warning video recording: cannot execute ffmpeg! [" << strerror(errno) << "]" << std::endl;
+	   exit(0);
+	 }
+       }
+#endif
+    }
+
+    void BaseApplication::video()
+    {
+      if (_recording_video) {
+	    auto image = rgb_from_image(&(*_image));
+#ifdef ROBOX2D_HAS_BOOST_PROCESS
+	_video_pipe.write((char*)image.data.data(), image.data.size());
+	_video_pipe.flush();
+#else
+	write(_video_fd[1], (char*)image.data.data(), image.data.size());
+#endif
+      }
+
     }
 
     
