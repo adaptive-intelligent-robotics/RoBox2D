@@ -54,6 +54,7 @@ namespace robox2d {
             WindowlessGLApplication::~WindowlessGLApplication()
             {
                 GLCleanUp();
+		kill_video();
             }
 
             void WindowlessGLApplication::render()

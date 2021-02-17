@@ -44,6 +44,7 @@ namespace robox2d {
       GlfwApplication::~GlfwApplication()
       {
 	GLCleanUp();
+	kill_video();
       }
       
       void GlfwApplication::render()

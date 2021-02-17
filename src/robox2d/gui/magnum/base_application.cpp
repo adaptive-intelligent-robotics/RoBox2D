@@ -292,6 +292,20 @@ namespace robox2d {
       }
 
     }
+    void BaseApplication::kill_video()
+    {
+#ifdef ROBOX2D_HAS_BOOST_PROCESS
+      if (_ffmpeg_process.id() > 0) {
+	 // we let ffmpeg finish nicely by detaching it and sending the signal
+	 // terminates() send a violent SIGTERM...
+	 _ffmpeg_process.detach();
+	 kill(_ffmpeg_process.id(), SIGINT);
+      }
+#else
+      if (_video_pid != 0)
+        kill(_video_pid, SIGINT);
+#endif
+    }
 
     
   } // namespace gui

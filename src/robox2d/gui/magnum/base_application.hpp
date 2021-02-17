@@ -177,6 +177,7 @@ namespace robox2d {
 #endif
 
       void video();
+      void kill_video();
       
       
       Scene2D _scene;
