@@ -5,8 +5,6 @@
 #include <Magnum/GL/Renderer.h>
 
 
-
-
 #include <iostream>
 #include <fstream>
 
@@ -30,6 +28,8 @@ namespace robox2d {
                 // Corrade::Utility::Debug{} << "Created context with: " << Magnum::GL::Context::current().versionString();
 
                 /* Create FrameBuffer to draw */
+		_width = width;
+		_height = height;
                 int w = width, h = height;
                 _framebuffer = Magnum::GL::Framebuffer({{}, {w, h}});
                 _color.setStorage(Magnum::GL::RenderbufferFormat::RGBA8, {w, h});
@@ -54,6 +54,7 @@ namespace robox2d {
             WindowlessGLApplication::~WindowlessGLApplication()
             {
                 GLCleanUp();
+		kill_video();
             }
 
             void WindowlessGLApplication::render()
@@ -95,6 +96,7 @@ namespace robox2d {
                     .draw(*_circleMesh);
 
                 _image = _framebuffer.read(_framebuffer.viewport(), {Magnum::PixelFormat::RGB8Unorm});
+		video();
             }
         } // namespace magnum
     } // namespace gui

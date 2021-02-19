@@ -13,6 +13,9 @@ namespace robox2d {
       GlfwApplication::GlfwApplication(int argc, char** argv, robox2d::Simu* simu, size_t width, size_t height, const std::string& title)
 	: Magnum::Platform::Application({argc, argv}, Magnum::NoCreate), _speedMove(0.f), _speedStrafe(0.f)
       {
+	_width = width;
+	_height = height;
+
 	/* Try 16x MSAA */
 	Configuration conf;
 	GLConfiguration glConf;
@@ -41,6 +44,7 @@ namespace robox2d {
       GlfwApplication::~GlfwApplication()
       {
 	GLCleanUp();
+	kill_video();
       }
       
       void GlfwApplication::render()
@@ -86,6 +90,7 @@ namespace robox2d {
 	  .draw(*_lineMesh);
 
 	_image = Magnum::GL::defaultFramebuffer.read(Magnum::GL::defaultFramebuffer.viewport(), {Magnum::PixelFormat::RGB8Unorm});
+	video();
 	
 	swapBuffers();
 	redraw();

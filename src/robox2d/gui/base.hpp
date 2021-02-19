@@ -1,10 +1,7 @@
 #ifndef ROBOX2D_GUI_BASE_HPP
 #define ROBOX2D_GUI_BASE_HPP
 
-
-#include <box2d/box2d.h>
 #include <robox2d/gui/magnum/helper.hpp>
-
 #include "robox2d/simu.hpp"
 
 namespace robox2d {

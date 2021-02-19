@@ -115,6 +115,10 @@ namespace robox2d {
       */
       BaseApplication* magnum_app() { return &*_magnum_app; }
 
+      void record_video(const std::string& video_fname, int fps) { _magnum_app->record_video(video_fname, fps); }
+
+      
+
     protected:
       std::shared_ptr<b2World> _world;
       size_t _render_period, _width, _height, _frame_counter;

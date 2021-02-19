@@ -51,6 +51,8 @@ def configure(conf):
     conf.load('magnum_plugins')
 
     conf.check_boost(lib='regex system filesystem unit_test_framework', min_version='1.46')
+    # we need pthread for video saving
+    conf.check(features='cxx cxxprogram', lib=['pthread'], uselib_store='PTHREAD')
     conf.check_eigen(required=True)
 
     conf.check_corrade(components='Utility PluginManager', required=False)
@@ -125,7 +127,8 @@ def build(bld):
     magnum_files = [f[len(bld.path.abspath())+1:] for f in magnum_files]
     robox2d_magnum_srcs = " ".join(magnum_files)
 
-    libs = 'BOOST EIGEN BOX2D'
+    libs = 'BOOST EIGEN BOX2D PTHREAD'
+    bld.env.LIB_PTHREAD = ['pthread']
 
     bld.program(features = 'cxx ' + bld.env['lib_type'],
                 source = robox2d_srcs,

@@ -28,6 +28,14 @@
 #include <Magnum/Shaders/Flat.h>
 #include <Magnum/Trade/MeshData.h>
 
+
+// This could/should be removed in the future once boost.process is on every computer...
+#include <boost/version.hpp>
+#if ((BOOST_VERSION / 100000) > 1) || ((BOOST_VERSION / 100000) == 1 && ((BOOST_VERSION / 100 % 1000) >= 64))
+#include <boost/process.hpp> // for launching ffmpeg
+#define ROBOX2D_HAS_BOOST_PROCESS
+#endif
+
 #include <Magnum/Platform/GLContext.h>
 #ifndef MAGNUM_MAC_OSX
 #include <Magnum/Platform/WindowlessGlxApplication.h>
@@ -139,6 +147,8 @@ namespace robox2d {
      
       virtual void render() {}
       void GLCleanUp();
+
+      void record_video(const std::string& video_fname, int fps);
       
     protected:
       /* Magnum */
@@ -152,6 +162,22 @@ namespace robox2d {
       std::unique_ptr<Magnum::GL::Mesh> _lineMesh;//{Magnum::NoCreate};
       std::unique_ptr<Magnum::Containers::Array<InstanceData>> _lineInstanceData;
 
+      // Video recording
+      bool _recording_video = false;
+      size_t _width;
+      size_t _height;
+
+#ifdef ROBOX2D_HAS_BOOST_PROCESS
+      // pipe to write a video
+      boost::process::opstream _video_pipe;
+      boost::process::child _ffmpeg_process;
+#else
+      pid_t _video_pid = 0;
+      int _video_fd[2];
+#endif
+
+      void video();
+      void kill_video();
       
       
       Scene2D _scene;
