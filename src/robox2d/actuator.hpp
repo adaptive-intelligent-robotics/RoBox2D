@@ -22,6 +22,7 @@ namespace robox2d {
      */
     class Actuator{
     public:
+      Actuator() : _input(0.0) {}
             
       virtual void set_input(double input){_input=input;};
       
@@ -51,7 +52,6 @@ namespace robox2d {
       private:
           b2RevoluteJoint *_joint;
           double _gain;
-          double _target_pos;
       };
 
 

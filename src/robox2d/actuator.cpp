@@ -18,7 +18,7 @@ namespace robox2d {
      * @param  anchor Position the joint will be at when initializing the situation (can move during the simulation).
      * @param  gain factor for the movement of the Proportional Controller for the joint.
      */
-    Servo::Servo( std::shared_ptr<b2World> world, b2Body* bodyA, b2Body* bodyB,  const b2Vec2 & anchor, double gain):_gain(gain), _target_pos(0.0)
+    Servo::Servo( std::shared_ptr<b2World> world, b2Body* bodyA, b2Body* bodyB,  const b2Vec2 & anchor, double gain): _gain(gain)
     {
       b2RevoluteJointDef jointDef;
       jointDef.Initialize(bodyA, bodyB, anchor);
