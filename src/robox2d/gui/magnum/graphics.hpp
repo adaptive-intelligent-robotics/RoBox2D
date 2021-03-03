@@ -39,12 +39,12 @@ namespace robox2d {
 	_frame_counter++;
       }
 
+      void set_enable(bool enable) override
+      {
+        _enabled = enable;
+      }
 
-      /*void set_enable(bool enable) override
-	{
-	_enabled = enable;
-	}
-
+/*
 	void look_at(const Eigen::Vector3d& camera_pos,
 	const Eigen::Vector3d& look_at = Eigen::Vector3d(0, 0, 0),
 	const Eigen::Vector3d& up = Eigen::Vector3d(0, 0, 1))
