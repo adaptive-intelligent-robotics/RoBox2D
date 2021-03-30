@@ -10,19 +10,15 @@ namespace robox2d {
   namespace gui {
     class Base {
     public:
-      Base() {}
       
-      Base(robox2d::Simu* simu) { _simu = simu; }
+      Base() {}
 
       virtual void set_simu(robox2d::Simu* simu) { _simu = simu; }
       const robox2d::Simu* simu() const { return _simu; }
       
       virtual ~Base() {}
       
-      virtual bool done() const
-      {
-	return false;
-      }
+      virtual bool done() const { return false; }
       
       virtual void refresh() {}
       

@@ -71,7 +71,11 @@ namespace robox2d {
   
   std::shared_ptr<gui::Base> Simu::graphics() const { return _graphics; }
   
-  void Simu::set_graphics(const std::shared_ptr<gui::Base>& graphics) { _graphics = graphics; }
+  void Simu::set_graphics(const std::shared_ptr<gui::Base>& graphics) 
+  { 
+     _graphics = graphics; 
+     _graphics->set_simu(this);
+  }
   
   /**
    * @brief Get current world (type std::shared_ptr<b2World>)
