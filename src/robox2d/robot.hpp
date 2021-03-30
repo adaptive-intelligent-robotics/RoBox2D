@@ -31,7 +31,8 @@ namespace robox2d {
     
     //std::shared_ptr<control::RobotControl> controller(size_t index) const;
     
-    void add_controller(const std::shared_ptr<control::BaseController>& controller){_controllers.push_back(controller);};
+    void add_controller(const std::shared_ptr<control::BaseController>& controller)
+    {_controllers.push_back(controller);};
     void remove_controller(const std::shared_ptr<control::BaseController>& controller);
     void remove_controller(size_t index);
     void clear_controllers();
@@ -73,6 +74,6 @@ namespace robox2d {
     std::vector<std::shared_ptr<actuator::Actuator>> _actuators;
     std::vector<std::shared_ptr<control::BaseController>> _controllers;
   };
-} // namespace robot_dart
+} // namespace robox2d
 
 #endif

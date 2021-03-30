@@ -17,4 +17,4 @@ namespace robox2d {
           _desc_period = desc_dump;
         }
     } // namespace descriptor
-} // namespace robot_dart
+} // namespace robox2d

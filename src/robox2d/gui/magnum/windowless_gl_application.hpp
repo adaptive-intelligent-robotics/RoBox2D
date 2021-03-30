@@ -15,7 +15,7 @@ namespace robox2d {
         namespace magnum {
             class WindowlessGLApplication : public BaseApplication, public Magnum::Platform::WindowlessApplication {
             public:
-                explicit WindowlessGLApplication(int argc, char** argv, robox2d::Simu* simu, size_t width, size_t height, const std::string& title = "DART");
+                explicit WindowlessGLApplication(int argc, char** argv, robox2d::Simu* simu, size_t width, size_t height, const std::string& title = "ROBOX2D");
                 ~WindowlessGLApplication();
 
                 void render() override;

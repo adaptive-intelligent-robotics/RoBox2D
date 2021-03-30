@@ -30,6 +30,6 @@ namespace robox2d {
             size_t _desc_period;
         };
     } // namespace descriptor
-} // namespace robot_dart
+} // namespace robox2d
 
 #endif //ROBOX2D_OFFICIAL_BASE_DESCRIPTOR_HPP

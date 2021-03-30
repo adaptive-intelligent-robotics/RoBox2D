@@ -20,7 +20,7 @@ namespace robox2d {
     namespace gui {
       class GlfwApplication : public BaseApplication, public Magnum::Platform::Application {
       public:
-	explicit GlfwApplication(int argc, char** argv, robox2d::Simu* simu, size_t width, size_t height, const std::string& title = "DART");
+	explicit GlfwApplication(int argc, char** argv, robox2d::Simu* simu, size_t width, size_t height, const std::string& title = "ROBOX2D");
 	
 	~GlfwApplication();
 	
@@ -48,6 +48,6 @@ namespace robox2d {
 	void exitEvent(ExitEvent& event) override;
       };
     } // namespace gui
-} // namespace robot_dart
+} // namespace robox2d
 
 #endif

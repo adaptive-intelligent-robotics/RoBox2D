@@ -44,7 +44,7 @@ namespace robox2d {
                 _framebuffer.attachRenderbuffer(
                     Magnum::GL::Framebuffer::BufferAttachment::Depth, _depth);
 
-                /* Initialize DART world */
+                /* Initialize Box2d world */
                 init(simu, width, height);
 
                 // TODO : as in robot_dart:
@@ -102,4 +102,4 @@ namespace robox2d {
             }
         } // namespace magnum
     } // namespace gui
-} // namespace robot_dart
+} // namespace robox2d

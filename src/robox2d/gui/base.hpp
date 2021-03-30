@@ -42,6 +42,6 @@ namespace robox2d {
         robox2d::Simu* _simu = nullptr;
     };
   } // namespace gui
-} // namespace robot_dart
+} // namespace robox2d
 
 #endif
