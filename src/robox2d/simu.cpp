@@ -1,6 +1,6 @@
 #include "simu.hpp"
 #include <iostream>
-#include <boost/math/common_factor.hpp>
+#include <boost/integer/common_factor.hpp>
 namespace robox2d {
   
   Simu::Simu(size_t physic_freq, size_t control_freq, size_t graphic_freq) :
@@ -11,7 +11,7 @@ namespace robox2d {
     _old_index(0)
   {
   
-    _time_step = 1.0f/double( boost::math::lcm( boost::math::lcm(physic_freq, control_freq) , graphic_freq ));
+    _time_step = 1.0f/double( boost::integer::lcm( boost::integer::lcm(physic_freq, control_freq) , graphic_freq ));
     _physic_period = 1.0f/(double)physic_freq;
     _control_period = 1.0f/(double)control_freq;
     _graphic_period = 1.0f/(double)graphic_freq;
