@@ -8,6 +8,8 @@ namespace robox2d {
   class Simu;
 
   namespace gui {
+    namespace magnum {
+
     class Graphics : public BaseGraphics<GlfwApplication>
     {
     public:
@@ -22,6 +24,7 @@ namespace robox2d {
       static GraphicsConfiguration default_configuration();
     };
 
+    } // namespace magnum
   } // namespace gui
 } // namespace robox2d
 

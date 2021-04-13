@@ -50,7 +50,7 @@
   Corrade::Utility::Debug name##_magnum_silence_output{nullptr};	\
   Magnum::Platform::WindowlessGLContext* name = nullptr;		\
   while (name == nullptr) {						\
-    name = robox2d::gui::GlobalData::instance()->gl_context(); \
+    name = robox2d::gui::magnum::GlobalData::instance()->gl_context(); \
     /* Sleep for some ms */						\
     usleep(ms_sleep * 1000);						\
   }									\
@@ -63,11 +63,12 @@
 
 #define get_gl_context_robox2d(name) get_gl_context_with_sleep_robox2d(name, 0)
 
-#define release_gl_context_robox2d(name) robox2d::gui::GlobalData::instance()->free_gl_context(name);
+#define release_gl_context_robox2d(name) robox2d::gui::magnum::GlobalData::instance()->free_gl_context(name);
 
 namespace robox2d {
     class Simu;
   namespace gui {
+    namespace magnum {
 
 
     typedef Magnum::SceneGraph::Object<Magnum::SceneGraph::TranslationRotationScalingTransformation2D> Object2D;
@@ -79,8 +80,8 @@ namespace robox2d {
       Magnum::Matrix3 transformation;
       Magnum::Color3 color;
     };
-    
-    
+
+
     struct GlobalData {
     public:
       static GlobalData* instance()
@@ -88,22 +89,22 @@ namespace robox2d {
 	static GlobalData gdata;
 	return &gdata;
       }
-      
+
       GlobalData(const GlobalData&) = delete;
       void operator=(const GlobalData&) = delete;
-	
+
       Magnum::Platform::WindowlessGLContext* gl_context();
       void free_gl_context(Magnum::Platform::WindowlessGLContext* context);
-	
+
       /* You should call this before starting to draw or after finished */
       void set_max_contexts(size_t N);
-	
+
     private:
       GlobalData() = default;
       ~GlobalData() = default;
-	
+
       void _create_contexts();
-	
+
       std::vector<Magnum::Platform::WindowlessGLContext> _gl_contexts;
       std::vector<bool> _used;
       std::mutex _context_mutex;
@@ -133,7 +134,7 @@ namespace robox2d {
       // Background (default = black)
       Eigen::Vector4d bg_color{0.0, 0.0, 0.0, 1.0};
     };
-      
+
 
     class Drawable: public Magnum::SceneGraph::Drawable2D {
     public:
@@ -149,31 +150,31 @@ namespace robox2d {
       Magnum::Color3 _color;
     };
 
-    
-      
+
+
     class BaseApplication {
     public:
       BaseApplication(const GraphicsConfiguration& configuration = GraphicsConfiguration());
       virtual ~BaseApplication() {}
-	
+
       void init(robox2d::Simu* simu, const GraphicsConfiguration& configuration);
       void update_graphics();
-      	
+
       Magnum::SceneGraph::DrawableGroup2D& drawables() { return *_drawables; }
       Scene2D& scene() { return _scene; }
       Magnum::SceneGraph::Camera2D* camera() { return &*_camera; }
 
       Corrade::Containers::Optional<Magnum::Image2D>& image() { return _image; }
 
-      
+
       bool done() const;
 
-     
+
       virtual void render() {}
       void GLCleanUp();
 
       void record_video(const std::string& video_fname, int fps);
-      
+
     protected:
       /* Magnum */
       std::unique_ptr<Magnum::Shaders::Flat2D> _shader;//{Magnum::NoCreate};
@@ -201,8 +202,8 @@ namespace robox2d {
 
       void video();
       void kill_video();
-      
-      
+
+
       Scene2D _scene;
       Object2D* _cameraObject;
       std::unique_ptr<Magnum::SceneGraph::Camera2D> _camera;
@@ -210,7 +211,7 @@ namespace robox2d {
       std::shared_ptr<b2World> _world;
       //Magnum::Containers::Optional<b2World> _world;
       Corrade::Containers::Optional<Magnum::Image2D> _image;
-      
+
       bool _done = false;
     };
 
@@ -222,7 +223,8 @@ namespace robox2d {
 
       return new T(argc, argv, simu, configuration);
     }
-    
+
+    } // namespace magnum
   } // namespace gui
 } // namespace robox2d
 

@@ -2,6 +2,7 @@
 
 namespace robox2d {
   namespace gui {
+    namespace magnum {
 
     void
     Graphics::set_simu(Simu* simu)
@@ -19,5 +20,7 @@ namespace robox2d {
     {
       return GraphicsConfiguration();
     }
+
+    } // namespace magnum
   } // namespace gui
 } // namespace robox2d

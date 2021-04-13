@@ -10,6 +10,7 @@
 
 namespace robox2d {
     namespace gui {
+      namespace magnum {
       GlfwApplication::GlfwApplication(int argc, char** argv, robox2d::Simu* simu, const GraphicsConfiguration& configuration)
 	: BaseApplication(configuration),
           Magnum::Platform::Application({argc, argv}, Magnum::NoCreate),
@@ -50,19 +51,19 @@ namespace robox2d {
 	GLCleanUp();
 	kill_video();
       }
-      
+
       void GlfwApplication::render()
       {
 	mainLoopIteration();
       }
-      
+
       void GlfwApplication::viewportEvent(const Magnum::Vector2i& size)
       {
 	Magnum::GL::defaultFramebuffer.setViewport({{}, size});
-	
+
 	_camera->setViewport(size);
       }
-      
+
       void GlfwApplication::drawEvent()
       {
 	Magnum::GL::defaultFramebuffer.clear(Magnum::GL::FramebufferClear::Color);
@@ -97,36 +98,36 @@ namespace robox2d {
 
 	_image = Magnum::GL::defaultFramebuffer.read(Magnum::GL::defaultFramebuffer.viewport(), {Magnum::PixelFormat::RGB8Unorm});
 	video();
-	
+
 	swapBuffers();
 	redraw();
       }
-      
+
       void GlfwApplication::keyReleaseEvent(KeyEvent& event)
       {
 	event.setAccepted();
       }
-      
+
       void GlfwApplication::keyPressEvent(KeyEvent& event)
       {
 	event.setAccepted();
       }
-      
+
       void GlfwApplication::mouseScrollEvent(MouseScrollEvent& event)
       {
 	event.setAccepted();
       }
-      
+
       void GlfwApplication::mouseMoveEvent(MouseMoveEvent& event)
       {
 	event.setAccepted();
       }
-      
+
       void GlfwApplication::exitEvent(ExitEvent& event)
       {
 	_done = true;
 	event.setAccepted();
       }
-
-    } // namespace gui
+    } // namespace magnum
+  } // namespace gui
 } // namespace robox2d

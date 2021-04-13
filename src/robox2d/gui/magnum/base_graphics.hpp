@@ -8,6 +8,8 @@ namespace robox2d {
   class Simu;
 
   namespace gui {
+    namespace magnum {
+
     template <typename T = GlfwApplication>
     class BaseGraphics : public Base {
     public:
@@ -131,6 +133,7 @@ namespace robox2d {
       std::unique_ptr<BaseApplication> _magnum_app;
     };
 
+    } // namespace magnum
   } // namespace gui
 } // namespace robox2d
 

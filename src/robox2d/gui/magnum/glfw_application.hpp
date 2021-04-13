@@ -18,16 +18,18 @@ namespace robox2d {
     class Simu;
 
     namespace gui {
+      namespace magnum {
+
       class GlfwApplication : public BaseApplication, public Magnum::Platform::Application {
       public:
 	explicit GlfwApplication(int argc, char** argv, robox2d::Simu* simu, const GraphicsConfiguration& configuration = GraphicsConfiguration());
-	
+
 	~GlfwApplication();
-	
+
 	void render() override;
 
-	
-	
+
+
       protected:
         Magnum::Float _speedMove, _speedStrafe;
 
@@ -35,20 +37,21 @@ namespace robox2d {
 
 
         static constexpr Magnum::Float _speed = 0.05f;
-	
+
 	void viewportEvent(const Magnum::Vector2i& size);
-	
+
 	void drawEvent() override;
-	
+
 	virtual void keyReleaseEvent(KeyEvent& event) override;
 	virtual void keyPressEvent(KeyEvent& event) override;
-	
+
 	virtual void mouseScrollEvent(MouseScrollEvent& event) override;
 	virtual void mouseMoveEvent(MouseMoveEvent& event) override;
-	
+
 	void exitEvent(ExitEvent& event) override;
       };
-    } // namespace gui
+    } // namespace magnum
+  } // namespace gui
 } // namespace robox2d
 
 #endif
