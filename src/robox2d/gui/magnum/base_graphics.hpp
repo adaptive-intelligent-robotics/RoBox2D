@@ -21,7 +21,8 @@ namespace robox2d {
       void set_simu(robox2d::Simu* simu) override
       {
         _world = simu->world();
-        _magnum_app.reset(make_application<T>(simu, _configuration.width, _configuration.height, _configuration.title));
+        _simu = simu;
+        _magnum_app.reset(make_application<T>(simu, _configuration));
       }
 
       ~BaseGraphics() {}

@@ -215,12 +215,12 @@ namespace robox2d {
     };
 
     template <typename T>
-    inline BaseApplication* make_application(robox2d::Simu* simu, size_t width, size_t height, const std::string& title = "ROBOX2D")
+    inline BaseApplication* make_application(robox2d::Simu* simu, const GraphicsConfiguration& configuration = GraphicsConfiguration())
     {
       int argc = 0;
       char** argv = NULL;
 
-      return new T(argc, argv, simu, width, height, title);
+      return new T(argc, argv, simu, configuration);
     }
     
   } // namespace gui
