@@ -11,8 +11,8 @@ namespace robox2d {
     template <typename T = GlfwApplication>
     class BaseGraphics : public Base {
     public:
-      BaseGraphics(double time_step = 0.02, unsigned int width = 640, unsigned int height = 480, const std::string& title = "ROBOX2D")
-        : _width(width), _height(height), _frame_counter(0), _enabled(true), _title(title)
+      BaseGraphics(const GraphicsConfiguration& configuration = GraphicsConfiguration())
+        : _configuration(configuration), _frame_counter(0), _enabled(true)
       {
         Corrade::Utility::Debug magnum_silence_output{nullptr};
         //robot_dart_initialize_magnum_resources();
@@ -21,7 +21,7 @@ namespace robox2d {
       void set_simu(robox2d::Simu* simu) override
       {
         _world = simu->world();
-        _magnum_app.reset(make_application<T>(simu, _width, _height, _title));
+        _magnum_app.reset(make_application<T>(simu, _configuration.width, _configuration.height, _configuration.title));
       }
 
       ~BaseGraphics() {}
@@ -122,9 +122,10 @@ namespace robox2d {
 
     protected:
       std::shared_ptr<b2World> _world;
-      size_t _render_period, _width, _height, _frame_counter;
+      size_t _render_period, _frame_counter;
+      GraphicsConfiguration _configuration;
+
       bool _enabled;
-      std::string _title;
 
       std::unique_ptr<BaseApplication> _magnum_app;
     };
