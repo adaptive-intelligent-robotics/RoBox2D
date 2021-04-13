@@ -29,13 +29,12 @@ namespace robox2d {
 	
 	
       protected:
+        Magnum::Float _speedMove, _speedStrafe;
+
         Magnum::Color4 _bg_color;
 
-        Magnum::Float _speedMove, _speedStrafe;
-	
-	
-	
-	static constexpr Magnum::Float _speed = 0.05f;
+
+        static constexpr Magnum::Float _speed = 0.05f;
 	
 	void viewportEvent(const Magnum::Vector2i& size);
 	
