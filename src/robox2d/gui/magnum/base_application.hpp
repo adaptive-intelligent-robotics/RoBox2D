@@ -153,10 +153,10 @@ namespace robox2d {
       
     class BaseApplication {
     public:
-      BaseApplication(){}
+      BaseApplication(const GraphicsConfiguration& configuration = GraphicsConfiguration());
       virtual ~BaseApplication() {}
 	
-      void init(robox2d::Simu* simu, size_t width, size_t height);
+      void init(robox2d::Simu* simu, const GraphicsConfiguration& configuration);
       void update_graphics();
       	
       Magnum::SceneGraph::DrawableGroup2D& drawables() { return *_drawables; }
@@ -188,8 +188,7 @@ namespace robox2d {
 
       // Video recording
       bool _recording_video = false;
-      size_t _width;
-      size_t _height;
+      GraphicsConfiguration _configuration;
 
 #ifdef ROBOX2D_HAS_BOOST_PROCESS
       // pipe to write a video

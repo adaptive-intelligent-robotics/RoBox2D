@@ -51,14 +51,16 @@ namespace robox2d {
 	_gl_contexts.emplace_back(Magnum::Platform::WindowlessGLContext{{}});
       }
     }
-    
+
     // BaseApplication
-    
-    void BaseApplication::init(robox2d::Simu* simu, size_t width, size_t height)
+    BaseApplication::BaseApplication(const GraphicsConfiguration& configuration)
+      : _configuration(configuration)
+    {}
+
+    void BaseApplication::init(robox2d::Simu* simu, const GraphicsConfiguration& configuration)
     {
       _world = simu->world();
-      _width = width;
-      _height = height;
+      _configuration = configuration;
 
       /* Configure camera */
       _cameraObject = new Object2D{&_scene};
@@ -242,7 +244,7 @@ namespace robox2d {
       std::vector<std::string> args = {"-y",
 	      "-f", "rawvideo",
 	      "-vcodec", "rawvideo",
-	      "-s", std::to_string(_width) + 'x' + std::to_string(_height),
+	      "-s", std::to_string(_configuration.width) + 'x' + std::to_string(_configuration.height),
 	      "-pix_fmt", "rgb24",
 	      "-r", std::to_string(fps),
 	      "-i", "-",
