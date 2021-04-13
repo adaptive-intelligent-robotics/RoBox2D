@@ -14,7 +14,11 @@ namespace robox2d {
 	: BaseApplication(configuration),
           Magnum::Platform::Application({argc, argv}, Magnum::NoCreate),
           _speedMove(0.f),
-          _speedStrafe(0.f)
+          _speedStrafe(0.f),
+          _bg_color(configuration.bg_color[0],
+                    configuration.bg_color[1],
+                    configuration.bg_color[2],
+                    configuration.bg_color[3])
       {
 
 	/* Try 16x MSAA */
@@ -66,8 +70,10 @@ namespace robox2d {
 	/* Update graphic meshes/materials and render */
 	update_graphics();
 
+        /* Change clear color to _bg_color */
+        Magnum::GL::Renderer::setClearColor(_bg_color);
+
 	/* Populate instance data with transformations and colors */
-	
 	arrayResize(*_boxInstanceData, 0);
 	arrayResize(*_circleInstanceData, 0);
 	arrayResize(*_lineInstanceData, 0);

@@ -15,7 +15,11 @@ namespace robox2d {
         namespace magnum {
             WindowlessGLApplication::WindowlessGLApplication(int argc, char** argv, robox2d::Simu* simu, const GraphicsConfiguration& configuration)
                 : BaseApplication(configuration),
-                  Magnum::Platform::WindowlessApplication({argc, argv}, Magnum::NoCreate)
+                  Magnum::Platform::WindowlessApplication({argc, argv}, Magnum::NoCreate),
+                  _bg_color(configuration.bg_color[0],
+                            configuration.bg_color[1],
+                            configuration.bg_color[2],
+                            configuration.bg_color[3])
             {
                 /* Assume context is given externally, if not create it */
                 if (!Magnum::GL::Context::hasCurrent()) {
@@ -67,8 +71,8 @@ namespace robox2d {
                 // Magnum::GL::Renderer::setBlendFunction(Magnum::GL::Renderer::BlendFunction::SourceAlpha, Magnum::GL::Renderer::BlendFunction::OneMinusSourceAlpha);
                 // Magnum::GL::Renderer::setBlendEquation(Magnum::GL::Renderer::BlendEquation::Add);
 
-                /* Change default clear color to black */
-                Magnum::GL::Renderer::setClearColor(Magnum::Vector4{0.f, 0.f, 0.f, 1.f});
+                /* Change clear color to _bg_color */
+                Magnum::GL::Renderer::setClearColor(_bg_color);
 
                 /* Bind the framebuffer */
                 _framebuffer.bind();

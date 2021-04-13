@@ -21,6 +21,8 @@ namespace robox2d {
                 void render() override;
 
             protected:
+                Magnum::Color4 _bg_color;
+
                 Magnum::GL::Framebuffer _framebuffer{Magnum::NoCreate};
                 Magnum::PixelFormat _format;
                 Magnum::GL::Renderbuffer _color{Magnum::NoCreate}, _depth{Magnum::NoCreate};

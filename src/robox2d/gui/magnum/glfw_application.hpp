@@ -29,7 +29,9 @@ namespace robox2d {
 	
 	
       protected:
-	Magnum::Float _speedMove, _speedStrafe;
+        Magnum::Color4 _bg_color;
+
+        Magnum::Float _speedMove, _speedStrafe;
 	
 	
 	
