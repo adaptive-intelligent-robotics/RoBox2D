@@ -1,12 +1,8 @@
 #ifndef ROBOX2D_GUI_MAGNUM_GRAPHICS_HPP
 #define ROBOX2D_GUI_MAGNUM_GRAPHICS_HPP
 
-#include "../base.hpp"
-#include "glfw_application.hpp"
-#include "helper.hpp"
-#include "windowless_gl_application.hpp"
-
-#include "robox2d/simu.hpp"
+#include <robox2d/gui/magnum/base_graphics.hpp>
+#include <robox2d/gui/magnum/glfw_application.hpp>
 
 namespace robox2d {
   class Simu;

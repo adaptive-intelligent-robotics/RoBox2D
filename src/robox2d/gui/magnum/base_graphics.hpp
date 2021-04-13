@@ -1,6 +1,9 @@
 #ifndef ROBOX2D_BASE_GRAPHICS_HPP
 #define ROBOX2D_BASE_GRAPHICS_HPP
 
+#include <robox2d/gui/base.hpp>
+#include <robox2d/gui/magnum/glfw_application.hpp>
+
 namespace robox2d {
   class Simu;
 
