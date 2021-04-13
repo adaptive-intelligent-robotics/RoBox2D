@@ -6,7 +6,7 @@
 #include <robox2d/common.hpp>
 #include <robox2d/actuator.hpp>
 #ifdef GRAPHIC
-#include <robox2d/gui/magnum/base_graphics.hpp>
+#include <robox2d/gui/magnum/graphics.hpp>
 #endif
 
 

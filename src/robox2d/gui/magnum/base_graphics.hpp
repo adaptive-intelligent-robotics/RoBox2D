@@ -121,9 +121,9 @@ namespace robox2d {
 
 
     protected:
+      GraphicsConfiguration _configuration;
       std::shared_ptr<b2World> _world;
       size_t _render_period, _frame_counter;
-      GraphicsConfiguration _configuration;
 
       bool _enabled;
 
