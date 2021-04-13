@@ -9,12 +9,19 @@ namespace robox2d {
         BaseGraphics<WindowlessGLApplication>::set_simu(simu);
         // we should not synchronize by default if we want windowless graphics (usually used only for sensors)
         simu->set_sync(false);
+//        // disable summary text when windowless graphics activated
+//        simu->enable_text_panel(false);
+//        simu->enable_status_bar(false);
       }
 
       GraphicsConfiguration
       WindowlessGraphics::default_configuration()
       {
         GraphicsConfiguration config;
+
+//        // by default we do not draw text in windowless mode
+//        config.draw_debug = false;
+//        config.draw_text = false;
 
         return config;
       }

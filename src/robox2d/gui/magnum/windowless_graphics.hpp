@@ -1,6 +1,9 @@
 #ifndef ROBOX2D_WINDOWLESSGRAPHICS_HPP
 #define ROBOX2D_WINDOWLESSGRAPHICS_HPP
 
+#include "robox2d/gui/magnum/base_graphics.hpp"
+#include "robox2d/gui/magnum/windowless_gl_application.hpp"
+
 namespace robox2d {
   namespace gui {
     namespace magnum {
