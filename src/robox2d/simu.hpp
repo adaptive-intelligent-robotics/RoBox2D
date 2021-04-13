@@ -87,7 +87,6 @@ namespace robox2d {
 
   protected:
     std::shared_ptr<b2World> _world;
-    size_t _old_index;
 
     double _physic_period;
     double _control_period;
@@ -103,6 +102,8 @@ namespace robox2d {
     //std::vector<std::shared_ptr<gui::Base>> _cameras; // designed to include mainly graphcis::CameraOSR
     std::vector<robot_t> _robots;
     std::shared_ptr<gui::Base> _graphics;
+
+    size_t _old_index;
   };
 
 
