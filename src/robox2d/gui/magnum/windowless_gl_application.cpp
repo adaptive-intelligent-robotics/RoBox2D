@@ -13,8 +13,9 @@
 namespace robox2d {
     namespace gui {
         namespace magnum {
-            WindowlessGLApplication::WindowlessGLApplication(int argc, char** argv, robox2d::Simu* simu, size_t width, size_t height, const std::string& title)
-                : Magnum::Platform::WindowlessApplication({argc, argv}, Magnum::NoCreate)
+            WindowlessGLApplication::WindowlessGLApplication(int argc, char** argv, robox2d::Simu* simu, const GraphicsConfiguration& configuration)
+                : BaseApplication(configuration),
+                  Magnum::Platform::WindowlessApplication({argc, argv}, Magnum::NoCreate)
             {
                 /* Assume context is given externally, if not create it */
                 if (!Magnum::GL::Context::hasCurrent()) {
@@ -28,9 +29,7 @@ namespace robox2d {
                 // Corrade::Utility::Debug{} << "Created context with: " << Magnum::GL::Context::current().versionString();
 
                 /* Create FrameBuffer to draw */
-		_width = width;
-		_height = height;
-                int w = width, h = height;
+                int w = configuration.width, h = configuration.height;
                 _framebuffer = Magnum::GL::Framebuffer({{}, {w, h}});
 		_color = Magnum::GL::Renderbuffer();
                 _depth = Magnum::GL::Renderbuffer();
@@ -45,12 +44,7 @@ namespace robox2d {
                     Magnum::GL::Framebuffer::BufferAttachment::Depth, _depth);
 
                 /* Initialize Box2d world */
-                init(simu, width, height);
-
-                // TODO : as in robot_dart:
-                //  create class WindowlessGraphics to encapsulate the behaviour of WindowlessApplication
-                //  WindowlessGraphics should be the one setting the sync param of simu to false by default
-                simu->set_sync(false);
+                init(simu, configuration);
             }
 
             WindowlessGLApplication::~WindowlessGLApplication()

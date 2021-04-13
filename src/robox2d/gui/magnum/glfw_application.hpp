@@ -20,7 +20,7 @@ namespace robox2d {
     namespace gui {
       class GlfwApplication : public BaseApplication, public Magnum::Platform::Application {
       public:
-	explicit GlfwApplication(int argc, char** argv, robox2d::Simu* simu, size_t width, size_t height, const std::string& title = "ROBOX2D");
+	explicit GlfwApplication(int argc, char** argv, robox2d::Simu* simu, const GraphicsConfiguration& configuration = GraphicsConfiguration());
 	
 	~GlfwApplication();
 	
