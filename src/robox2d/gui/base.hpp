@@ -2,7 +2,6 @@
 #define ROBOX2D_GUI_BASE_HPP
 
 #include <robox2d/gui/magnum/helper.hpp>
-#include "robox2d/simu.hpp"
 
 namespace robox2d {
     class Simu;
