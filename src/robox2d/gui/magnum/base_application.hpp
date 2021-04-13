@@ -109,6 +109,30 @@ namespace robox2d {
       std::mutex _context_mutex;
       size_t _max_contexts = 4;
     };
+
+    struct GraphicsConfiguration {
+      // General
+      size_t width = 640;
+      size_t height = 480;
+      std::string title = "Robox2D";
+
+//      // Shadows
+//      bool shadowed = true;
+//      bool transparent_shadows = true;
+//      size_t shadow_map_size = 1024;
+
+//      // Lights
+//      size_t max_lights = 3;
+//      double specular_strength = 0.25; // strength of the specular component
+
+//      // These options are only for the main camera
+//      bool draw_main_camera = true;
+//      bool draw_debug = true;
+//      bool draw_text = true;
+
+      // Background (default = black)
+      Eigen::Vector4d bg_color{0.0, 0.0, 0.0, 1.0};
+    };
       
 
     class Drawable: public Magnum::SceneGraph::Drawable2D {
