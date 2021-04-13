@@ -1,7 +1,7 @@
 #include "helper.hpp"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "../stb_image_write.h"
+#include "stb_image_write.h"
 
 #include <Corrade/Containers/ArrayViewStl.h>
 #include <Corrade/Containers/StridedArrayView.h>
