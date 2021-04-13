@@ -4,7 +4,7 @@ namespace robox2d {
   namespace gui {
     namespace magnum {
       void
-      WindowlessGraphics::set_simu(RobotDARTSimu* simu)
+      WindowlessGraphics::set_simu(Simu* simu)
       {
         BaseGraphics<WindowlessGLApplication>::set_simu(simu);
         // we should not synchronize by default if we want windowless graphics (usually used only for sensors)

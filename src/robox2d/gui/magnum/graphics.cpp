@@ -4,7 +4,7 @@ namespace robox2d {
   namespace gui {
 
     void
-    Graphics::set_simu(RobotDARTSimu* simu)
+    Graphics::set_simu(Simu* simu)
     {
       BaseGraphics<GlfwApplication>::set_simu(simu);
       // we synchronize by default if we have the graphics activated

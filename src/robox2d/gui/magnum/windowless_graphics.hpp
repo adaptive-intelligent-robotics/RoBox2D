@@ -15,7 +15,7 @@ namespace robox2d {
         {}
         ~WindowlessGraphics() {}
 
-        void set_simu(RobotDARTSimu* simu) override;
+        void set_simu(Simu* simu) override;
 
         static GraphicsConfiguration default_configuration();
       };
