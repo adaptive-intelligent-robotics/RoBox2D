@@ -89,6 +89,9 @@ namespace robox2d {
     void set_map_body_color(const std::map<b2Body*, rgb_t>& map_body_color) { _map_body_color = map_body_color; }
     const std::map<b2Body*, rgb_t>& get_map_body_color() const { return _map_body_color; }
 
+    void set_map_fixture_color(const std::map<b2Body*, rgb_t>& map_fixture_color) { _map_fixture_color = map_fixture_color; }
+    const std::map<b2Fixture*, rgb_t>& get_map_fixture_color() const { return _map_fixture_color; }
+
   protected:
     std::shared_ptr<b2World> _world;
 
@@ -110,6 +113,7 @@ namespace robox2d {
     size_t _old_index;
 
     std::map<b2Body*, rgb_t> _map_body_color;
+    std::map<b2Fixture*, rgb_t> _map_fixture_color;
   };
 
 

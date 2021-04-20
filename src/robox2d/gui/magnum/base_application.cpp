@@ -328,14 +328,15 @@ namespace robox2d {
                                                const BaseApplication::rgb_t & default_color) {
       using rgb_t = BaseApplication::rgb_t;
 
+      const std::map<b2Fixture*, rgb_t>& map_fixture_color = _simu->get_map_fixture_color();
       const std::map<b2Body*, rgb_t>& map_body_color = _simu->get_map_body_color();
 
-      std::map<b2Body*, rgb_t>::const_iterator fixture_color = map_body_color.find(fixture);
+      std::map<b2Fixture*, rgb_t>::const_iterator fixture_color = map_fixture_color.find(fixture);
       std::map<b2Body*, rgb_t>::const_iterator body_color = map_body_color.find(body);
 
       rgb_t color;
 
-      if (fixture_color != map_body_color.end()) {
+      if (fixture_color != map_fixture_color.end()) {
         color = fixture_color->second;
       } else if (body_color != map_body_color.end()) {
         color = body_color->second;
