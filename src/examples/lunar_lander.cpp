@@ -153,7 +153,12 @@ int main()
     simu.set_map_body_color(rob->get_map_body_colors());
     simu.set_map_fixture_color(rob->get_map_fixture_colors());
 
-    auto graphics = std::make_shared<robox2d::gui::magnum::Graphics>();
+
+    robox2d::gui::magnum::GraphicsConfiguration graphics_configuration = robox2d::gui::magnum::Graphics::default_configuration();
+    graphics_configuration.width = graphics_configuration.height * 1.33;
+    graphics_configuration.bg_color = Eigen::Vector4d{0.3, 0.3, 0.3, 1.}; // Background color is white
+
+    auto graphics = std::make_shared<robox2d::gui::magnum::Graphics>(graphics_configuration);
     simu.set_graphics(graphics);
 #endif
 
