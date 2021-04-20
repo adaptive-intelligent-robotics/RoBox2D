@@ -154,6 +154,8 @@ namespace robox2d {
 
     class BaseApplication {
     public:
+      using rgb_t = std::tuple<uint8_t, uint8_t, uint8_t>;
+
       BaseApplication(const GraphicsConfiguration& configuration = GraphicsConfiguration());
       virtual ~BaseApplication() {}
 
@@ -200,10 +202,6 @@ namespace robox2d {
       int _video_fd[2];
 #endif
 
-      void video();
-      void kill_video();
-
-
       Scene2D _scene;
       Object2D* _cameraObject;
       std::unique_ptr<Magnum::SceneGraph::Camera2D> _camera;
@@ -213,6 +211,11 @@ namespace robox2d {
       Corrade::Containers::Optional<Magnum::Image2D> _image;
 
       bool _done = false;
+
+      void video();
+      void kill_video();
+
+      Magnum::Color3 _get_color(b2Fixture* fixture, b2Body* body, const rgb_t& default_color);
     };
 
     template <typename T>

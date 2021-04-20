@@ -21,7 +21,8 @@ namespace robox2d {
   class Simu {
   public:
     using robot_t = std::shared_ptr<Robot>;
-    
+    using rgb_t = std::tuple<uint8_t, uint8_t, uint8_t>;
+
     /**
      * @brief Construct a new Simu object.
      * 
@@ -85,8 +86,8 @@ namespace robox2d {
     void set_sync(bool sync) { _sync = sync; };
     bool get_sync() { return _sync; };
 
-    void set_map_body_color(const std::map<b2Body*, Magnum::Color3>& map_body_color) { _map_body_color = map_body_color; }
-    const std::map<b2Body*, Magnum::Color3>& get_map_body_color() const { return _map_body_color; }
+    void set_map_body_color(const std::map<b2Body*, rgb_t>& map_body_color) { _map_body_color = map_body_color; }
+    const std::map<b2Body*, rgb_t>& get_map_body_color() const { return _map_body_color; }
 
   protected:
     std::shared_ptr<b2World> _world;
@@ -108,7 +109,7 @@ namespace robox2d {
 
     size_t _old_index;
 
-    std::map<b2Body*, Magnum::Color3> _map_body_color;
+    std::map<b2Body*, rgb_t> _map_body_color;
   };
 
 

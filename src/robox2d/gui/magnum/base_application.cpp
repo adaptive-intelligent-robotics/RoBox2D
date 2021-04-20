@@ -100,19 +100,6 @@ namespace robox2d {
 
 	for(b2Body* body = _simu->world()->GetBodyList(); body; body = body->GetNext()) {
 
-          // Accessing color of body
-          Magnum::Color3 color;
-          bool use_default_color;
-          const std::map<b2Body*, Magnum::Color3>& map_body_color = simu->get_map_body_color();
-          std::map<b2Body*, Magnum::Color3>::iterator iter_map_body_color = map_body_color.find(body);
-
-          if (iter_map_body_color != map_body_color.end()) {
-            color = iter_map_body_color->second;
-            use_default_color = false;
-          } else {
-            use_default_color = true;
-          }
-
           // Creating drawable instances
 	  for(b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext())
 	  {
@@ -126,20 +113,19 @@ namespace robox2d {
 	      {
 	      case b2Shape::e_circle: // if shape is a circle
 		 {
-                   if (use_default_color) {
-                      color = 0xeac9a5_rgbf;
-                   }
 
-		   b2CircleShape* circle = static_cast<b2CircleShape*>(fixture->GetShape());
+                   BaseApplication::rgb_t default_color{234, 201, 165};
+                   const Magnum::Color3& color = _get_color(fixture, body, default_color);
+
+                   b2CircleShape* circle = static_cast<b2CircleShape*>(fixture->GetShape());
 		   obj->setScaling(Magnum::Vector2(circle->m_radius, circle->m_radius));
 		   new Drawable{*obj, *_circleInstanceData, color, *_drawables};
 		   break;
 		 }
 	      case b2Shape::e_polygon: // if shape is a box (more advanced polygon not supported yet)
 		{
-                  if (use_default_color) {
-                    color = 0xa5c9ea_rgbf;
-                  }
+                  BaseApplication::rgb_t default_color{165, 201, 234};
+                  const Magnum::Color3& color = _get_color(fixture, body, default_color);
 
 		  b2PolygonShape* poly =  static_cast<b2PolygonShape*>(fixture->GetShape());
 		  auto v = poly->m_vertices;
@@ -321,6 +307,7 @@ namespace robox2d {
       }
 
     }
+
     void BaseApplication::kill_video()
     {
 #ifdef ROBOX2D_HAS_BOOST_PROCESS
@@ -334,6 +321,33 @@ namespace robox2d {
       if (_video_pid != 0)
         kill(_video_pid, SIGINT);
 #endif
+    }
+
+    Magnum::Color3 BaseApplication::_get_color(b2Fixture* fixture,
+                                               b2Body* body,
+                                               const BaseApplication::rgb_t & default_color) {
+      using rgb_t = BaseApplication::rgb_t;
+
+      const std::map<b2Body*, rgb_t>& map_body_color = simu->get_map_body_color();
+
+      std::map<b2Body*, rgb_t>::const_iterator fixture_color = map_body_color.find(fixture);
+      std::map<b2Body*, rgb_t>::const_iterator body_color = map_body_color.find(body);
+
+      rgb_t color;
+
+      if (fixture_color != map_body_color.end()) {
+        color = fixture_color->second;
+      } else if (body_color != map_body_color.end()) {
+        color = body_color->second;
+      } else {
+        color = default_color;
+      }
+
+      const float r = std::get<0>(color) / 255.f;
+      const float g = std::get<1>(color) / 255.f;
+      const float b = std::get<2>(color) / 255.f;
+
+      return Magnum::Color3{r, g, b};
     }
 
     } // namespace magnum
