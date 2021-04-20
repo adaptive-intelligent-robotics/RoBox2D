@@ -13,7 +13,8 @@
 
 class LunarLander : public robox2d::Robot {
 public:
-  
+  using rgb_t = robox2d::Simu::rgb_t;
+
   LunarLander(std::shared_ptr<b2World> world){
 
     float hull_size = 0.1;
@@ -23,6 +24,7 @@ public:
     
     // body will always represent the body created in the previous iteration
 
+    _fixtures_v.clear();
     
     for(size_t i =0; i < 4; i++)
       {
@@ -51,7 +53,8 @@ public:
 	}
 	
 	
-	robox2d::common::addBoxFixture( _hull, {radius*2.0f, radius*1.0f}, {anchor.x,anchor.y, 0.0f}, 0.0f); //REACTOR
+	b2Fixture* box_fixture = robox2d::common::addBoxFixture( _hull, {radius*2.0f, radius*1.0f}, {anchor.x,anchor.y, 0.0f}, 0.0f); //REACTOR
+        _fixtures_v.push_back(box_fixture);
 	
 	this->_actuators.push_back(std::make_shared<robox2d::actuator::PonctualForce>(_hull, anchor, direction)); 
 	
@@ -64,9 +67,24 @@ public:
   b2Vec2 get_hull_pos(){return _hull->GetWorldCenter(); }
   b2Vec2 get_hull_lin_vel(){return _hull->GetLinearVelocity(); }
   float get_hull_rot_vel(){return _hull->GetAngularVelocity(); }
+
+  std::map<b2Body*, rgb_t> get_map_body_colors() {
+    std::map<b2Body*, rgb_t> map_body_colors;
+    map_body_colors[_hull] = rgb_t{209,172,80};
+    return map_body_colors;
+  }
+
+  std::map<b2Fixture*, rgb_t> get_map_fixture_colors() {
+    std::map<b2Fixture*, rgb_t> map_fixture_colors;
+    for (b2Fixture* fixture : _fixtures_v) {
+      map_fixture_colors[fixture] = rgb_t{234,165,225};
+    }
+    return map_fixture_colors;
+  }
   
 private:
   b2Body* _hull;
+  std::vector<b2Fixture*> _fixtures_v;
 };
 
 
@@ -131,6 +149,10 @@ int main()
     simu.add_robot(rob);
 
 #ifdef GRAPHIC
+
+    simu.set_map_body_color(rob->get_map_body_colors());
+    simu.set_map_fixture_color(rob->get_map_fixture_colors());
+
     auto graphics = std::make_shared<robox2d::gui::magnum::Graphics>();
     simu.set_graphics(graphics);
 #endif
