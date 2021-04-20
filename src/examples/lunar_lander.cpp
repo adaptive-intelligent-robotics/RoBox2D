@@ -68,13 +68,13 @@ public:
   b2Vec2 get_hull_lin_vel(){return _hull->GetLinearVelocity(); }
   float get_hull_rot_vel(){return _hull->GetAngularVelocity(); }
 
-  std::map<b2Body*, rgb_t> get_map_body_colors() {
+  std::map<b2Body*, rgb_t> get_map_body_color() {
     std::map<b2Body*, rgb_t> map_body_colors;
     map_body_colors[_hull] = rgb_t{209,172,80};
     return map_body_colors;
   }
 
-  std::map<b2Fixture*, rgb_t> get_map_fixture_colors() {
+  std::map<b2Fixture*, rgb_t> get_map_fixture_color() {
     std::map<b2Fixture*, rgb_t> map_fixture_colors;
     for (b2Fixture* fixture : _fixtures_v) {
       map_fixture_colors.insert(std::pair<b2Fixture*, rgb_t>(fixture, rgb_t{234,165,225}));
@@ -149,14 +149,11 @@ int main()
     simu.add_robot(rob);
 
 #ifdef GRAPHIC
-
-    simu.set_map_body_color(rob->get_map_body_colors());
-    simu.set_map_fixture_color(rob->get_map_fixture_colors());
-
-
     robox2d::gui::magnum::GraphicsConfiguration graphics_configuration = robox2d::gui::magnum::Graphics::default_configuration();
     graphics_configuration.width = graphics_configuration.height * 1.33;
     graphics_configuration.bg_color = Eigen::Vector4d{0.3, 0.3, 0.3, 1.}; // Background color is white
+    graphics_configuration.map_body_color = rob->get_map_body_color();
+    graphics_configuration.map_fixture_color = rob->get_map_fixture_color();
 
     auto graphics = std::make_shared<robox2d::gui::magnum::Graphics>(graphics_configuration);
     simu.set_graphics(graphics);

@@ -133,6 +133,11 @@ namespace robox2d {
 
       // Background (default = black)
       Eigen::Vector4d bg_color{0.0, 0.0, 0.0, 1.0};
+
+      // Mappings to define colors
+      using rgb_t = std::tuple<uint8_t, uint8_t, uint8_t>;
+      std::map<b2Body*, rgb_t> map_body_color;
+      std::map<b2Fixture*, rgb_t> map_fixture_color;
     };
 
 
@@ -215,7 +220,7 @@ namespace robox2d {
       void video();
       void kill_video();
 
-      Magnum::Color3 _get_color(b2Fixture* fixture, b2Body* body, const rgb_t& default_color);
+      Magnum::Color3 _get_color(b2Fixture* fixture, b2Body* body, const rgb_t& default_color, const GraphicsConfiguration& graphics_configuration);
     };
 
     template <typename T>
