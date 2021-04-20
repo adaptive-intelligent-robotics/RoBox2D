@@ -22,7 +22,6 @@ namespace robox2d {
 
       void set_simu(robox2d::Simu* simu) override
       {
-        _world = simu->world();
         _simu = simu;
         _magnum_app.reset(make_application<T>(simu, _configuration));
       }
@@ -125,7 +124,6 @@ namespace robox2d {
 
     protected:
       GraphicsConfiguration _configuration;
-      std::shared_ptr<b2World> _world;
       size_t _render_period, _frame_counter;
 
       bool _enabled;

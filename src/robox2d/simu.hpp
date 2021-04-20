@@ -85,6 +85,9 @@ namespace robox2d {
     void set_sync(bool sync) { _sync = sync; };
     bool get_sync() { return _sync; };
 
+    void set_map_body_color(const std::map<b2Body*, Magnum::Color3>& map_body_color) { _map_body_color = map_body_color; }
+    const std::map<b2Body*, Magnum::Color3>& get_map_body_color() const { return _map_body_color; }
+
   protected:
     std::shared_ptr<b2World> _world;
 
@@ -104,6 +107,8 @@ namespace robox2d {
     std::shared_ptr<gui::Base> _graphics;
 
     size_t _old_index;
+
+    std::map<b2Body*, Magnum::Color3> _map_body_color;
   };
 
 

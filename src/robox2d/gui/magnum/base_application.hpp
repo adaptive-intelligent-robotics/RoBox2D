@@ -208,7 +208,7 @@ namespace robox2d {
       Object2D* _cameraObject;
       std::unique_ptr<Magnum::SceneGraph::Camera2D> _camera;
       std::unique_ptr<Magnum::SceneGraph::DrawableGroup2D> _drawables;
-      std::shared_ptr<b2World> _world;
+      Simu* _simu;
       //Magnum::Containers::Optional<b2World> _world;
       Corrade::Containers::Optional<Magnum::Image2D> _image;
 

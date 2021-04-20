@@ -60,7 +60,7 @@ namespace robox2d {
 
     void BaseApplication::init(robox2d::Simu* simu, const GraphicsConfiguration& configuration)
     {
-      _world = simu->world();
+      _simu = simu;
       _configuration = configuration;
 
       /* Configure camera */
@@ -96,8 +96,24 @@ namespace robox2d {
       _lineInstanceData = std::unique_ptr<Magnum::Containers::Array<InstanceData>>(new Magnum::Containers::Array<InstanceData>() ) ;
 
 
-      if(_world)
-	for(b2Body* body = _world->GetBodyList(); body; body = body->GetNext())
+      if(_simu->world()) {
+
+	for(b2Body* body = _simu->world()->GetBodyList(); body; body = body->GetNext()) {
+
+          // Accessing color of body
+          Magnum::Color3 color;
+          bool use_default_color;
+          const std::map<b2Body*, Magnum::Color3>& map_body_color = simu->get_map_body_color();
+          std::map<b2Body*, Magnum::Color3>::iterator iter_map_body_color = map_body_color.find(body);
+
+          if (iter_map_body_color != map_body_color.end()) {
+            color = iter_map_body_color->second;
+            use_default_color = false;
+          } else {
+            use_default_color = true;
+          }
+
+          // Creating drawable instances
 	  for(b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext())
 	  {
 	    auto obj = new Object2D{&_scene};
@@ -110,20 +126,28 @@ namespace robox2d {
 	      {
 	      case b2Shape::e_circle: // if shape is a circle
 		 {
+                   if (use_default_color) {
+                      color = 0xeac9a5_rgbf;
+                   }
+
 		   b2CircleShape* circle = static_cast<b2CircleShape*>(fixture->GetShape());
 		   obj->setScaling(Magnum::Vector2(circle->m_radius, circle->m_radius));
-		   new Drawable{*obj, *_circleInstanceData, 0xeac9a5_rgbf, *_drawables};
+		   new Drawable{*obj, *_circleInstanceData, color, *_drawables};
 		   break;
 		 }
 	      case b2Shape::e_polygon: // if shape is a box (more advanced polygon not supported yet)
 		{
+                  if (use_default_color) {
+                    color = 0xa5c9ea_rgbf;
+                  }
+
 		  b2PolygonShape* poly =  static_cast<b2PolygonShape*>(fixture->GetShape());
 		  auto v = poly->m_vertices;
 		  auto hx = (v[1]-v[0]).Length()/2;
 		  auto hy = (v[2]-v[1]).Length()/2;
 		  Magnum::Vector2 halfSize(hx, hy);
 		  obj->setScaling(halfSize);
-		  new Drawable{*obj, *_boxInstanceData, 0xa5c9ea_rgbf, *_drawables};
+		  new Drawable{*obj, *_boxInstanceData, color, *_drawables};
 		  break;
 		}
 	      default: // not supported shapes
@@ -133,8 +157,10 @@ namespace robox2d {
 		}
 	      }
 	  }
+        }
+        }
 
-      /*for(b2Joint* joint = _world->GetJointList(); joint; joint = joint->GetNext())
+      /*for(b2Joint* joint = _simu->world()->GetJointList(); joint; joint = joint->GetNext())
 	{
 	  auto obj = new Object2D{&_scene};
 	  joint->SetUserData(obj);
@@ -150,9 +176,9 @@ namespace robox2d {
     void BaseApplication::update_graphics()
     {
       /* update all object positions */
-      if(_world)
+      if(_simu->world())
 	{
-	  for(b2Body* body = _world->GetBodyList(); body; body = body->GetNext())
+	  for(b2Body* body = _simu->world()->GetBodyList(); body; body = body->GetNext())
 	    for(b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext())
 	      switch(fixture->GetShape()->GetType())
 		{
@@ -185,7 +211,7 @@ namespace robox2d {
 	      }
 
 
-	  /*for(b2Joint* joint = _world->GetJointList(); joint; joint = joint->GetNext())
+	  /*for(b2Joint* joint = _simu->world()->GetJointList(); joint; joint = joint->GetNext())
 	    {
 	    (*static_cast<Object2D*>(joint->GetUserData()))
 	      .setTranslation({joint->GetAnchorB().x, joint->GetAnchorB().y})
