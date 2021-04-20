@@ -77,7 +77,7 @@ public:
   std::map<b2Fixture*, rgb_t> get_map_fixture_colors() {
     std::map<b2Fixture*, rgb_t> map_fixture_colors;
     for (b2Fixture* fixture : _fixtures_v) {
-      map_fixture_colors[fixture] = rgb_t{234,165,225};
+      map_fixture_colors.insert(std::pair<b2Fixture*, rgb_t>(fixture, rgb_t{234,165,225}));
     }
     return map_fixture_colors;
   }
