@@ -46,7 +46,7 @@ namespace robox2d {
       return body;
     }
 
-    void addBoxFixture(b2Body* body,
+    b2Fixture* addBoxFixture(b2Body* body,
                        const b2Vec2& halfSize,
                        const b2Vec3& transformation,
                        const float density,
@@ -56,12 +56,15 @@ namespace robox2d {
       b2PolygonShape shape;
       shape.SetAsBox(halfSize.x, halfSize.y, {transformation.x, transformation.y}, transformation.z);
 
-      b2FixtureDef fixture;
-      fixture.friction = friction;
-      fixture.density = density;
-      fixture.shape = &shape;
-      fixture.restitution = restitution;
-      body->CreateFixture(&fixture);
+      b2FixtureDef fixture_def;
+      fixture_def.friction = friction;
+      fixture_def.density = density;
+      fixture_def.shape = &shape;
+      fixture_def.restitution = restitution;
+
+      b2Fixture* fixture = body->CreateFixture(&fixture_def);
+
+      return fixture;
     }
 
     /**
@@ -104,7 +107,7 @@ namespace robox2d {
       return body;
     }
 
-    void addCircleFixture(b2Body* body,
+      b2Fixture* addCircleFixture(b2Body* body,
                           const float radius,
                           const b2Vec3& transformation,
                           const float density,
@@ -114,12 +117,15 @@ namespace robox2d {
       shape.m_radius = radius;
       shape.m_p = {transformation.x, transformation.y};
 
-      b2FixtureDef fixture;
-      fixture.friction = friction;
-      fixture.density = density;
-      fixture.shape = &shape;
-      fixture.restitution = restitution;
-      body->CreateFixture(&fixture);
+      b2FixtureDef fixture_def;
+      fixture_def.friction = friction;
+      fixture_def.density = density;
+      fixture_def.shape = &shape;
+      fixture_def.restitution = restitution;
+
+      b2Fixture* fixture = body->CreateFixture(&fixture_def);
+
+      return fixture;
     }
 
     /**
