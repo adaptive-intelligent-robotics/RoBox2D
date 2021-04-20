@@ -13,7 +13,7 @@
 
 class LunarLander : public robox2d::Robot {
 public:
-  using rgb_t = robox2d::Simu::rgb_t;
+  using rgb_t = std::tuple<uint8_t, uint8_t, uint8_t>;
 
   LunarLander(std::shared_ptr<b2World> world){
 
