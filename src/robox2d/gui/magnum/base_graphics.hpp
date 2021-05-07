@@ -3,6 +3,7 @@
 
 #include <robox2d/gui/base.hpp>
 #include <robox2d/gui/magnum/glfw_application.hpp>
+#include <robox2d/gui/magnum/gs/helper.hpp>
 
 namespace robox2d {
   class Simu;
@@ -98,7 +99,7 @@ namespace robox2d {
       {
         auto image = magnum_image();
         if (image)
-          return rgb_from_image(image);
+          return gs::rgb_from_image(image);
         return Image();
       }
       /*

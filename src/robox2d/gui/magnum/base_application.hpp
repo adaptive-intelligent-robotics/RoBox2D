@@ -6,6 +6,10 @@
 #include <unordered_map>
 #include <memory>
 
+#include <robox2d/simu.hpp>
+#include <robox2d/gui/helper.hpp>
+#include <robox2d/gui/magnum/gs/helper.hpp>
+
 #include <box2d/box2d.h>
 
 #include <Corrade/Containers/GrowableArray.h>
@@ -43,7 +47,6 @@
 #include <Magnum/Platform/WindowlessCglApplication.h>
 #endif
 
-#include "robox2d/simu.hpp"
 
 #define get_gl_context_with_sleep_robox2d(name, ms_sleep)			\
   /* Create/Get GLContext */						\

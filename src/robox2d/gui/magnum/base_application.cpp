@@ -297,7 +297,7 @@ namespace robox2d {
     void BaseApplication::video()
     {
       if (_recording_video) {
-	    auto image = rgb_from_image(&(*_image));
+	    auto image = gs::rgb_from_image(&(*_image));
 #ifdef ROBOX2D_HAS_BOOST_PROCESS
 	_video_pipe.write((char*)image.data.data(), image.data.size());
 	_video_pipe.flush();

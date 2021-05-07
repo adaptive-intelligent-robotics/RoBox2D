@@ -3,7 +3,6 @@
 
 #include <string>
 #include <vector>
-#include <Magnum/Image.h>
 
 namespace robox2d {
   namespace gui {
@@ -17,7 +16,7 @@ namespace robox2d {
       size_t width = 0, height = 0;
       std::vector<uint8_t> data;
     };
-    Image rgb_from_image(Magnum::Image2D* image);
+
     void save_png_image(const std::string& filename, const Image& rgb);
     void save_png_image(const std::string& filename, const GrayscaleImage& gray);
     
