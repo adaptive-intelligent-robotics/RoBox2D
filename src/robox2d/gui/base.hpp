@@ -25,8 +25,6 @@ namespace robox2d {
       
       virtual void set_enable(bool) {}
 
-      virtual Magnum::Image2D* magnum_image() = 0;
-      
       virtual Image image() = 0;
 
       
