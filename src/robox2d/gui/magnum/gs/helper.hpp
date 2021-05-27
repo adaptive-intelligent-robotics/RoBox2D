@@ -1,5 +1,5 @@
-#ifndef ROBOT_DART_GUI_MAGNUM_GS_HELPER_HPP
-#define ROBOT_DART_GUI_MAGNUM_GS_HELPER_HPP
+#ifndef ROBOX2D_GUI_MAGNUM_GS_HELPER_HPP
+#define ROBOX2D_GUI_MAGNUM_GS_HELPER_HPP
 
 #include <robox2d/gui/helper.hpp>
 
@@ -15,4 +15,4 @@ namespace robox2d {
   }
 }
 
-#endif // ROBOT_DART_GUI_MAGNUM_GS_HELPER_HPP
+#endif // ROBOX2D_GUI_MAGNUM_GS_HELPER_HPP
