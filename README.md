@@ -1,3 +1,3 @@
 # Robox2d
 
-Lightweight wrapper for box2d and magnum, with api inspired from robot_dart
+Lightweight wrapper for Box2D and Magnum, with API inspired from robot_dart.
